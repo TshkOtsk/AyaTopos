@@ -1,0 +1,5419 @@
+{
+  "version": 1,
+  "app": "HypoWeave",
+  "generatedAt": "2026-04-07T10:48:47.461Z",
+  "snapshot": {
+    "nodes": [
+      {
+        "id": "auto-group-47",
+        "type": "group",
+        "position": {
+          "x": 5520.035110659292,
+          "y": 377.44811225185686
+        },
+        "data": {
+          "label": "私は外国人として内政への干渉を避け、身の丈に合った活動を望む。",
+          "kind": "group",
+          "w": 898.5799909011967,
+          "h": 380.0774656137303,
+          "collapsed": false,
+          "stackCount": 2,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+          "layoutTextBox": {
+            "text": "身の丈の支援",
+            "x": 372.8792556901966,
+            "y": 88
+          },
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": false,
+          "layoutHullPoints": [
+            {
+              "x": 2.19764045520511,
+              "y": 8.391585839764435
+            },
+            {
+              "x": 89.96257379571743,
+              "y": 12.725686282945986
+            },
+            {
+              "x": 97.8023595447949,
+              "y": 9.79045222253232
+            },
+            {
+              "x": 97.8023595447949,
+              "y": 91.60841416023557
+            },
+            {
+              "x": 72.74925835545663,
+              "y": 91.60841416023557
+            },
+            {
+              "x": 47.696157166118375,
+              "y": 91.60841416023557
+            },
+            {
+              "x": 2.19764045520511,
+              "y": 90.20954777746768
+            }
+          ],
+          "hasManualLayoutHull": true,
+          "layoutTitleOffsetPx": 3.747557402423091,
+          "layoutTitleWidthPx": 788.638130025617,
+          "layoutTextBoxEnabled": true,
+          "layoutTextBoxNeedsInit": false,
+          "layoutTextBoxFontPx": 128,
+          "layoutTextBoxExtraRangePx": {
+            "top": 204
+          },
+          "layoutTextBoxRenderOffsetPx": {
+            "x": 0,
+            "y": 136
+          },
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false,
+          "layoutHullManualPoints": [
+            {
+              "x": 2.19764045520511,
+              "y": 8.391585839764435
+            },
+            {
+              "x": 89.96257379571743,
+              "y": 12.725686282945986
+            },
+            {
+              "x": 97.8023595447949,
+              "y": 9.79045222253232
+            },
+            {
+              "x": 97.8023595447949,
+              "y": 91.60841416023557
+            },
+            {
+              "x": 72.74925835545663,
+              "y": 91.60841416023557
+            },
+            {
+              "x": 47.696157166118375,
+              "y": 91.60841416023557
+            },
+            {
+              "x": 2.19764045520511,
+              "y": 90.20954777746768
+            }
+          ]
+        },
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "620px",
+          "--collapsed-card-height": "114px",
+          "--collapsed-card-max-width": "620px",
+          "--group-border": "12px",
+          "--group-title-size": "44px",
+          "--group-label-outset": "136px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "12px",
+          "--card-font-size": "44px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16)",
+          "width": 898.5799909011967,
+          "height": 380.0774656137303,
+          "pointerEvents": "none"
+        },
+        "className": "-layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 898.5799909011967,
+        "height": 380.0774656137303,
+        "selected": false
+      },
+      {
+        "id": "auto-group-48",
+        "type": "group",
+        "position": {
+          "x": 366.74167269715963,
+          "y": -1347.5711416824645
+        },
+        "data": {
+          "label": "ヒマラヤの薬草の知恵を活かし、環境保全と住民の自立を支援する。",
+          "kind": "group",
+          "w": 4216.357531656189,
+          "h": 1903.7058274379597,
+          "layoutTextBox": {
+            "text": "土地の知恵で自立",
+            "x": 0,
+            "y": -451.14251492384585
+          },
+          "mode": "layout",
+          "stackCount": 24,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12), 0 11px 12px rgba(0,0,0,0.10), 0 14px 14px rgba(0,0,0,0.08)",
+          "isEditing": false,
+          "hasParent": false,
+          "layoutHullPoints": [
+            {
+              "x": -0.09466654525758304,
+              "y": 10.206718860217237
+            },
+            {
+              "x": 0.47333272628791523,
+              "y": 1.0990787465993248
+            },
+            {
+              "x": 81.22089388568689,
+              "y": 1.0990787465993248
+            },
+            {
+              "x": 99.52666727371209,
+              "y": 4.174498476377642
+            },
+            {
+              "x": 99.88166681842802,
+              "y": 25.936257659044276
+            },
+            {
+              "x": 99.88166681842802,
+              "y": 67.7562039671486
+            },
+            {
+              "x": 82.97222497295218,
+              "y": 93.51543539506399
+            },
+            {
+              "x": 71.17531702546877,
+              "y": 102.52788111717844
+            },
+            {
+              "x": 49.02334543519433,
+              "y": 102.52788111717844
+            },
+            {
+              "x": 24.937672171256292,
+              "y": 91.64950892034952
+            },
+            {
+              "x": 0.8519989073182475,
+              "y": 91.64950892034952
+            },
+            {
+              "x": -0.09466654525758304,
+              "y": 42.63059682201965
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTitleOffsetPx": 4,
+          "layoutTitleWidthPx": 3411.873157077352,
+          "layoutTextBoxEnabled": true,
+          "layoutTextBoxNeedsInit": false,
+          "layoutTextBoxFontPx": 128,
+          "layoutTextBoxExtraRangePx": {
+            "top": 160
+          },
+          "layoutTextBoxRenderOffsetPx": {
+            "x": 0,
+            "y": 92
+          },
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false,
+          "collapsed": false
+        },
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "--group-border": "12px",
+          "--group-title-size": "44px",
+          "--group-label-outset": "92px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "12px",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "620px",
+          "--collapsed-card-height": "114px",
+          "--collapsed-card-max-width": "620px",
+          "--card-font-size": "44px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12), 0 11px 12px rgba(0,0,0,0.10), 0 14px 14px rgba(0,0,0,0.08)",
+          "width": 4216.357531656189,
+          "height": 1903.7058274379597,
+          "pointerEvents": "none"
+        },
+        "className": "-layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 4216.357531656189,
+        "height": 1903.7058274379597,
+        "selected": false
+      },
+      {
+        "id": "auto-group-49",
+        "type": "group",
+        "position": {
+          "x": 1676.6956323143597,
+          "y": 991.2981389275162
+        },
+        "data": {
+          "label": "祭りの喧騒に溶け込む民謡は、地域の記憶を宿しながら芸術へと昇華した。",
+          "kind": "group",
+          "w": 4898.844267817156,
+          "h": 2159.546844764588,
+          "mode": "layout",
+          "stackCount": 30,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12), 0 11px 12px rgba(0,0,0,0.10), 0 14px 14px rgba(0,0,0,0.08)",
+          "isEditing": false,
+          "hasParent": false,
+          "layoutHullPoints": [
+            {
+              "x": -0.5919763604349463,
+              "y": 10.040981729781805
+            },
+            {
+              "x": 0.4082595589206527,
+              "y": 0.9673299567864064
+            },
+            {
+              "x": 99.59174044107935,
+              "y": 0.9673299567864064
+            },
+            {
+              "x": 100.0816519117841,
+              "y": 7.545173662933971
+            },
+            {
+              "x": 100.0816519117841,
+              "y": 46.43183792574751
+            },
+            {
+              "x": 90.47970938718818,
+              "y": 62.257320700338056
+            },
+            {
+              "x": 71.35958462489333,
+              "y": 62.257320700338056
+            },
+            {
+              "x": 52.23945986259846,
+              "y": 102.61179088332331
+            },
+            {
+              "x": 33.132912505111904,
+              "y": 102.61179088332331
+            },
+            {
+              "x": -0.1837168015142937,
+              "y": 76.6416492545259
+            },
+            {
+              "x": -0.5919763604349463,
+              "y": 49.3145779753099
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTitleOffsetPx": 4,
+          "layoutTitleWidthPx": 4858.844267817156,
+          "layoutTextBox": {
+            "text": "地域記憶の芸術化",
+            "x": 0,
+            "y": -92
+          },
+          "layoutTextBoxEnabled": true,
+          "layoutTextBoxNeedsInit": false,
+          "layoutTextBoxFontPx": 128,
+          "layoutTextBoxExtraRangePx": {
+            "top": 160
+          },
+          "layoutTextBoxRenderOffsetPx": {
+            "x": 0,
+            "y": 92
+          },
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false,
+          "collapsed": false
+        },
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "--group-border": "12px",
+          "--group-title-size": "44px",
+          "--group-label-outset": "92px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "12px",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "620px",
+          "--collapsed-card-height": "114px",
+          "--collapsed-card-max-width": "620px",
+          "--card-font-size": "44px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12), 0 11px 12px rgba(0,0,0,0.10), 0 14px 14px rgba(0,0,0,0.08)",
+          "width": 4898.844267817156,
+          "height": 2159.546844764588,
+          "pointerEvents": "none"
+        },
+        "className": "-layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 4898.844267817156,
+        "height": 2159.546844764588,
+        "selected": false
+      },
+      {
+        "id": "auto-group-50",
+        "type": "group",
+        "position": {
+          "x": 4824.266391621132,
+          "y": -1054.4508269703276
+        },
+        "data": {
+          "label": "経済成長は福祉の必要条件だが、ネパールの近代化は伝統喪失や紛争の危機も招く。",
+          "kind": "group",
+          "w": 2222.131324092541,
+          "h": 1219.2580770736658,
+          "mode": "layout",
+          "stackCount": 8,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12)",
+          "isEditing": false,
+          "hasParent": false,
+          "layoutHullPoints": [
+            {
+              "x": 0.9000368152484176,
+              "y": 10.220600445753043
+            },
+            {
+              "x": 20.50308317378125,
+              "y": 1.7742166063621834
+            },
+            {
+              "x": 99.09996318475159,
+              "y": 1.7742166063621834
+            },
+            {
+              "x": 100.18000736304968,
+              "y": 27.564435732536026
+            },
+            {
+              "x": 100.18000736304968,
+              "y": 90.84695014688762
+            },
+            {
+              "x": 77.62851842203155,
+              "y": 101.82998445761267
+            },
+            {
+              "x": 58.727745301814785,
+              "y": 101.82998445761267
+            },
+            {
+              "x": 39.82697218159801,
+              "y": 101.82998445761267
+            },
+            {
+              "x": 18.815486760625703,
+              "y": 101.80001251118142
+            },
+            {
+              "x": 0.9000368152484176,
+              "y": 27.519212357784333
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTitleOffsetPx": 439.6054336093403,
+          "layoutTitleWidthPx": 1746.5258904832008,
+          "layoutTextBox": {
+            "text": "経済支援のジレンマ",
+            "x": 0,
+            "y": -469.72764176663026
+          },
+          "layoutTextBoxEnabled": true,
+          "layoutTextBoxNeedsInit": false,
+          "layoutTextBoxFontPx": 128,
+          "layoutTextBoxExtraRangePx": {
+            "top": 160
+          },
+          "layoutTextBoxRenderOffsetPx": {
+            "x": 0,
+            "y": 92
+          },
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false,
+          "collapsed": false
+        },
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "--group-border": "12px",
+          "--group-title-size": "44px",
+          "--group-label-outset": "92px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "12px",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "620px",
+          "--collapsed-card-height": "114px",
+          "--collapsed-card-max-width": "620px",
+          "--card-font-size": "44px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12)",
+          "width": 2222.131324092541,
+          "height": 1219.2580770736658,
+          "pointerEvents": "none"
+        },
+        "className": "-layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 2222.131324092541,
+        "height": 1219.2580770736658,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-c467-26",
+        "type": "card",
+        "position": {
+          "x": 463.68937021199486,
+          "y": 930.3286367246867
+        },
+        "data": {
+          "kind": "card",
+          "label": "映像記録が増えるほど、逆に身体の細部まで復元できるようになった。",
+          "w": 620,
+          "h": 260,
+          "layoutTextBox": {
+            "text": "映像で身体復元",
+            "x": -606.7059565473027,
+            "y": 236
+          },
+          "mode": "layout",
+          "isEditing": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "useCollapsedCardStyle": true,
+          "layoutTextBoxEnabled": true,
+          "layoutTextBoxNeedsInit": false,
+          "layoutTextBoxFontPx": 128
+        },
+        "style": {
+          "--card-font-size": "44px",
+          "--edge-handle-size": "12px",
+          "--card-max-width": "620px",
+          "--card-fixed-width": "620px"
+        },
+        "className": "",
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "auto-group-42",
+        "type": "group",
+        "position": {
+          "x": 503.60543360934025,
+          "y": 160
+        },
+        "data": {
+          "label": "ネパールの近代化は生活を向上させる一方、紛争の火種や伝統の喪失という深刻な危機を孕んでいる。",
+          "kind": "group",
+          "w": 1650.5258904832008,
+          "h": 991.2580770736657,
+          "collapsed": false,
+          "stackCount": 7,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12)",
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "layoutHullPoints": [
+            {
+              "x": 0.5988023952095809,
+              "y": 0.3147128245476003
+            },
+            {
+              "x": 68.8622754491018,
+              "y": 0.3147128245476003
+            },
+            {
+              "x": 78.44311377245509,
+              "y": 12.352478363493312
+            },
+            {
+              "x": 78.44311377245509,
+              "y": 32.88749016522423
+            },
+            {
+              "x": 39.52095808383233,
+              "y": 32.88749016522423
+            },
+            {
+              "x": 0.5988023952095809,
+              "y": 32.88749016522423
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTitleOffsetPx": -12,
+          "layoutTitleWidthPx": 456.0000000000001,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false,
+          "layoutHullManualPoints": [
+            {
+              "x": -2.2720400047776947,
+              "y": 19.962378271213215
+            },
+            {
+              "x": 0.24234700122328753,
+              "y": 0.4528687711809502
+            },
+            {
+              "x": 96.76853406465395,
+              "y": 0.9965560028103133
+            },
+            {
+              "x": 99.75765299877672,
+              "y": 13.62221547467991
+            },
+            {
+              "x": 101.45408200733972,
+              "y": 19.962378271213215
+            },
+            {
+              "x": 101.45408200733972,
+              "y": 90.49668938264621
+            },
+            {
+              "x": 71.09262553476525,
+              "y": 104.64190490460471
+            },
+            {
+              "x": 48.554354420999516,
+              "y": 104.64190490460471
+            },
+            {
+              "x": 26.016083307233767,
+              "y": 104.64190490460471
+            },
+            {
+              "x": -2.2720400047776947,
+              "y": 104.60330358279437
+            }
+          ]
+        },
+        "parentId": "auto-group-50",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "384px",
+          "--collapsed-card-height": "165px",
+          "--collapsed-card-max-width": "384px",
+          "--group-border": "8px",
+          "--group-title-size": "36px",
+          "--group-label-outset": "206px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "10.8px",
+          "--card-font-size": "25px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12)",
+          "width": 1650.5258904832008,
+          "height": 991.2580770736657,
+          "pointerEvents": "none"
+        },
+        "className": "group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 1650.5258904832008,
+        "height": 991.2580770736657,
+        "selected": false
+      },
+      {
+        "id": "auto-group-44",
+        "type": "group",
+        "position": {
+          "x": 68,
+          "y": 160
+        },
+        "data": {
+          "label": "民謡は地域の記憶を継承しながら、時代の変化と共に芸術へと進化を遂げた。",
+          "kind": "group",
+          "w": 4762.844267817156,
+          "h": 1931.5468447645883,
+          "collapsed": false,
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-49",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "384px",
+          "--collapsed-card-height": "132px",
+          "--collapsed-card-max-width": "384px",
+          "--group-border": "8px",
+          "--group-title-size": "36px",
+          "--group-label-outset": "296px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "10.8px",
+          "--card-font-size": "25px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12), 0 11px 12px rgba(0,0,0,0.10), 0 14px 14px rgba(0,0,0,0.08)",
+          "width": 4762.844267817156,
+          "height": 1931.5468447645883
+        },
+        "className": "group-wrapper group-wrapper-collapsed",
+        "hidden": false,
+        "width": 4762.844267817156,
+        "height": 1931.5468447645883,
+        "selected": false
+      },
+      {
+        "id": "auto-group-45",
+        "type": "group",
+        "position": {
+          "x": 68,
+          "y": 160
+        },
+        "data": {
+          "label": "山岳地域の村々と連携し、薬草の知恵を福祉と平和へ繋げ、自立的な活性化と生態系との共生を全力で支援する。",
+          "kind": "group",
+          "w": 3315.8731570773525,
+          "h": 1675.7058274379597,
+          "collapsed": false,
+          "stackCount": 20,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12), 0 11px 12px rgba(0,0,0,0.10), 0 14px 14px rgba(0,0,0,0.08)",
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "layoutHullPoints": [
+            {
+              "x": -0.723791256875274,
+              "y": 5.581385372756886
+            },
+            {
+              "x": 0.12063187614587902,
+              "y": 2.0981610761054514
+            },
+            {
+              "x": 46.27694080066992,
+              "y": 0.24880173547510248
+            },
+            {
+              "x": 99.87936812385412,
+              "y": 0.24880173547510248
+            },
+            {
+              "x": 102.23168970869875,
+              "y": 3.732026032126537
+            },
+            {
+              "x": 102.23168970869875,
+              "y": 93.90435748085999
+            },
+            {
+              "x": 87.19910206590463,
+              "y": 104.10522863533917
+            },
+            {
+              "x": 61.86640807527003,
+              "y": 104.10522863533917
+            },
+            {
+              "x": 31.174467789926773,
+              "y": 91.79238076120124
+            },
+            {
+              "x": 0.48252750458351606,
+              "y": 91.79238076120124
+            },
+            {
+              "x": -0.723791256875274,
+              "y": 36.3095937502534
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTitleOffsetPx": 512,
+          "layoutTitleWidthPx": 1777.3884991513612,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-48",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "384px",
+          "--collapsed-card-height": "165px",
+          "--collapsed-card-max-width": "384px",
+          "--group-border": "8px",
+          "--group-title-size": "36px",
+          "--group-label-outset": "76px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "10.8px",
+          "--card-font-size": "25px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12), 0 11px 12px rgba(0,0,0,0.10), 0 14px 14px rgba(0,0,0,0.08)",
+          "width": 3315.8731570773525,
+          "height": 1675.7058274379597,
+          "pointerEvents": "none"
+        },
+        "className": "-layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 3315.8731570773525,
+        "height": 1675.7058274379597,
+        "selected": false
+      },
+      {
+        "id": "auto-group-46",
+        "type": "group",
+        "position": {
+          "x": 3511.1212957385924,
+          "y": 265.9635920409528
+        },
+        "data": {
+          "label": "ヒマラヤの自然と人々を愛するがゆえに、森林減少による地すべりと住民の困窮が痛ましい。",
+          "kind": "group",
+          "w": 637.2362359175968,
+          "h": 1142.1978104796426,
+          "collapsed": false,
+          "stackCount": 4,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14)",
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "layoutHullPoints": [
+            {
+              "x": 0.5988023952095809,
+              "y": 0.437636761487965
+            },
+            {
+              "x": 66.1676646706587,
+              "y": 0.437636761487965
+            },
+            {
+              "x": 99.40119760479041,
+              "y": 10.831509846827133
+            },
+            {
+              "x": 102.24550898203593,
+              "y": 25.711159737417944
+            },
+            {
+              "x": 102.24550898203593,
+              "y": 98.46827133479214
+            },
+            {
+              "x": 54.41616766467065,
+              "y": 98.46827133479214
+            },
+            {
+              "x": 6.58682634730539,
+              "y": 98.46827133479214
+            },
+            {
+              "x": 0.5988023952095809,
+              "y": 17.61487964989059
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTitleOffsetPx": -12,
+          "layoutTitleWidthPx": 438.00000000000017,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-48",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "384px",
+          "--collapsed-card-height": "165px",
+          "--collapsed-card-max-width": "384px",
+          "--group-border": "8px",
+          "--group-title-size": "36px",
+          "--group-label-outset": "161px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "10.8px",
+          "--card-font-size": "25px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14)",
+          "width": 637.2362359175968,
+          "height": 1142.1978104796426,
+          "pointerEvents": "none"
+        },
+        "className": "group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 637.2362359175968,
+        "height": 1142.1978104796426,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-9549-12",
+        "type": "card",
+        "position": {
+          "x": 286.2958488987638,
+          "y": 166.98905095538476
+        },
+        "data": {
+          "kind": "card",
+          "label": "祭りの雑踏は周波数が被るため、民謡は目立つ帯域に寄る。",
+          "w": 360,
+          "h": 99,
+          "mode": "layout",
+          "isEditing": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "useCollapsedCardStyle": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false
+        },
+        "parentId": "auto-group-49",
+        "style": {
+          "--card-font-size": "25px",
+          "--edge-handle-size": "10.8px"
+        },
+        "className": "",
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-1901-31",
+        "type": "card",
+        "position": {
+          "x": 470.57999090119665,
+          "y": 213.07746561373028
+        },
+        "data": {
+          "kind": "card",
+          "label": "最初から大きな資本投下をするのは、私の力では及ばない。",
+          "w": 360,
+          "h": 99,
+          "mode": "layout",
+          "isEditing": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "useCollapsedCardStyle": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false
+        },
+        "parentId": "auto-group-47",
+        "style": {
+          "--card-font-size": "25px",
+          "--edge-handle-size": "10.8px"
+        },
+        "className": "",
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-b68f-7",
+        "type": "card",
+        "position": {
+          "x": 68,
+          "y": 204
+        },
+        "data": {
+          "kind": "card",
+          "label": "私は外国人だから、内政には干渉したくない。",
+          "w": 360,
+          "h": 99,
+          "mode": "layout",
+          "isEditing": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "useCollapsedCardStyle": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false
+        },
+        "parentId": "auto-group-47",
+        "style": {
+          "--card-font-size": "25px",
+          "--edge-handle-size": "10.8px"
+        },
+        "className": "",
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-e583-28",
+        "type": "card",
+        "position": {
+          "x": 68,
+          "y": 255.21254405017828
+        },
+        "data": {
+          "kind": "card",
+          "label": "経済的向上は福祉向上の必要条件だが十分条件ではない。",
+          "w": 360,
+          "h": 99,
+          "mode": "layout",
+          "isEditing": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "useCollapsedCardStyle": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false
+        },
+        "parentId": "auto-group-50",
+        "style": {
+          "--card-font-size": "25px",
+          "--edge-handle-size": "10.8px"
+        },
+        "className": "",
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "auto-group-33",
+        "type": "group",
+        "position": {
+          "x": 63.49939147900841,
+          "y": 284.3193184564891
+        },
+        "data": {
+          "label": "ネパールの近代化は生活基盤を改善する一方、伝統や環境を脅かしている。",
+          "kind": "group",
+          "w": 1535.0264990041924,
+          "h": 654.9387586171766,
+          "collapsed": false,
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-42",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "384px",
+          "--collapsed-card-height": "120px",
+          "--collapsed-card-max-width": "384px",
+          "--group-border": "6px",
+          "--group-title-size": "32px",
+          "--group-label-outset": "226px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "9.6px",
+          "--card-font-size": "22px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14)",
+          "width": 1535.0264990041924,
+          "height": 654.9387586171766
+        },
+        "className": "group-wrapper group-wrapper-collapsed",
+        "hidden": false,
+        "width": 1535.0264990041924,
+        "height": 654.9387586171766,
+        "selected": false
+      },
+      {
+        "id": "auto-group-38",
+        "type": "group",
+        "position": {
+          "x": 52,
+          "y": 179.60200093749245
+        },
+        "data": {
+          "label": "民謡は身体を通じた旋律と踊りにより、地域の記憶と共同体の絆を次世代へと継承する。",
+          "kind": "group",
+          "w": 2358.5103448568616,
+          "h": 1699.9448438270958,
+          "collapsed": false,
+          "stackCount": 19,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12), 0 11px 12px rgba(0,0,0,0.10), 0 14px 14px rgba(0,0,0,0.08)",
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "layoutHullPoints": [
+            {
+              "x": -2.339821777567125,
+              "y": -0.609033856258636
+            },
+            {
+              "x": 103.44351129528746,
+              "y": -0.609033856258636
+            },
+            {
+              "x": 103.44351129528746,
+              "y": 104.26323699381047
+            },
+            {
+              "x": 70.59771124793008,
+              "y": 104.26323699381047
+            },
+            {
+              "x": -1.4568701633908516,
+              "y": 71.56147811038971
+            },
+            {
+              "x": -2.339821777567125,
+              "y": 37.1510652317768
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-44",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "384px",
+          "--collapsed-card-height": "120px",
+          "--collapsed-card-max-width": "384px",
+          "--group-border": "6px",
+          "--group-title-size": "32px",
+          "--group-label-outset": "66px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "9.6px",
+          "--card-font-size": "22px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12), 0 11px 12px rgba(0,0,0,0.10), 0 14px 14px rgba(0,0,0,0.08)",
+          "width": 2358.5103448568616,
+          "height": 1699.9448438270958,
+          "pointerEvents": "none"
+        },
+        "className": "group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 2358.5103448568616,
+        "height": 1699.9448438270958,
+        "selected": false
+      },
+      {
+        "id": "auto-group-39",
+        "type": "group",
+        "position": {
+          "x": 1582.484657925991,
+          "y": 128
+        },
+        "data": {
+          "label": "山岳地域の各村と協働し、成功事例の展開を通じて自立的な活性化を全力で支援する。",
+          "kind": "group",
+          "w": 1681.3884991513614,
+          "h": 1495.7058274379597,
+          "collapsed": false
+        },
+        "parentId": "auto-group-45",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "width": 1681.3884991513614,
+          "height": 1495.7058274379597
+        },
+        "hidden": false,
+        "width": 1681.3884991513614,
+        "height": 1495.7058274379597,
+        "selected": false
+      },
+      {
+        "id": "auto-group-40",
+        "type": "group",
+        "position": {
+          "x": 2623.6544584587655,
+          "y": 128
+        },
+        "data": {
+          "label": "民謡は社会の変化や観光化に適応し、個人の歌から芸術へと進化を遂げた。",
+          "kind": "group",
+          "w": 2087.1898093583904,
+          "h": 917.1992697748103,
+          "collapsed": false,
+          "stackCount": 10,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12), 0 11px 12px rgba(0,0,0,0.10)",
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "layoutHullPoints": [
+            {
+              "x": -2.539299481166613,
+              "y": -1.119571000379474
+            },
+            {
+              "x": 101.34151670703142,
+              "y": -1.119571000379474
+            },
+            {
+              "x": 101.34151670703142,
+              "y": 67.39817422284435
+            },
+            {
+              "x": 78.80479250225663,
+              "y": 104.03045560136607
+            },
+            {
+              "x": 43.15877714399323,
+              "y": 104.03045560136607
+            },
+            {
+              "x": 15.53678254559788,
+              "y": 101.48232290502168
+            },
+            {
+              "x": -2.539299481166613,
+              "y": 55.95395488365305
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-44",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "384px",
+          "--collapsed-card-height": "120px",
+          "--collapsed-card-max-width": "384px",
+          "--group-border": "6px",
+          "--group-title-size": "32px",
+          "--group-label-outset": "66px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "9.6px",
+          "--card-font-size": "22px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12), 0 11px 12px rgba(0,0,0,0.10)",
+          "width": 2087.1898093583904,
+          "height": 917.1992697748103,
+          "pointerEvents": "none"
+        },
+        "className": "group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 2087.1898093583904,
+        "height": 917.1992697748103,
+        "selected": false
+      },
+      {
+        "id": "auto-group-41",
+        "type": "group",
+        "position": {
+          "x": 52,
+          "y": 157.73225788958234
+        },
+        "data": {
+          "label": "山岳民謡の薬草知識を福祉と平和へ繋げ、生態系との共生を目指す。",
+          "kind": "group",
+          "w": 1329.9844543736604,
+          "h": 1268.0191967522908,
+          "collapsed": false,
+          "stackCount": 8,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12)",
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "layoutHullPoints": [
+            {
+              "x": -2.1052877654262696,
+              "y": -0.8264331695596356
+            },
+            {
+              "x": 103.98500898455687,
+              "y": -0.8264331695596356
+            },
+            {
+              "x": 103.98500898455687,
+              "y": 68.61875612657518
+            },
+            {
+              "x": 56.842769666509284,
+              "y": 105.78503218691743
+            },
+            {
+              "x": 0.9022661851826871,
+              "y": 105.78503218691743
+            },
+            {
+              "x": -2.1052877654262696,
+              "y": 32.06719346219795
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-45",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "384px",
+          "--collapsed-card-height": "120px",
+          "--collapsed-card-max-width": "384px",
+          "--group-border": "6px",
+          "--group-title-size": "32px",
+          "--group-label-outset": "66px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "9.6px",
+          "--card-font-size": "22px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12)",
+          "width": 1329.9844543736604,
+          "height": 1268.0191967522908,
+          "pointerEvents": "none"
+        },
+        "className": "-layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 1329.9844543736604,
+        "height": 1268.0191967522908,
+        "selected": false
+      },
+      {
+        "id": "auto-group-43",
+        "type": "group",
+        "position": {
+          "x": 60.23623591759679,
+          "y": 258
+        },
+        "data": {
+          "label": "森林の減少で地すべりが多発し、住民の生活は困窮を極めている。",
+          "kind": "group",
+          "w": 525,
+          "h": 677,
+          "collapsed": false
+        },
+        "parentId": "auto-group-46",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "width": 525,
+          "height": 677
+        },
+        "hidden": false,
+        "width": 525,
+        "height": 677,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-06ad-0",
+        "type": "card",
+        "position": {
+          "x": 52,
+          "y": 168
+        },
+        "data": {
+          "kind": "card",
+          "label": "ヘマをするとネパールは戦争の引き金となったバルカン・ベトナムと化してしまう。",
+          "w": 360,
+          "h": 120,
+          "mode": "layout",
+          "isEditing": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "useCollapsedCardStyle": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false
+        },
+        "parentId": "auto-group-42",
+        "style": {
+          "--card-font-size": "22px",
+          "--edge-handle-size": "9.6px"
+        },
+        "className": "",
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-8dbc-17",
+        "type": "card",
+        "position": {
+          "x": 52,
+          "y": 1029.1978104796426
+        },
+        "data": {
+          "kind": "card",
+          "label": "ヒマラヤ山中の土地と人とが好きだ。",
+          "w": 342,
+          "h": 61,
+          "mode": "layout",
+          "isEditing": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "useCollapsedCardStyle": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false
+        },
+        "parentId": "auto-group-46",
+        "style": {
+          "--card-font-size": "22px",
+          "--edge-handle-size": "9.6px"
+        },
+        "className": "",
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "auto-group-10",
+        "type": "group",
+        "position": {
+          "x": 1077.0264990041924,
+          "y": 104
+        },
+        "data": {
+          "label": "ネパールの道路整備は進むが、人口急増の中で住民の生活基盤をどう確保すべきか。",
+          "kind": "group",
+          "w": 420,
+          "h": 413,
+          "collapsed": false,
+          "stackCount": 2,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "layoutHullPoints": [
+            {
+              "x": -4.285714285714286,
+              "y": -5.202312138728325
+            },
+            {
+              "x": 104.28571428571429,
+              "y": -5.202312138728325
+            },
+            {
+              "x": 104.28571428571429,
+              "y": 93.0635838150289
+            },
+            {
+              "x": -4.285714285714286,
+              "y": 93.0635838150289
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-33",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "384px",
+          "--collapsed-card-height": "120px",
+          "--collapsed-card-max-width": "384px",
+          "--group-border": "4px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "109px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "8.4px",
+          "--card-font-size": "22px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16)",
+          "width": 420,
+          "height": 413,
+          "pointerEvents": "none"
+        },
+        "className": "group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 420,
+        "height": 413,
+        "selected": false
+      },
+      {
+        "id": "auto-group-13",
+        "type": "group",
+        "position": {
+          "x": 1629.1898093583904,
+          "y": 104
+        },
+        "data": {
+          "label": "生活苦を歌い権威を笑う民謡は、学校教育を経て個人の歌から社会の歌へと変容した。",
+          "kind": "group",
+          "w": 420,
+          "h": 498,
+          "collapsed": false,
+          "stackCount": 3,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "layoutHullPoints": [
+            {
+              "x": -4.285714285714286,
+              "y": -4.627249357326478
+            },
+            {
+              "x": 104.28571428571429,
+              "y": -4.627249357326478
+            },
+            {
+              "x": 104.28571428571429,
+              "y": 104.62724935732648
+            },
+            {
+              "x": -4.285714285714286,
+              "y": 104.62724935732648
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-40",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "384px",
+          "--collapsed-card-height": "120px",
+          "--collapsed-card-max-width": "384px",
+          "--group-border": "4px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "109px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "8.4px",
+          "--card-font-size": "22px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16)",
+          "width": 420,
+          "height": 498,
+          "pointerEvents": "none"
+        },
+        "className": "-layout-hit -hull-hit  -layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 420,
+        "height": 498,
+        "selected": false
+      },
+      {
+        "id": "auto-group-25",
+        "type": "group",
+        "position": {
+          "x": 38,
+          "y": 108.93875861717663
+        },
+        "data": {
+          "label": "近代化はネパールの山村に恩恵と弊害をもたらし、伝統や環境を脅かしている。",
+          "kind": "group",
+          "w": 932.9027991965631,
+          "h": 508,
+          "collapsed": false,
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-33",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "384px",
+          "--collapsed-card-height": "120px",
+          "--collapsed-card-max-width": "384px",
+          "--group-border": "4px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "136px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "8.4px",
+          "--card-font-size": "22px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14)",
+          "width": 932.9027991965631,
+          "height": 508
+        },
+        "className": "group-wrapper group-wrapper-collapsed",
+        "hidden": false,
+        "width": 932.9027991965631,
+        "height": 508,
+        "selected": false
+      },
+      {
+        "id": "auto-group-29",
+        "type": "group",
+        "position": {
+          "x": 825.9844543736604,
+          "y": 104
+        },
+        "data": {
+          "label": "山岳民謡の薬草知識を解明し福祉を向上させることは、国際紛争の予防にも繋がる。",
+          "kind": "group",
+          "w": 466,
+          "h": 701.3001217041983,
+          "collapsed": false,
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-41",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "384px",
+          "--collapsed-card-height": "120px",
+          "--collapsed-card-max-width": "384px",
+          "--group-border": "4px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "136px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "8.4px",
+          "--card-font-size": "22px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16)",
+          "width": 466,
+          "height": 701.3001217041983
+        },
+        "className": "group-wrapper group-wrapper-collapsed",
+        "hidden": false,
+        "width": 466,
+        "height": 701.3001217041983,
+        "selected": false
+      },
+      {
+        "id": "auto-group-30",
+        "type": "group",
+        "position": {
+          "x": 38,
+          "y": 124.19926977480964
+        },
+        "data": {
+          "label": "民謡は時代の変化や観光化に適応し、芸術として進化し続ける。",
+          "kind": "group",
+          "w": 1490.8055983931245,
+          "h": 755.0000000000007,
+          "collapsed": false,
+          "stackCount": 7,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12)",
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "layoutHullPoints": [
+            {
+              "x": -2.884346560433356,
+              "y": -2.4291497975708496
+            },
+            {
+              "x": 104.5612922351039,
+              "y": -2.4291497975708496
+            },
+            {
+              "x": 104.5612922351039,
+              "y": 103.50877192982455
+            },
+            {
+              "x": 61.0948603476431,
+              "y": 103.50877192982455
+            },
+            {
+              "x": 22.422919685450626,
+              "y": 100.43726010301737
+            },
+            {
+              "x": -2.884346560433356,
+              "y": 45.557496174913084
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-40",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "width": 1490.8055983931245,
+          "height": 755.0000000000007,
+          "pointerEvents": "none",
+          "--group-border": "4px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "56px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "8.4px"
+        },
+        "className": "group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 1490.8055983931245,
+        "height": 755.0000000000007,
+        "selected": false
+      },
+      {
+        "id": "auto-group-31",
+        "type": "group",
+        "position": {
+          "x": 617.0556609492196,
+          "y": 104
+        },
+        "data": {
+          "label": "山岳地域の独自性を活かし、住民と協働して自立的な活性化を全力で支援する。",
+          "kind": "group",
+          "w": 1026.3328382021418,
+          "h": 1353.7058274379597,
+          "collapsed": false,
+          "stackCount": 9,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12)",
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "layoutHullPoints": [
+            {
+              "x": -6.625530965092927,
+              "y": -1.37856472888073
+            },
+            {
+              "x": 106.62553096509293,
+              "y": -1.37856472888073
+            },
+            {
+              "x": 106.62553096509293,
+              "y": 92.03495934424465
+            },
+            {
+              "x": 58.05829040649322,
+              "y": 104.59521576293575
+            },
+            {
+              "x": -5.079122319686438,
+              "y": 104.59521576293575
+            },
+            {
+              "x": -6.625530965092927,
+              "y": 45.41604912368182
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-39",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "width": 1026.3328382021418,
+          "height": 1353.7058274379597,
+          "pointerEvents": "none",
+          "--group-border": "4px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "56px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "8.4px"
+        },
+        "className": "-layout-hit -hull-hit  -layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 1026.3328382021418,
+        "height": 1353.7058274379597,
+        "selected": false
+      },
+      {
+        "id": "auto-group-32",
+        "type": "group",
+        "position": {
+          "x": 1276.3074239561008,
+          "y": 162.39975659160336
+        },
+        "data": {
+          "label": "民謡は旋律と踊りを通じて地域の記憶を継承し、共同体に一体感をもたらす。",
+          "kind": "group",
+          "w": 1044.2029209007605,
+          "h": 1499.5450872354925,
+          "collapsed": false,
+          "stackCount": 10,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12), 0 11px 12px rgba(0,0,0,0.10)",
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "layoutHullPoints": [
+            {
+              "x": -4.5224010036950615,
+              "y": -1.356113049536284
+            },
+            {
+              "x": 107.1517039128201,
+              "y": -1.356113049536284
+            },
+            {
+              "x": 107.1517039128201,
+              "y": 104.52037683178762
+            },
+            {
+              "x": 39.000172508299165,
+              "y": 104.52037683178762
+            },
+            {
+              "x": -4.5224010036950615,
+              "y": 82.84825502726954
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-38",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "384px",
+          "--collapsed-card-height": "120px",
+          "--collapsed-card-max-width": "384px",
+          "--group-border": "4px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "56px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "8.4px",
+          "--card-font-size": "22px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12), 0 11px 12px rgba(0,0,0,0.10)",
+          "width": 1044.2029209007605,
+          "height": 1499.5450872354925,
+          "pointerEvents": "none"
+        },
+        "className": "group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 1044.2029209007605,
+        "height": 1499.5450872354925,
+        "selected": false
+      },
+      {
+        "id": "auto-group-34",
+        "type": "group",
+        "position": {
+          "x": 38,
+          "y": 156.01919675229078
+        },
+        "data": {
+          "label": "地理学と民族学の知見を活かし、伝統的な暮らしを生態系として捉え直して共生を目指す。",
+          "kind": "group",
+          "w": 602,
+          "h": 1074,
+          "collapsed": false,
+          "stackCount": 5,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14)",
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "layoutHullPoints": [
+            {
+              "x": -3.1088082901554404,
+              "y": -1.8404907975460123
+            },
+            {
+              "x": 106.73575129533678,
+              "y": -1.8404907975460123
+            },
+            {
+              "x": 106.73575129533678,
+              "y": 82.61758691206545
+            },
+            {
+              "x": 0.3454231433506045,
+              "y": 82.61758691206545
+            },
+            {
+              "x": -3.1088082901554404,
+              "y": 17.280163599182004
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-41",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "width": 602,
+          "height": 1074,
+          "pointerEvents": "none",
+          "--group-border": "4px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "109px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "8.4px"
+        },
+        "className": "-layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 602,
+        "height": 1074,
+        "selected": false
+      },
+      {
+        "id": "auto-group-35",
+        "type": "group",
+        "position": {
+          "x": 38,
+          "y": 104
+        },
+        "data": {
+          "label": "歌は土地の風土や共同体の儀礼と密接に関わり、身体を通じて継承される。",
+          "kind": "group",
+          "w": 1125.4034077175536,
+          "h": 1021.0000000000002,
+          "collapsed": false,
+          "stackCount": 9,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12)",
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "layoutHullPoints": [
+            {
+              "x": -3.237410071942446,
+              "y": -1.810865191146881
+            },
+            {
+              "x": 90.28776978417267,
+              "y": -1.810865191146881
+            },
+            {
+              "x": 90.28776978417267,
+              "y": 43.259557344064376
+            },
+            {
+              "x": -3.237410071942446,
+              "y": 43.259557344064376
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-38",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "384px",
+          "--collapsed-card-height": "120px",
+          "--collapsed-card-max-width": "384px",
+          "--group-border": "4px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "81px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "8.4px",
+          "--card-font-size": "22px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12)",
+          "width": 1125.4034077175536,
+          "height": 1021.0000000000002,
+          "pointerEvents": "none"
+        },
+        "className": "group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 1125.4034077175536,
+        "height": 1021.0000000000002,
+        "selected": false
+      },
+      {
+        "id": "auto-group-36",
+        "type": "group",
+        "position": {
+          "x": 38,
+          "y": 111.04082758854872
+        },
+        "data": {
+          "label": "各村の活性化を優先し、成功事例を広めることで地域全体を底上げしたい。",
+          "kind": "group",
+          "w": 420,
+          "h": 527,
+          "collapsed": false,
+          "stackCount": 3,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "layoutHullPoints": [
+            {
+              "x": -4.285714285714286,
+              "y": -4.176334106728538
+            },
+            {
+              "x": 104.28571428571429,
+              "y": -4.176334106728538
+            },
+            {
+              "x": 104.28571428571429,
+              "y": 101.16009280742459
+            },
+            {
+              "x": -4.285714285714286,
+              "y": 101.16009280742459
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-39",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "384px",
+          "--collapsed-card-height": "120px",
+          "--collapsed-card-max-width": "384px",
+          "--group-border": "4px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "109px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "8.4px",
+          "--card-font-size": "22px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16)",
+          "width": 420,
+          "height": 527,
+          "pointerEvents": "none"
+        },
+        "className": "-layout-hit -hull-hit  -layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 420,
+        "height": 527,
+        "selected": false
+      },
+      {
+        "id": "auto-group-37",
+        "type": "group",
+        "position": {
+          "x": 76,
+          "y": 324
+        },
+        "data": {
+          "label": "森林の減少に伴い、地すべりが頻発する事態となっているようだ。",
+          "kind": "group",
+          "w": 411,
+          "h": 315,
+          "collapsed": false
+        },
+        "parentId": "auto-group-43",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "width": 411,
+          "height": 315
+        },
+        "hidden": false,
+        "width": 411,
+        "height": 315,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-370e-27",
+        "type": "card",
+        "position": {
+          "x": 38,
+          "y": 184
+        },
+        "data": {
+          "kind": "card",
+          "label": "住民は生活苦に喘ぎ、見るに忍びない。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-43",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "auto-group-11",
+        "type": "group",
+        "position": {
+          "x": 30,
+          "y": 112.65905070725273
+        },
+        "data": {
+          "label": "近代化に伴う過疎と過密は、伝統文化や環境を破壊する深刻な問題だ。",
+          "kind": "group",
+          "w": 406,
+          "h": 365,
+          "collapsed": false,
+          "stackCount": 2,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "layoutHullPoints": [
+            {
+              "x": -6.157635467980295,
+              "y": -9.469696969696969
+            },
+            {
+              "x": 106.1576354679803,
+              "y": -9.469696969696969
+            },
+            {
+              "x": 106.1576354679803,
+              "y": 106.43939393939394
+            },
+            {
+              "x": -6.157635467980295,
+              "y": 106.43939393939394
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-25",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "384px",
+          "--collapsed-card-height": "120px",
+          "--collapsed-card-max-width": "384px",
+          "--group-border": "3px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "109px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "7.2px",
+          "--card-font-size": "22px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16)",
+          "width": 406,
+          "height": 365,
+          "pointerEvents": "none"
+        },
+        "className": "group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 406,
+        "height": 365,
+        "selected": false
+      },
+      {
+        "id": "auto-group-17",
+        "type": "group",
+        "position": {
+          "x": 30,
+          "y": 279.3001217041983
+        },
+        "data": {
+          "label": "山岳地域の病因を解明し、山民の福祉を向上させることが国際紛争の未然防止につながる。",
+          "kind": "group",
+          "w": 406,
+          "h": 392,
+          "collapsed": false,
+          "stackCount": 2,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "layoutHullPoints": [
+            {
+              "x": -6.157635467980295,
+              "y": -8.389261744966444
+            },
+            {
+              "x": 106.1576354679803,
+              "y": -8.389261744966444
+            },
+            {
+              "x": 106.1576354679803,
+              "y": 94.29530201342283
+            },
+            {
+              "x": -6.157635467980295,
+              "y": 94.29530201342283
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-29",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "width": 406,
+          "height": 392,
+          "pointerEvents": "none",
+          "--group-border": "3px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "136px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "7.2px"
+        },
+        "className": "group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 406,
+        "height": 392,
+        "selected": false
+      },
+      {
+        "id": "auto-group-19",
+        "type": "group",
+        "position": {
+          "x": 30,
+          "y": 91.24009736335893
+        },
+        "data": {
+          "label": "民謡は時代の変化や地域性を取り込み、環境適応として進化し続ける。",
+          "kind": "group",
+          "w": 854.2821419938919,
+          "h": 611.0000000000002,
+          "collapsed": false,
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-30",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "384px",
+          "--collapsed-card-height": "120px",
+          "--collapsed-card-max-width": "384px",
+          "--group-border": "3px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "109px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "7.2px",
+          "--card-font-size": "22px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14)",
+          "width": 854.2821419938919,
+          "height": 611.0000000000002
+        },
+        "className": "group-wrapper group-wrapper-collapsed",
+        "hidden": false,
+        "width": 854.2821419938919,
+        "height": 611.0000000000002,
+        "selected": false
+      },
+      {
+        "id": "auto-group-20",
+        "type": "group",
+        "position": {
+          "x": 30,
+          "y": 86
+        },
+        "data": {
+          "label": "住民が自立して利益を得られる技術を導入し、共に喜びを分かち合いたい。",
+          "kind": "group",
+          "w": 922.9628235374025,
+          "h": 482.10085192938845,
+          "collapsed": false
+        },
+        "parentId": "auto-group-31",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "width": 922.9628235374025,
+          "height": 482.10085192938845
+        },
+        "hidden": false,
+        "width": 922.9628235374025,
+        "height": 482.10085192938845,
+        "selected": false
+      },
+      {
+        "id": "auto-group-21",
+        "type": "group",
+        "position": {
+          "x": 79.06002434083894,
+          "y": 86
+        },
+        "data": {
+          "label": "民謡は旋律と踊りで記憶と地域性を継承し、集団の絆を深める。",
+          "kind": "group",
+          "w": 935.1428965599216,
+          "h": 835.4418012221361,
+          "collapsed": false,
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-32",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "384px",
+          "--collapsed-card-height": "90px",
+          "--collapsed-card-max-width": "384px",
+          "--group-border": "3px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "109px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "7.2px",
+          "--card-font-size": "22px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12)",
+          "width": 935.1428965599216,
+          "height": 835.4418012221361
+        },
+        "className": "group-wrapper group-wrapper-collapsed",
+        "hidden": false,
+        "width": 935.1428965599216,
+        "height": 835.4418012221361,
+        "selected": false
+      },
+      {
+        "id": "auto-group-22",
+        "type": "group",
+        "position": {
+          "x": 45.87129974060372,
+          "y": 667.7058274379594
+        },
+        "data": {
+          "label": "山岳地域の独自性を活かし、住民と協働して村々の自立的な活性化を全力で支援したい。",
+          "kind": "group",
+          "w": 950.4615384615381,
+          "h": 656.0000000000002,
+          "collapsed": false,
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-31",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "384px",
+          "--collapsed-card-height": "120px",
+          "--collapsed-card-max-width": "384px",
+          "--group-border": "3px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "136px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "7.2px",
+          "--card-font-size": "22px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14)",
+          "width": 950.4615384615381,
+          "height": 656.0000000000002
+        },
+        "className": "group-wrapper group-wrapper-collapsed",
+        "hidden": false,
+        "width": 950.4615384615381,
+        "height": 656.0000000000002,
+        "selected": false
+      },
+      {
+        "id": "auto-group-23",
+        "type": "group",
+        "position": {
+          "x": 963.8055983931245,
+          "y": 86
+        },
+        "data": {
+          "label": "観光化で変容する民謡は、時代の要請に応じた芸術の自然な進化である。",
+          "kind": "group",
+          "w": 497,
+          "h": 639.0000000000007,
+          "collapsed": false,
+          "stackCount": 3,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "layoutHullPoints": [
+            {
+              "x": -5.030181086519115,
+              "y": -4.166666666666665
+            },
+            {
+              "x": 110.06036217303823,
+              "y": -4.166666666666665
+            },
+            {
+              "x": 110.06036217303823,
+              "y": 101.33333333333334
+            },
+            {
+              "x": -1.0060362173038229,
+              "y": 101.33333333333334
+            },
+            {
+              "x": -5.030181086519115,
+              "y": 26.99999999999999
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-30",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "384px",
+          "--collapsed-card-height": "120px",
+          "--collapsed-card-max-width": "384px",
+          "--group-border": "3px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "81px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "7.2px",
+          "--card-font-size": "22px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16)",
+          "width": 497,
+          "height": 639.0000000000007,
+          "pointerEvents": "none"
+        },
+        "className": "-layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 497,
+        "height": 639.0000000000007,
+        "selected": false
+      },
+      {
+        "id": "auto-group-24",
+        "type": "group",
+        "position": {
+          "x": 30,
+          "y": 977.5450872354925
+        },
+        "data": {
+          "label": "繰り返される旋律は、共同体に安らぎと一体感をもたらす。",
+          "kind": "group",
+          "w": 890.8223610614477,
+          "h": 492,
+          "collapsed": false,
+          "stackCount": 3,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "layoutHullPoints": [
+            {
+              "x": -5.274261603375527,
+              "y": -4.604051565377534
+            },
+            {
+              "x": 104.43037974683544,
+              "y": -4.604051565377534
+            },
+            {
+              "x": 104.43037974683544,
+              "y": 65.37753222836095
+            },
+            {
+              "x": -5.274261603375527,
+              "y": 65.37753222836095
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-32",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "384px",
+          "--collapsed-card-height": "90px",
+          "--collapsed-card-max-width": "384px",
+          "--group-border": "3px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "81px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "7.2px",
+          "--card-font-size": "22px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16)",
+          "width": 890.8223610614477,
+          "height": 492,
+          "pointerEvents": "none"
+        },
+        "className": "group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 890.8223610614477,
+        "height": 492,
+        "selected": false
+      },
+      {
+        "id": "auto-group-26",
+        "type": "group",
+        "position": {
+          "x": 75,
+          "y": 286
+        },
+        "data": {
+          "label": "地理学と民族学の知見を活かし、現地の文化を尊重しつつ共生を目指す。",
+          "kind": "group",
+          "w": 497,
+          "h": 758,
+          "collapsed": false
+        },
+        "parentId": "auto-group-34",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "width": 497,
+          "height": 758
+        },
+        "hidden": false,
+        "width": 497,
+        "height": 758,
+        "selected": false
+      },
+      {
+        "id": "auto-group-27",
+        "type": "group",
+        "position": {
+          "x": 598.4034077175536,
+          "y": 91.13924543397025
+        },
+        "data": {
+          "label": "歌の機能や伝承から文化圏を読み解く際、その多様な呼称や背景にある共同体の儀礼的役割を考慮する必要がある。",
+          "kind": "group",
+          "w": 497,
+          "h": 813.0000000000002,
+          "collapsed": false,
+          "stackCount": 4,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14)",
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "layoutHullPoints": [
+            {
+              "x": -5.030181086519115,
+              "y": -3.6496350364963495
+            },
+            {
+              "x": 110.06036217303823,
+              "y": -3.6496350364963495
+            },
+            {
+              "x": 110.06036217303823,
+              "y": 106.13138686131387
+            },
+            {
+              "x": -1.0060362173038229,
+              "y": 106.13138686131387
+            },
+            {
+              "x": -5.030181086519115,
+              "y": 41.02189781021897
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-35",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "384px",
+          "--collapsed-card-height": "149px",
+          "--collapsed-card-max-width": "384px",
+          "--group-border": "3px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "136px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "7.2px",
+          "--card-font-size": "22px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14)",
+          "width": 497,
+          "height": 813.0000000000002,
+          "pointerEvents": "none"
+        },
+        "className": "-layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 497,
+        "height": 813.0000000000002,
+        "selected": false
+      },
+      {
+        "id": "auto-group-28",
+        "type": "group",
+        "position": {
+          "x": 30,
+          "y": 86
+        },
+        "data": {
+          "label": "歌い手の技法や旋律は、その土地の住環境や自然景観と深く結びつき身体的に育まれてきた。",
+          "kind": "group",
+          "w": 496.9999999999998,
+          "h": 905.0000000000002,
+          "collapsed": false,
+          "stackCount": 5,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14)",
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "layoutHullPoints": [
+            {
+              "x": -5.274261603375527,
+              "y": -3.067484662576688
+            },
+            {
+              "x": 104.43037974683544,
+              "y": -3.067484662576688
+            },
+            {
+              "x": 104.43037974683544,
+              "y": 58.159509202454004
+            },
+            {
+              "x": -5.274261603375527,
+              "y": 58.159509202454004
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-35",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "width": 496.9999999999998,
+          "height": 905.0000000000002,
+          "pointerEvents": "none",
+          "--group-border": "3px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "109px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "7.2px"
+        },
+        "className": "group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 496.9999999999998,
+        "height": 905.0000000000002,
+        "selected": false
+      },
+      {
+        "id": "auto-group-6",
+        "type": "group",
+        "position": {
+          "x": 496.90279919656314,
+          "y": 86
+        },
+        "data": {
+          "label": "近代文明はネパールの山村にとって、有害な面と活性化に役立つ面の両面を併せ持っている。",
+          "kind": "group",
+          "w": 406,
+          "h": 392,
+          "collapsed": false
+        },
+        "parentId": "auto-group-25",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "width": 406,
+          "height": 392
+        },
+        "hidden": false,
+        "width": 406,
+        "height": 392,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-0417-28",
+        "type": "card",
+        "position": {
+          "x": 30,
+          "y": 377
+        },
+        "data": {
+          "kind": "card",
+          "label": "民謡が学校で教わると、家の歌から社会の歌へ性格が変わる。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-13",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-aa00-23",
+        "type": "card",
+        "position": {
+          "x": 30,
+          "y": 258
+        },
+        "data": {
+          "kind": "card",
+          "label": "民謡は権威を笑い飛ばし、庶民が主役になる希少な場を作った。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-13",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-aedc-21",
+        "type": "card",
+        "position": {
+          "x": 30,
+          "y": 139
+        },
+        "data": {
+          "kind": "card",
+          "label": "民謡は失恋より生活苦が多く、感情の根は経済に繋がっている。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-13",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-c547-1",
+        "type": "card",
+        "position": {
+          "x": 66.20048681679327,
+          "y": 139
+        },
+        "data": {
+          "kind": "card",
+          "label": "山の民謡には薬草名が出て、民間医療の記録として役立つ。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-29",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-2eb3-19",
+        "type": "card",
+        "position": {
+          "x": 30,
+          "y": 258
+        },
+        "data": {
+          "kind": "card",
+          "label": "成功した実例は広域の人々を励ます効果があろう。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-36",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-2fda-18",
+        "type": "card",
+        "position": {
+          "x": 30,
+          "y": 139
+        },
+        "data": {
+          "kind": "card",
+          "label": "地すべりが頻発しているようだ。",
+          "w": 295,
+          "h": 61
+        },
+        "parentId": "auto-group-37",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-3681-14",
+        "type": "card",
+        "position": {
+          "x": 30,
+          "y": 139
+        },
+        "data": {
+          "kind": "card",
+          "label": "住民にとって最も効果的な事業から重点的に始めたい。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-36",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-712a-13",
+        "type": "card",
+        "position": {
+          "x": 30,
+          "y": 139
+        },
+        "data": {
+          "kind": "card",
+          "label": "ネパールに車道ばかり先行して発達させれば、山中は過疎化するばかりではないか。",
+          "w": 360,
+          "h": 120
+        },
+        "parentId": "auto-group-10",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-7a6e-26",
+        "type": "card",
+        "position": {
+          "x": 30,
+          "y": 377
+        },
+        "data": {
+          "kind": "card",
+          "label": "個々の村が活性化しないと、人体に例えれば筋肉が発達しないようなもの。",
+          "w": 360,
+          "h": 120
+        },
+        "parentId": "auto-group-36",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-e0fb-32",
+        "type": "card",
+        "position": {
+          "x": 30,
+          "y": 292
+        },
+        "data": {
+          "kind": "card",
+          "label": "ネパールの人口は急増しているが、どうやって人々は食っていけば良いのか。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-10",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-eb91-2",
+        "type": "card",
+        "position": {
+          "x": 30,
+          "y": 111
+        },
+        "data": {
+          "kind": "card",
+          "label": "伝統的な暮らし方を、生態系として捉え直そう。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-34",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-fe1d-29",
+        "type": "card",
+        "position": {
+          "x": 30,
+          "y": 224
+        },
+        "data": {
+          "kind": "card",
+          "label": "森林がどんどん失われつつあるらしい。",
+          "w": 351,
+          "h": 61
+        },
+        "parentId": "auto-group-37",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "auto-group-1",
+        "type": "group",
+        "position": {
+          "x": 68,
+          "y": 224
+        },
+        "data": {
+          "label": "現代の民謡アレンジは伝統の破壊ではなく、時代と共に生き続ける芸術の自然な更新である。",
+          "kind": "group",
+          "w": 406,
+          "h": 392.0000000000007,
+          "collapsed": false
+        },
+        "parentId": "auto-group-23",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "width": 406,
+          "height": 392.0000000000007
+        },
+        "hidden": false,
+        "width": 406,
+        "height": 392.0000000000007,
+        "selected": false
+      },
+      {
+        "id": "auto-group-12",
+        "type": "group",
+        "position": {
+          "x": 425.28214199389186,
+          "y": 77
+        },
+        "data": {
+          "label": "民謡は時代の変化や地域の特性を柔軟に取り込み、社会の姿を映し出す鏡として進化してきた。",
+          "kind": "group",
+          "w": 406,
+          "h": 511.0000000000002,
+          "collapsed": false,
+          "stackCount": 3,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "layoutHullPoints": [
+            {
+              "x": -6.157635467980295,
+              "y": -6.527415143603134
+            },
+            {
+              "x": 106.1576354679803,
+              "y": -6.527415143603134
+            },
+            {
+              "x": 106.1576354679803,
+              "y": 104.43864229765015
+            },
+            {
+              "x": -6.157635467980295,
+              "y": 104.43864229765015
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-19",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "width": 406,
+          "height": 511.0000000000002,
+          "pointerEvents": "none",
+          "--group-border": "3px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "136px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "6px"
+        },
+        "className": "group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 406,
+        "height": 511.0000000000002,
+        "selected": false
+      },
+      {
+        "id": "auto-group-14",
+        "type": "group",
+        "position": {
+          "x": 461.82236106144774,
+          "y": 77
+        },
+        "data": {
+          "label": "繰り返される旋律は共同体に安らぎを与え、骨格として共同体の核心を繋ぎ止める。",
+          "kind": "group",
+          "w": 406,
+          "h": 392,
+          "collapsed": false,
+          "stackCount": 2,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "layoutHullPoints": [
+            {
+              "x": -6.157635467980295,
+              "y": -9.469696969696969
+            },
+            {
+              "x": 106.1576354679803,
+              "y": -9.469696969696969
+            },
+            {
+              "x": 106.1576354679803,
+              "y": 106.43939393939394
+            },
+            {
+              "x": -6.157635467980295,
+              "y": 106.43939393939394
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-24",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "width": 406,
+          "height": 392,
+          "pointerEvents": "none",
+          "--group-border": "3px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "136px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "6px"
+        },
+        "className": "group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 406,
+        "height": 392,
+        "selected": false
+      },
+      {
+        "id": "auto-group-15",
+        "type": "group",
+        "position": {
+          "x": 506.1428965599216,
+          "y": 307.28092495190776
+        },
+        "data": {
+          "label": "民謡は踊りと共に歌うことで心拍が同調し、集団の一体感が生まれる。",
+          "kind": "group",
+          "w": 406,
+          "h": 365.0000000000002,
+          "collapsed": false,
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-21",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "384px",
+          "--collapsed-card-height": "120px",
+          "--collapsed-card-max-width": "384px",
+          "--group-border": "3px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "109px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "6px",
+          "--card-font-size": "22px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16)",
+          "width": 406,
+          "height": 365.0000000000002
+        },
+        "className": "group-wrapper group-wrapper-collapsed",
+        "hidden": false,
+        "width": 406,
+        "height": 365.0000000000002,
+        "selected": false
+      },
+      {
+        "id": "auto-group-16",
+        "type": "group",
+        "position": {
+          "x": 68,
+          "y": 370
+        },
+        "data": {
+          "label": "近代文明の知識は私の方が上だが、それを現地に強いるのは疑問だ。",
+          "kind": "group",
+          "w": 406,
+          "h": 365,
+          "collapsed": false
+        },
+        "parentId": "auto-group-26",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "width": 406,
+          "height": 365
+        },
+        "hidden": false,
+        "width": 406,
+        "height": 365,
+        "selected": false
+      },
+      {
+        "id": "auto-group-18",
+        "type": "group",
+        "position": {
+          "x": 68,
+          "y": 371.0000000000002
+        },
+        "data": {
+          "label": "旋律の抑揚や音の長さは、その土地の地形や景観といった環境と深く結びついている。",
+          "kind": "group",
+          "w": 405.9999999999998,
+          "h": 511,
+          "collapsed": false
+        },
+        "parentId": "auto-group-28",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "width": 405.9999999999998,
+          "height": 511
+        },
+        "hidden": false,
+        "width": 405.9999999999998,
+        "height": 511,
+        "selected": false
+      },
+      {
+        "id": "auto-group-2",
+        "type": "group",
+        "position": {
+          "x": 521.4615384615381,
+          "y": 104
+        },
+        "data": {
+          "label": "山岳地の村々が自力で活力を取り戻せるよう、心から応援したい。",
+          "kind": "group",
+          "w": 406,
+          "h": 365,
+          "collapsed": false,
+          "stackCount": 2,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "layoutHullPoints": [
+            {
+              "x": -6.157635467980295,
+              "y": -9.469696969696969
+            },
+            {
+              "x": 106.1576354679803,
+              "y": -9.469696969696969
+            },
+            {
+              "x": 106.1576354679803,
+              "y": 106.43939393939394
+            },
+            {
+              "x": -6.157635467980295,
+              "y": 106.43939393939394
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-22",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "width": 406,
+          "height": 365,
+          "pointerEvents": "none",
+          "--group-border": "3px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "109px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "6px"
+        },
+        "className": "group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 406,
+        "height": 365,
+        "selected": false
+      },
+      {
+        "id": "auto-group-3",
+        "type": "group",
+        "position": {
+          "x": 493.9628235374025,
+          "y": 94.10085192938845
+        },
+        "data": {
+          "label": "外国人の私にできる技術協力を通じて、住民の喜ぶ顔が見たい。",
+          "kind": "group",
+          "w": 406,
+          "h": 365,
+          "collapsed": false,
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-20",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "384px",
+          "--collapsed-card-height": "90px",
+          "--collapsed-card-max-width": "384px",
+          "--group-border": "3px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "109px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "6px",
+          "--card-font-size": "22px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16)",
+          "width": 406,
+          "height": 365
+        },
+        "className": "group-wrapper group-wrapper-collapsed",
+        "hidden": false,
+        "width": 406,
+        "height": 365,
+        "selected": false
+      },
+      {
+        "id": "auto-group-4",
+        "type": "group",
+        "position": {
+          "x": 83.90036511259586,
+          "y": 77
+        },
+        "data": {
+          "label": "民謡の旋律は記憶の鍵となり、儀礼と共に長い物語を伝承する。",
+          "kind": "group",
+          "w": 795.7623367206088,
+          "h": 222.22090061106792,
+          "collapsed": false,
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-21",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "--collapsed-card-width": "384px",
+          "--collapsed-card-height": "90px",
+          "--collapsed-card-max-width": "384px",
+          "--group-border": "3px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "109px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "6px",
+          "--card-font-size": "22px",
+          "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16)",
+          "width": 795.7623367206088,
+          "height": 222.22090061106792
+        },
+        "className": "group-wrapper group-wrapper-collapsed",
+        "hidden": false,
+        "width": 795.7623367206088,
+        "height": 222.22090061106792,
+        "selected": false
+      },
+      {
+        "id": "auto-group-5",
+        "type": "group",
+        "position": {
+          "x": 23,
+          "y": 77
+        },
+        "data": {
+          "label": "住民が自力で維持でき、かつ利益を生む技術導入を目指すべきだ。",
+          "kind": "group",
+          "w": 406,
+          "h": 365,
+          "collapsed": false,
+          "stackCount": 2,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "layoutHullPoints": [
+            {
+              "x": -6.157635467980295,
+              "y": -9.469696969696969
+            },
+            {
+              "x": 106.1576354679803,
+              "y": -9.469696969696969
+            },
+            {
+              "x": 106.1576354679803,
+              "y": 106.43939393939394
+            },
+            {
+              "x": -6.157635467980295,
+              "y": 106.43939393939394
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-20",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "width": 406,
+          "height": 365,
+          "pointerEvents": "none",
+          "--group-border": "3px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "109px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "6px"
+        },
+        "className": "-layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 406,
+        "height": 365,
+        "selected": false
+      },
+      {
+        "id": "auto-group-7",
+        "type": "group",
+        "position": {
+          "x": 23,
+          "y": 328.4418012221363
+        },
+        "data": {
+          "label": "民謡は余韻で繋ぎ、響きを鍛え、方言の節回しで地域性を保つ。",
+          "kind": "group",
+          "w": 406,
+          "h": 483.9999999999998,
+          "collapsed": false,
+          "stackCount": 3,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "layoutHullPoints": [
+            {
+              "x": -6.157635467980295,
+              "y": -6.527415143603137
+            },
+            {
+              "x": 106.1576354679803,
+              "y": -6.527415143603137
+            },
+            {
+              "x": 106.1576354679803,
+              "y": 104.43864229765015
+            },
+            {
+              "x": -6.157635467980295,
+              "y": 104.43864229765015
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-21",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "width": 406,
+          "height": 483.9999999999998,
+          "pointerEvents": "none",
+          "--group-border": "3px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "109px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "6px"
+        },
+        "className": "group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 406,
+        "height": 483.9999999999998,
+        "selected": false
+      },
+      {
+        "id": "auto-group-8",
+        "type": "group",
+        "position": {
+          "x": 68,
+          "y": 425.0000000000002
+        },
+        "data": {
+          "label": "歌が題名ではなく機能で呼ばれてきたため、異名同曲や同名異曲が多発した。",
+          "kind": "group",
+          "w": 406,
+          "h": 365,
+          "collapsed": false
+        },
+        "parentId": "auto-group-27",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "width": 406,
+          "height": 365
+        },
+        "hidden": false,
+        "width": 406,
+        "height": 365,
+        "selected": false
+      },
+      {
+        "id": "auto-group-9",
+        "type": "group",
+        "position": {
+          "x": 23,
+          "y": 149.00000000000023
+        },
+        "data": {
+          "label": "地域の独自性を活かし、住民と協働して僻地の活性化を実現したい。",
+          "kind": "group",
+          "w": 406,
+          "h": 484,
+          "collapsed": false,
+          "stackCount": 3,
+          "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+          "mode": "layout",
+          "isEditing": false,
+          "hasParent": true,
+          "layoutHullPoints": [
+            {
+              "x": -6.157635467980295,
+              "y": -6.527415143603134
+            },
+            {
+              "x": 106.1576354679803,
+              "y": -6.527415143603134
+            },
+            {
+              "x": 106.1576354679803,
+              "y": 104.43864229765015
+            },
+            {
+              "x": -6.157635467980295,
+              "y": 104.43864229765015
+            }
+          ],
+          "hasManualLayoutHull": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "isAddTarget": false
+        },
+        "parentId": "auto-group-22",
+        "style": {
+          "zIndex": 0,
+          "borderRadius": 24,
+          "border": "none",
+          "background": "transparent",
+          "overflow": "visible",
+          "outline": "none",
+          "boxSizing": "border-box",
+          "width": 406,
+          "height": 484,
+          "pointerEvents": "none",
+          "--group-border": "3px",
+          "--group-title-size": "22px",
+          "--group-label-outset": "109px",
+          "--group-title-line-clamp": "6",
+          "--edge-handle-size": "6px"
+        },
+        "className": "group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+        "hidden": false,
+        "width": 406,
+        "height": 484,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-0422-5",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 115.34094929274761
+        },
+        "data": {
+          "kind": "card",
+          "label": "繰り返しが多いのは退屈ではなく、参加者全員の覚えやすさだ。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-24",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-2aed-14",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 159
+        },
+        "data": {
+          "kind": "card",
+          "label": "伝承者が一人だけでも、歌が残れば文化圏を推定できる。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-27",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-4aef-10",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 251
+        },
+        "data": {
+          "kind": "card",
+          "label": "土間や囲炉裏端は天然の残響室で、家の構造が歌を育てた。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-28",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-7bc8-15",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 115.34094929274715
+        },
+        "data": {
+          "kind": "card",
+          "label": "民謡の変化は誤りではなく、環境適応として自然淘汰される。",
+          "w": 360,
+          "h": 91,
+          "mode": "layout",
+          "isEditing": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "useCollapsedCardStyle": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false
+        },
+        "parentId": "auto-group-19",
+        "style": {
+          "--card-font-size": "22px",
+          "--edge-handle-size": "6px"
+        },
+        "className": "",
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-8ae1-22",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 278
+        },
+        "data": {
+          "kind": "card",
+          "label": "酒の歌が多いのは嗜好ではなく、共同体の調停儀礼だったからだ。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-27",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-9794-8",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 132
+        },
+        "data": {
+          "kind": "card",
+          "label": "唄い手の息継ぎ位置は地域差があり、身体技法として学ばれる。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-28",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-990a-29",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 104
+        },
+        "data": {
+          "kind": "card",
+          "label": "観光化された民謡は短縮されがちで、時間感覚が別物になる。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-23",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-31d7-11",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 104
+        },
+        "data": {
+          "kind": "card",
+          "label": "私にできることは、地理学・民族学での経験を活かすことだ。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-26",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-3b94-4",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 278
+        },
+        "data": {
+          "kind": "card",
+          "label": "山岳地域の社会は病気にかかっているので、その原因を突き止めよう。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-17",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-4c40-3",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 159
+        },
+        "data": {
+          "kind": "card",
+          "label": "近代文明にはネパール山民にとって有害な面も多くある。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-6",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-4de1-10",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 251
+        },
+        "data": {
+          "kind": "card",
+          "label": "過疎は伝統的な文化と環境を破壊しつつある。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-11",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-52d9-21",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 159
+        },
+        "data": {
+          "kind": "card",
+          "label": "山民の福祉向上が国際紛争の未然の防止策である。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-17",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-7a5a-8",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 278
+        },
+        "data": {
+          "kind": "card",
+          "label": "近外文明にはネパール山村の活性化に役立つものも多くある。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-6",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-850b-30",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 223
+        },
+        "data": {
+          "kind": "card",
+          "label": "まず現地の自然・文化・人間からできるだけ学ぶことだ。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-26",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-8582-5",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 132
+        },
+        "data": {
+          "kind": "card",
+          "label": "近代化のもと、過疎過密が重大な問題となっている。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-11",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-095d-2",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 278
+        },
+        "data": {
+          "kind": "card",
+          "label": "都市民謡は新語を吸収し、電車や工場が歌詞に入り込む。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-12",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-1a4e-19",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 397
+        },
+        "data": {
+          "kind": "card",
+          "label": "旋律の上行下行は地形感覚に似て、山国は急峻な跳躍が出る。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-18",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-2624-7",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 132
+        },
+        "data": {
+          "kind": "card",
+          "label": "民謡の終止はきっぱり終わらず、余韻で次の会話へ橋渡しする。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-7",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-449c-30",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 278
+        },
+        "data": {
+          "kind": "card",
+          "label": "それでも核心が残るのは、旋律が共同体の骨格を担うからだ。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-14",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-51f2-16",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 132
+        },
+        "data": {
+          "kind": "card",
+          "label": "異名同曲が多いのは、題名より機能で歌が呼ばれてきたからだ。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-8",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-6b2f-4",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 108.22090061106792
+        },
+        "data": {
+          "kind": "card",
+          "label": "民謡の旋律は短くても、場の儀礼が長さを補ってくれる。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-4",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-722b-24",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 132
+        },
+        "data": {
+          "kind": "card",
+          "label": "民謡を歌うと心拍が揃いやすく、集団の一体感が物理化する。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-15",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-84fb-25",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 251.00000000000023
+        },
+        "data": {
+          "kind": "card",
+          "label": "民謡は踊りと不可分で、音だけ保存すると半分が失われる。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-15",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-8a97-11",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 159
+        },
+        "data": {
+          "kind": "card",
+          "label": "屋外の広場では反射が少なく、直線的な旋律が選ばれやすい。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-18",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-b5f1-27",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 278.00000000000045
+        },
+        "data": {
+          "kind": "card",
+          "label": "現代の民謡アレンジは伝統破壊でなく、昔から続く更新の延長だ。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-1",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-c548-9",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 250.99999999999977
+        },
+        "data": {
+          "kind": "card",
+          "label": "民謡の声量は大きさより通りが重要で、響きの方向が鍛えられる。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-7",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-c8a4-13",
+        "type": "card",
+        "position": {
+          "x": 412.7623367206088,
+          "y": 77
+        },
+        "data": {
+          "kind": "card",
+          "label": "民謡の旋律は記憶のフックで、長い物語を短い節で運べる。",
+          "w": 360,
+          "h": 91,
+          "mode": "layout",
+          "isEditing": false,
+          "canUngroup": false,
+          "isUngroupTarget": false,
+          "useCollapsedCardStyle": false,
+          "layoutTextBoxEnabled": false,
+          "layoutTextBoxNeedsInit": false
+        },
+        "parentId": "auto-group-4",
+        "style": {
+          "--card-font-size": "22px",
+          "--edge-handle-size": "6px"
+        },
+        "className": "",
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-ca76-17",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 251
+        },
+        "data": {
+          "kind": "card",
+          "label": "同名異曲も多く、名前は場面のラベルとして付け替えられた。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-8",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-d7ef-6",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 159
+        },
+        "data": {
+          "kind": "card",
+          "label": "同じ節が何度も戻ると、安心感が生まれ共同体の輪が締まる。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-14",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-e7bf-3",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 397
+        },
+        "data": {
+          "kind": "card",
+          "label": "港町の民謡は外来語が混ざり、交易の多言語環境を映す。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-12",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-e90d-0",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 159
+        },
+        "data": {
+          "kind": "card",
+          "label": "民謡は広告にもなり、名産や市の開催日を歌に埋め込んだ。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-12",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-ebbc-31",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 159
+        },
+        "data": {
+          "kind": "card",
+          "label": "民謡は古いだけでなく、今も生活に寄り添い続ける可変の芸術だ。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-1",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-f243-20",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 278
+        },
+        "data": {
+          "kind": "card",
+          "label": "海辺の歌に水平線の長い音が多いのは、景色の比喩でもある。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-18",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf6114a-fe9d-18",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 369.9999999999998
+        },
+        "data": {
+          "kind": "card",
+          "label": "民謡の節回しは方言のアクセントと結び、地域性が消えにくい。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-7",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-01e6-12",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 132
+        },
+        "data": {
+          "kind": "card",
+          "label": "住民の力で維持できるような技術導入でありたい。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-5",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-13a2-1",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 132
+        },
+        "data": {
+          "kind": "card",
+          "label": "山岳地の村々には、素朴な活力がありそうだ。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-2",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-165d-6",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 132
+        },
+        "data": {
+          "kind": "card",
+          "label": "外国人の私にもできることは、技術協力である。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-3",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-1691-24",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 251
+        },
+        "data": {
+          "kind": "card",
+          "label": "技術協力の結果、住民の喜ぶ顔を見たい。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-3",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-1a86-22",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 251
+        },
+        "data": {
+          "kind": "card",
+          "label": "新技術の導入は、住民にとって黒字の事業であるべきだ。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-5",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-25f7-23",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 370
+        },
+        "data": {
+          "kind": "card",
+          "label": "現地の独自な地域性を捉え、それを活用したい。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-9",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-2fac-16",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 132
+        },
+        "data": {
+          "kind": "card",
+          "label": "住民と一緒になって活性化を図ることが成功の鍵",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-9",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-9f52-9",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 132
+        },
+        "data": {
+          "kind": "card",
+          "label": "現地人より私の方が近代文明の遺産には詳しい。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-16",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-b9e2-20",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 251
+        },
+        "data": {
+          "kind": "card",
+          "label": "僻地でも活性化の道はあるという実例を、小地域で実現したい。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-9",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-cff0-25",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 251
+        },
+        "data": {
+          "kind": "card",
+          "label": "近代文明のやり方をそのまま押し付けるのは疑問。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-16",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      },
+      {
+        "id": "c-19d5cf642fb-e05d-15",
+        "type": "card",
+        "position": {
+          "x": 23,
+          "y": 251
+        },
+        "data": {
+          "kind": "card",
+          "label": "山中の村々が自力更生で活性化するのを激励したい。",
+          "w": 360,
+          "h": 91
+        },
+        "parentId": "auto-group-2",
+        "style": {},
+        "hidden": false,
+        "selected": false
+      }
+    ],
+    "edges": [
+      {
+        "id": "e-1775391082311-ab4c8ded1ee6d",
+        "source": "auto-group-50",
+        "target": "auto-group-47",
+        "type": "board",
+        "data": {
+          "kind": "rel",
+          "relationType": "normal",
+          "label": "ゆえに",
+          "line": "solid",
+          "arrow": "forward",
+          "width": 15,
+          "labelT": 0.5244510993669476,
+          "labelOffsetX": -67.32115512660584,
+          "labelOffsetY": -40.650314443750915
+        },
+        "selected": false
+      },
+      {
+        "id": "e-1775391161367-cc911a5b5114c",
+        "source": "auto-group-49",
+        "target": "c-19d5cf6114a-c467-26",
+        "type": "board",
+        "data": {
+          "kind": "rel",
+          "relationType": "softInfluence",
+          "label": "緩やかに影響",
+          "line": "dashed",
+          "arrow": "backward",
+          "width": 24,
+          "labelT": 0.8217663505656517,
+          "labelOffsetX": -12.532239460703295,
+          "labelOffsetY": 77.91588996878022
+        },
+        "selected": false
+      },
+      {
+        "id": "e-1775391188873-3e080398e2799",
+        "source": "c-19d5cf6114a-c467-26",
+        "target": "auto-group-48",
+        "type": "board",
+        "data": {
+          "kind": "rel",
+          "relationType": "normal",
+          "label": "関連して",
+          "line": "dashed",
+          "arrow": "none",
+          "width": 24,
+          "labelT": 0.5462748679908339,
+          "labelOffsetX": -103.00207668761732,
+          "labelOffsetY": -60.68061480159861
+        },
+        "selected": false
+      },
+      {
+        "id": "e-1775391279679-5c36b132811a8",
+        "source": "auto-group-49",
+        "target": "auto-group-48",
+        "type": "board",
+        "data": {
+          "kind": "rel",
+          "relationType": "support",
+          "label": "支える",
+          "line": "solid",
+          "arrow": "forward",
+          "width": 24,
+          "labelT": 0.7132937095960729,
+          "labelOffsetX": -50.18640022987711,
+          "labelOffsetY": 49.863063215476245
+        },
+        "selected": false
+      },
+      {
+        "id": "e-1775391832345-b35f7d259da2a",
+        "source": "auto-group-47",
+        "target": "auto-group-49",
+        "type": "board",
+        "data": {
+          "kind": "rel",
+          "relationType": "normal",
+          "label": "関連して",
+          "line": "dashed",
+          "arrow": "none",
+          "width": 24,
+          "labelT": 0.5885621434082342,
+          "labelOffsetX": -87.47548659858421,
+          "labelOffsetY": -48.67086003859322
+        },
+        "selected": false
+      },
+      {
+        "id": "xy-edge__auto-group-48right-auto-group-50left",
+        "source": "auto-group-50",
+        "target": "auto-group-48",
+        "type": "board",
+        "data": {
+          "kind": "rel",
+          "relationType": "normal",
+          "label": "ゆえに",
+          "line": "solid",
+          "arrow": "forward",
+          "width": 24,
+          "labelT": 0.6662933137437258,
+          "labelOffsetX": -0.2391916989990932,
+          "labelOffsetY": -11.697849739418245
+        },
+        "selected": false
+      }
+    ]
+  },
+  "groups": {
+    "rootGroups": [
+      {
+        "id": "auto-group-47",
+        "label": "私は外国人として内政への干渉を避け、身の丈に合った活動を望む。",
+        "collapsed": false,
+        "children": [],
+        "cards": [
+          {
+            "id": "c-19d5cf642fb-1901-31",
+            "label": "最初から大きな資本投下をするのは、私の力では及ばない。"
+          },
+          {
+            "id": "c-19d5cf642fb-b68f-7",
+            "label": "私は外国人だから、内政には干渉したくない。"
+          }
+        ]
+      },
+      {
+        "id": "auto-group-48",
+        "label": "ヒマラヤの薬草の知恵を活かし、環境保全と住民の自立を支援する。",
+        "collapsed": false,
+        "children": [
+          {
+            "id": "auto-group-45",
+            "label": "山岳地域の村々と連携し、薬草の知恵を福祉と平和へ繋げ、自立的な活性化と生態系との共生を全力で支援する。",
+            "collapsed": false,
+            "children": [
+              {
+                "id": "auto-group-39",
+                "label": "山岳地域の各村と協働し、成功事例の展開を通じて自立的な活性化を全力で支援する。",
+                "collapsed": false,
+                "children": [
+                  {
+                    "id": "auto-group-31",
+                    "label": "山岳地域の独自性を活かし、住民と協働して自立的な活性化を全力で支援する。",
+                    "collapsed": false,
+                    "children": [
+                      {
+                        "id": "auto-group-20",
+                        "label": "住民が自立して利益を得られる技術を導入し、共に喜びを分かち合いたい。",
+                        "collapsed": false,
+                        "children": [
+                          {
+                            "id": "auto-group-3",
+                            "label": "外国人の私にできる技術協力を通じて、住民の喜ぶ顔が見たい。",
+                            "collapsed": false,
+                            "children": [],
+                            "cards": [
+                              {
+                                "id": "c-19d5cf642fb-165d-6",
+                                "label": "外国人の私にもできることは、技術協力である。"
+                              },
+                              {
+                                "id": "c-19d5cf642fb-1691-24",
+                                "label": "技術協力の結果、住民の喜ぶ顔を見たい。"
+                              }
+                            ]
+                          },
+                          {
+                            "id": "auto-group-5",
+                            "label": "住民が自力で維持でき、かつ利益を生む技術導入を目指すべきだ。",
+                            "collapsed": false,
+                            "children": [],
+                            "cards": [
+                              {
+                                "id": "c-19d5cf642fb-01e6-12",
+                                "label": "住民の力で維持できるような技術導入でありたい。"
+                              },
+                              {
+                                "id": "c-19d5cf642fb-1a86-22",
+                                "label": "新技術の導入は、住民にとって黒字の事業であるべきだ。"
+                              }
+                            ]
+                          }
+                        ],
+                        "cards": []
+                      },
+                      {
+                        "id": "auto-group-22",
+                        "label": "山岳地域の独自性を活かし、住民と協働して村々の自立的な活性化を全力で支援したい。",
+                        "collapsed": false,
+                        "children": [
+                          {
+                            "id": "auto-group-2",
+                            "label": "山岳地の村々が自力で活力を取り戻せるよう、心から応援したい。",
+                            "collapsed": false,
+                            "children": [],
+                            "cards": [
+                              {
+                                "id": "c-19d5cf642fb-13a2-1",
+                                "label": "山岳地の村々には、素朴な活力がありそうだ。"
+                              },
+                              {
+                                "id": "c-19d5cf642fb-e05d-15",
+                                "label": "山中の村々が自力更生で活性化するのを激励したい。"
+                              }
+                            ]
+                          },
+                          {
+                            "id": "auto-group-9",
+                            "label": "地域の独自性を活かし、住民と協働して僻地の活性化を実現したい。",
+                            "collapsed": false,
+                            "children": [],
+                            "cards": [
+                              {
+                                "id": "c-19d5cf642fb-25f7-23",
+                                "label": "現地の独自な地域性を捉え、それを活用したい。"
+                              },
+                              {
+                                "id": "c-19d5cf642fb-2fac-16",
+                                "label": "住民と一緒になって活性化を図ることが成功の鍵"
+                              },
+                              {
+                                "id": "c-19d5cf642fb-b9e2-20",
+                                "label": "僻地でも活性化の道はあるという実例を、小地域で実現したい。"
+                              }
+                            ]
+                          }
+                        ],
+                        "cards": []
+                      }
+                    ],
+                    "cards": []
+                  },
+                  {
+                    "id": "auto-group-36",
+                    "label": "各村の活性化を優先し、成功事例を広めることで地域全体を底上げしたい。",
+                    "collapsed": false,
+                    "children": [],
+                    "cards": [
+                      {
+                        "id": "c-19d5cf642fb-2eb3-19",
+                        "label": "成功した実例は広域の人々を励ます効果があろう。"
+                      },
+                      {
+                        "id": "c-19d5cf642fb-3681-14",
+                        "label": "住民にとって最も効果的な事業から重点的に始めたい。"
+                      },
+                      {
+                        "id": "c-19d5cf642fb-7a6e-26",
+                        "label": "個々の村が活性化しないと、人体に例えれば筋肉が発達しないようなもの。"
+                      }
+                    ]
+                  }
+                ],
+                "cards": []
+              },
+              {
+                "id": "auto-group-41",
+                "label": "山岳民謡の薬草知識を福祉と平和へ繋げ、生態系との共生を目指す。",
+                "collapsed": false,
+                "children": [
+                  {
+                    "id": "auto-group-29",
+                    "label": "山岳民謡の薬草知識を解明し福祉を向上させることは、国際紛争の予防にも繋がる。",
+                    "collapsed": false,
+                    "children": [
+                      {
+                        "id": "auto-group-17",
+                        "label": "山岳地域の病因を解明し、山民の福祉を向上させることが国際紛争の未然防止につながる。",
+                        "collapsed": false,
+                        "children": [],
+                        "cards": [
+                          {
+                            "id": "c-19d5cf642fb-3b94-4",
+                            "label": "山岳地域の社会は病気にかかっているので、その原因を突き止めよう。"
+                          },
+                          {
+                            "id": "c-19d5cf642fb-52d9-21",
+                            "label": "山民の福祉向上が国際紛争の未然の防止策である。"
+                          }
+                        ]
+                      }
+                    ],
+                    "cards": [
+                      {
+                        "id": "c-19d5cf6114a-c547-1",
+                        "label": "山の民謡には薬草名が出て、民間医療の記録として役立つ。"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "auto-group-34",
+                    "label": "地理学と民族学の知見を活かし、伝統的な暮らしを生態系として捉え直して共生を目指す。",
+                    "collapsed": false,
+                    "children": [
+                      {
+                        "id": "auto-group-26",
+                        "label": "地理学と民族学の知見を活かし、現地の文化を尊重しつつ共生を目指す。",
+                        "collapsed": false,
+                        "children": [
+                          {
+                            "id": "auto-group-16",
+                            "label": "近代文明の知識は私の方が上だが、それを現地に強いるのは疑問だ。",
+                            "collapsed": false,
+                            "children": [],
+                            "cards": [
+                              {
+                                "id": "c-19d5cf642fb-9f52-9",
+                                "label": "現地人より私の方が近代文明の遺産には詳しい。"
+                              },
+                              {
+                                "id": "c-19d5cf642fb-cff0-25",
+                                "label": "近代文明のやり方をそのまま押し付けるのは疑問。"
+                              }
+                            ]
+                          }
+                        ],
+                        "cards": [
+                          {
+                            "id": "c-19d5cf642fb-31d7-11",
+                            "label": "私にできることは、地理学・民族学での経験を活かすことだ。"
+                          },
+                          {
+                            "id": "c-19d5cf642fb-850b-30",
+                            "label": "まず現地の自然・文化・人間からできるだけ学ぶことだ。"
+                          }
+                        ]
+                      }
+                    ],
+                    "cards": [
+                      {
+                        "id": "c-19d5cf642fb-eb91-2",
+                        "label": "伝統的な暮らし方を、生態系として捉え直そう。"
+                      }
+                    ]
+                  }
+                ],
+                "cards": []
+              }
+            ],
+            "cards": []
+          },
+          {
+            "id": "auto-group-46",
+            "label": "ヒマラヤの自然と人々を愛するがゆえに、森林減少による地すべりと住民の困窮が痛ましい。",
+            "collapsed": false,
+            "children": [
+              {
+                "id": "auto-group-43",
+                "label": "森林の減少で地すべりが多発し、住民の生活は困窮を極めている。",
+                "collapsed": false,
+                "children": [
+                  {
+                    "id": "auto-group-37",
+                    "label": "森林の減少に伴い、地すべりが頻発する事態となっているようだ。",
+                    "collapsed": false,
+                    "children": [],
+                    "cards": [
+                      {
+                        "id": "c-19d5cf642fb-2fda-18",
+                        "label": "地すべりが頻発しているようだ。"
+                      },
+                      {
+                        "id": "c-19d5cf642fb-fe1d-29",
+                        "label": "森林がどんどん失われつつあるらしい。"
+                      }
+                    ]
+                  }
+                ],
+                "cards": [
+                  {
+                    "id": "c-19d5cf642fb-370e-27",
+                    "label": "住民は生活苦に喘ぎ、見るに忍びない。"
+                  }
+                ]
+              }
+            ],
+            "cards": [
+              {
+                "id": "c-19d5cf642fb-8dbc-17",
+                "label": "ヒマラヤ山中の土地と人とが好きだ。"
+              }
+            ]
+          }
+        ],
+        "cards": []
+      },
+      {
+        "id": "auto-group-49",
+        "label": "祭りの喧騒に溶け込む民謡は、地域の記憶を宿しながら芸術へと昇華した。",
+        "collapsed": false,
+        "children": [
+          {
+            "id": "auto-group-44",
+            "label": "民謡は地域の記憶を継承しながら、時代の変化と共に芸術へと進化を遂げた。",
+            "collapsed": false,
+            "children": [
+              {
+                "id": "auto-group-38",
+                "label": "民謡は身体を通じた旋律と踊りにより、地域の記憶と共同体の絆を次世代へと継承する。",
+                "collapsed": false,
+                "children": [
+                  {
+                    "id": "auto-group-32",
+                    "label": "民謡は旋律と踊りを通じて地域の記憶を継承し、共同体に一体感をもたらす。",
+                    "collapsed": false,
+                    "children": [
+                      {
+                        "id": "auto-group-21",
+                        "label": "民謡は旋律と踊りで記憶と地域性を継承し、集団の絆を深める。",
+                        "collapsed": false,
+                        "children": [
+                          {
+                            "id": "auto-group-15",
+                            "label": "民謡は踊りと共に歌うことで心拍が同調し、集団の一体感が生まれる。",
+                            "collapsed": false,
+                            "children": [],
+                            "cards": [
+                              {
+                                "id": "c-19d5cf6114a-722b-24",
+                                "label": "民謡を歌うと心拍が揃いやすく、集団の一体感が物理化する。"
+                              },
+                              {
+                                "id": "c-19d5cf6114a-84fb-25",
+                                "label": "民謡は踊りと不可分で、音だけ保存すると半分が失われる。"
+                              }
+                            ]
+                          },
+                          {
+                            "id": "auto-group-4",
+                            "label": "民謡の旋律は記憶の鍵となり、儀礼と共に長い物語を伝承する。",
+                            "collapsed": false,
+                            "children": [],
+                            "cards": [
+                              {
+                                "id": "c-19d5cf6114a-6b2f-4",
+                                "label": "民謡の旋律は短くても、場の儀礼が長さを補ってくれる。"
+                              },
+                              {
+                                "id": "c-19d5cf6114a-c8a4-13",
+                                "label": "民謡の旋律は記憶のフックで、長い物語を短い節で運べる。"
+                              }
+                            ]
+                          },
+                          {
+                            "id": "auto-group-7",
+                            "label": "民謡は余韻で繋ぎ、響きを鍛え、方言の節回しで地域性を保つ。",
+                            "collapsed": false,
+                            "children": [],
+                            "cards": [
+                              {
+                                "id": "c-19d5cf6114a-2624-7",
+                                "label": "民謡の終止はきっぱり終わらず、余韻で次の会話へ橋渡しする。"
+                              },
+                              {
+                                "id": "c-19d5cf6114a-c548-9",
+                                "label": "民謡の声量は大きさより通りが重要で、響きの方向が鍛えられる。"
+                              },
+                              {
+                                "id": "c-19d5cf6114a-fe9d-18",
+                                "label": "民謡の節回しは方言のアクセントと結び、地域性が消えにくい。"
+                              }
+                            ]
+                          }
+                        ],
+                        "cards": []
+                      },
+                      {
+                        "id": "auto-group-24",
+                        "label": "繰り返される旋律は、共同体に安らぎと一体感をもたらす。",
+                        "collapsed": false,
+                        "children": [
+                          {
+                            "id": "auto-group-14",
+                            "label": "繰り返される旋律は共同体に安らぎを与え、骨格として共同体の核心を繋ぎ止める。",
+                            "collapsed": false,
+                            "children": [],
+                            "cards": [
+                              {
+                                "id": "c-19d5cf6114a-449c-30",
+                                "label": "それでも核心が残るのは、旋律が共同体の骨格を担うからだ。"
+                              },
+                              {
+                                "id": "c-19d5cf6114a-d7ef-6",
+                                "label": "同じ節が何度も戻ると、安心感が生まれ共同体の輪が締まる。"
+                              }
+                            ]
+                          }
+                        ],
+                        "cards": [
+                          {
+                            "id": "c-19d5cf6114a-0422-5",
+                            "label": "繰り返しが多いのは退屈ではなく、参加者全員の覚えやすさだ。"
+                          }
+                        ]
+                      }
+                    ],
+                    "cards": []
+                  },
+                  {
+                    "id": "auto-group-35",
+                    "label": "歌は土地の風土や共同体の儀礼と密接に関わり、身体を通じて継承される。",
+                    "collapsed": false,
+                    "children": [
+                      {
+                        "id": "auto-group-27",
+                        "label": "歌の機能や伝承から文化圏を読み解く際、その多様な呼称や背景にある共同体の儀礼的役割を考慮する必要がある。",
+                        "collapsed": false,
+                        "children": [
+                          {
+                            "id": "auto-group-8",
+                            "label": "歌が題名ではなく機能で呼ばれてきたため、異名同曲や同名異曲が多発した。",
+                            "collapsed": false,
+                            "children": [],
+                            "cards": [
+                              {
+                                "id": "c-19d5cf6114a-51f2-16",
+                                "label": "異名同曲が多いのは、題名より機能で歌が呼ばれてきたからだ。"
+                              },
+                              {
+                                "id": "c-19d5cf6114a-ca76-17",
+                                "label": "同名異曲も多く、名前は場面のラベルとして付け替えられた。"
+                              }
+                            ]
+                          }
+                        ],
+                        "cards": [
+                          {
+                            "id": "c-19d5cf6114a-2aed-14",
+                            "label": "伝承者が一人だけでも、歌が残れば文化圏を推定できる。"
+                          },
+                          {
+                            "id": "c-19d5cf6114a-8ae1-22",
+                            "label": "酒の歌が多いのは嗜好ではなく、共同体の調停儀礼だったからだ。"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "auto-group-28",
+                        "label": "歌い手の技法や旋律は、その土地の住環境や自然景観と深く結びつき身体的に育まれてきた。",
+                        "collapsed": false,
+                        "children": [
+                          {
+                            "id": "auto-group-18",
+                            "label": "旋律の抑揚や音の長さは、その土地の地形や景観といった環境と深く結びついている。",
+                            "collapsed": false,
+                            "children": [],
+                            "cards": [
+                              {
+                                "id": "c-19d5cf6114a-1a4e-19",
+                                "label": "旋律の上行下行は地形感覚に似て、山国は急峻な跳躍が出る。"
+                              },
+                              {
+                                "id": "c-19d5cf6114a-8a97-11",
+                                "label": "屋外の広場では反射が少なく、直線的な旋律が選ばれやすい。"
+                              },
+                              {
+                                "id": "c-19d5cf6114a-f243-20",
+                                "label": "海辺の歌に水平線の長い音が多いのは、景色の比喩でもある。"
+                              }
+                            ]
+                          }
+                        ],
+                        "cards": [
+                          {
+                            "id": "c-19d5cf6114a-4aef-10",
+                            "label": "土間や囲炉裏端は天然の残響室で、家の構造が歌を育てた。"
+                          },
+                          {
+                            "id": "c-19d5cf6114a-9794-8",
+                            "label": "唄い手の息継ぎ位置は地域差があり、身体技法として学ばれる。"
+                          }
+                        ]
+                      }
+                    ],
+                    "cards": []
+                  }
+                ],
+                "cards": []
+              },
+              {
+                "id": "auto-group-40",
+                "label": "民謡は社会の変化や観光化に適応し、個人の歌から芸術へと進化を遂げた。",
+                "collapsed": false,
+                "children": [
+                  {
+                    "id": "auto-group-13",
+                    "label": "生活苦を歌い権威を笑う民謡は、学校教育を経て個人の歌から社会の歌へと変容した。",
+                    "collapsed": false,
+                    "children": [],
+                    "cards": [
+                      {
+                        "id": "c-19d5cf6114a-0417-28",
+                        "label": "民謡が学校で教わると、家の歌から社会の歌へ性格が変わる。"
+                      },
+                      {
+                        "id": "c-19d5cf6114a-aa00-23",
+                        "label": "民謡は権威を笑い飛ばし、庶民が主役になる希少な場を作った。"
+                      },
+                      {
+                        "id": "c-19d5cf6114a-aedc-21",
+                        "label": "民謡は失恋より生活苦が多く、感情の根は経済に繋がっている。"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "auto-group-30",
+                    "label": "民謡は時代の変化や観光化に適応し、芸術として進化し続ける。",
+                    "collapsed": false,
+                    "children": [
+                      {
+                        "id": "auto-group-19",
+                        "label": "民謡は時代の変化や地域性を取り込み、環境適応として進化し続ける。",
+                        "collapsed": false,
+                        "children": [
+                          {
+                            "id": "auto-group-12",
+                            "label": "民謡は時代の変化や地域の特性を柔軟に取り込み、社会の姿を映し出す鏡として進化してきた。",
+                            "collapsed": false,
+                            "children": [],
+                            "cards": [
+                              {
+                                "id": "c-19d5cf6114a-095d-2",
+                                "label": "都市民謡は新語を吸収し、電車や工場が歌詞に入り込む。"
+                              },
+                              {
+                                "id": "c-19d5cf6114a-e7bf-3",
+                                "label": "港町の民謡は外来語が混ざり、交易の多言語環境を映す。"
+                              },
+                              {
+                                "id": "c-19d5cf6114a-e90d-0",
+                                "label": "民謡は広告にもなり、名産や市の開催日を歌に埋め込んだ。"
+                              }
+                            ]
+                          }
+                        ],
+                        "cards": [
+                          {
+                            "id": "c-19d5cf6114a-7bc8-15",
+                            "label": "民謡の変化は誤りではなく、環境適応として自然淘汰される。"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "auto-group-23",
+                        "label": "観光化で変容する民謡は、時代の要請に応じた芸術の自然な進化である。",
+                        "collapsed": false,
+                        "children": [
+                          {
+                            "id": "auto-group-1",
+                            "label": "現代の民謡アレンジは伝統の破壊ではなく、時代と共に生き続ける芸術の自然な更新である。",
+                            "collapsed": false,
+                            "children": [],
+                            "cards": [
+                              {
+                                "id": "c-19d5cf6114a-b5f1-27",
+                                "label": "現代の民謡アレンジは伝統破壊でなく、昔から続く更新の延長だ。"
+                              },
+                              {
+                                "id": "c-19d5cf6114a-ebbc-31",
+                                "label": "民謡は古いだけでなく、今も生活に寄り添い続ける可変の芸術だ。"
+                              }
+                            ]
+                          }
+                        ],
+                        "cards": [
+                          {
+                            "id": "c-19d5cf6114a-990a-29",
+                            "label": "観光化された民謡は短縮されがちで、時間感覚が別物になる。"
+                          }
+                        ]
+                      }
+                    ],
+                    "cards": []
+                  }
+                ],
+                "cards": []
+              }
+            ],
+            "cards": []
+          }
+        ],
+        "cards": [
+          {
+            "id": "c-19d5cf6114a-9549-12",
+            "label": "祭りの雑踏は周波数が被るため、民謡は目立つ帯域に寄る。"
+          }
+        ]
+      },
+      {
+        "id": "auto-group-50",
+        "label": "経済成長は福祉の必要条件だが、ネパールの近代化は伝統喪失や紛争の危機も招く。",
+        "collapsed": false,
+        "children": [
+          {
+            "id": "auto-group-42",
+            "label": "ネパールの近代化は生活を向上させる一方、紛争の火種や伝統の喪失という深刻な危機を孕んでいる。",
+            "collapsed": false,
+            "children": [
+              {
+                "id": "auto-group-33",
+                "label": "ネパールの近代化は生活基盤を改善する一方、伝統や環境を脅かしている。",
+                "collapsed": false,
+                "children": [
+                  {
+                    "id": "auto-group-10",
+                    "label": "ネパールの道路整備は進むが、人口急増の中で住民の生活基盤をどう確保すべきか。",
+                    "collapsed": false,
+                    "children": [],
+                    "cards": [
+                      {
+                        "id": "c-19d5cf642fb-712a-13",
+                        "label": "ネパールに車道ばかり先行して発達させれば、山中は過疎化するばかりではないか。"
+                      },
+                      {
+                        "id": "c-19d5cf642fb-e0fb-32",
+                        "label": "ネパールの人口は急増しているが、どうやって人々は食っていけば良いのか。"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "auto-group-25",
+                    "label": "近代化はネパールの山村に恩恵と弊害をもたらし、伝統や環境を脅かしている。",
+                    "collapsed": false,
+                    "children": [
+                      {
+                        "id": "auto-group-11",
+                        "label": "近代化に伴う過疎と過密は、伝統文化や環境を破壊する深刻な問題だ。",
+                        "collapsed": false,
+                        "children": [],
+                        "cards": [
+                          {
+                            "id": "c-19d5cf642fb-4de1-10",
+                            "label": "過疎は伝統的な文化と環境を破壊しつつある。"
+                          },
+                          {
+                            "id": "c-19d5cf642fb-8582-5",
+                            "label": "近代化のもと、過疎過密が重大な問題となっている。"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "auto-group-6",
+                        "label": "近代文明はネパールの山村にとって、有害な面と活性化に役立つ面の両面を併せ持っている。",
+                        "collapsed": false,
+                        "children": [],
+                        "cards": [
+                          {
+                            "id": "c-19d5cf642fb-4c40-3",
+                            "label": "近代文明にはネパール山民にとって有害な面も多くある。"
+                          },
+                          {
+                            "id": "c-19d5cf642fb-7a5a-8",
+                            "label": "近外文明にはネパール山村の活性化に役立つものも多くある。"
+                          }
+                        ]
+                      }
+                    ],
+                    "cards": []
+                  }
+                ],
+                "cards": []
+              }
+            ],
+            "cards": [
+              {
+                "id": "c-19d5cf642fb-06ad-0",
+                "label": "ヘマをするとネパールは戦争の引き金となったバルカン・ベトナムと化してしまう。"
+              }
+            ]
+          }
+        ],
+        "cards": [
+          {
+            "id": "c-19d5cf642fb-e583-28",
+            "label": "経済的向上は福祉向上の必要条件だが十分条件ではない。"
+          }
+        ]
+      }
+    ],
+    "ungroupedCards": [
+      {
+        "id": "c-19d5cf6114a-c467-26",
+        "label": "映像記録が増えるほど、逆に身体の細部まで復元できるようになった。"
+      }
+    ]
+  },
+  "ai": {
+    "keywordById": {},
+    "associationsById": {},
+    "pickedByGroupId": {},
+    "pickedSentenceByGroupId": {
+      "auto-group-2": "山岳地の村々が自力で活力を取り戻せるよう、心から応援したい。",
+      "auto-group-3": "外国人の私にできる技術協力を通じて、住民の喜ぶ顔が見たい。",
+      "auto-group-4": "民謡の旋律は記憶の鍵となり、儀礼と共に長い物語を伝承する。",
+      "auto-group-5": "住民が自力で維持でき、かつ利益を生む技術導入を目指すべきだ。",
+      "auto-group-6": "近代文明はネパールの山村にとって、有害な面と活性化に役立つ面の両面を併せ持っている。",
+      "auto-group-8": "歌が題名ではなく機能で呼ばれてきたため、異名同曲や同名異曲が多発した。",
+      "auto-group-11": "近代化に伴う過疎と過密は、伝統文化や環境を破壊する深刻な問題です。",
+      "auto-group-14": "繰り返される旋律は共同体に安らぎを与え、その骨格として核心を繋ぎ止める。",
+      "auto-group-15": "民謡は踊りと共に歌うことで心拍が同調し、集団の一体感が生まれる。",
+      "auto-group-16": "近代文明の知識は私の方が上だが、それを現地に強いるのは疑問だ。",
+      "auto-group-1": "現代の民謡アレンジは伝統の破壊ではなく、時代と共に生き続ける芸術の自然な更新である。",
+      "auto-group-17": "山岳地域の病因を解明し、山民の福祉を向上させることが国際紛争の未然防止につながる。",
+      "auto-group-10": "ネパールの道路整備は進むが、人口急増の中で住民の生活基盤をどう確保すべきか。",
+      "auto-group-7": "民謡は余韻で繋ぎ、響きを鍛え、方言の節回しで地域性を保つ。",
+      "auto-group-9": "地域の独自性を活かし、住民と協働して僻地の活性化を実現したい。",
+      "auto-group-12": "民謡は時代の変化や地域の特性を柔軟に取り込み、社会の姿を映し出す鏡として進化してきた。",
+      "auto-group-13": "生活苦を歌い権威を笑う民謡は、学校教育を経て個人の歌から社会の歌へと変容した。",
+      "auto-group-18": "旋律の抑揚や音の長さは、その土地の地形や景観といった環境と深く結びついている。",
+      "auto-group-20": "住民が自立して利益を得られる技術を導入し、共に喜びを分かち合いたい。",
+      "auto-group-19": "民謡は時代の変化や地域性を取り込み、環境適応として進化し続ける。",
+      "auto-group-23": "観光化で変容する民謡は、時代の要請に応じた芸術の自然な進化である。",
+      "auto-group-24": "繰り返される旋律は、共同体に安らぎと一体感をもたらす。",
+      "auto-group-29": "山岳民謡の薬草知識を解明し福祉を向上させることは、国際紛争の予防にも繋がる。",
+      "auto-group-22": "山岳地域の独自性を活かし、住民と協働して村々の自立的な活性化を全力で支援したい。",
+      "auto-group-25": "近代化はネパールの山村に恩恵と弊害をもたらし、伝統や環境を脅かしている。",
+      "auto-group-26": "地理学と民族学の知見を活かし、現地の文化を尊重しつつ共生を目指す。",
+      "auto-group-27": "歌の機能や伝承から文化圏を読み解く際、その多様な呼称や背景にある共同体の儀礼的役割を考慮する必要がある。",
+      "auto-group-28": "歌い手の技法や旋律は、その土地の住環境や自然景観と深く結びつき育まれてきた。",
+      "auto-group-21": "民謡は旋律と踊りで記憶と地域性を継承し、集団の絆を深める。",
+      "auto-group-37": "森林の減少に伴い、地すべりが頻発する事態となっているようだ。",
+      "auto-group-32": "民謡は旋律と踊りを通じて地域の記憶を継承し、共同体に一体感をもたらす。",
+      "auto-group-34": "地理学と民族学の知見を活かし、伝統的な暮らしを生態系として捉え直して共生を目指す。",
+      "auto-group-36": "各村の活性化を優先し、成功事例を広めることで地域全体を底上げしたい。",
+      "auto-group-30": "民謡は時代の変化や観光化に適応し、芸術として進化し続ける。",
+      "auto-group-31": "山岳地域の独自性を活かし、住民と協働して自立的な活性化を全力で支援します。",
+      "auto-group-33": "ネパールの近代化は生活基盤を改善する一方、伝統や環境を脅かしている。",
+      "auto-group-35": "歌は土地の風土や共同体の儀礼と密接に関わり、身体を通じて継承される。",
+      "auto-group-43": "森林の減少で地すべりが多発し、住民の生活は困窮を極めている。",
+      "auto-group-40": "民謡は社会の変化や観光化に適応し、個人の歌から芸術へと進化を遂げた。",
+      "auto-group-42": "ネパールの近代化は生活を向上させる一方、紛争の火種や伝統の喪失という深刻な危機を孕んでいる。",
+      "auto-group-38": "民謡は身体を通じた旋律と踊りにより、地域の記憶と共同体の絆を次世代へと継承する。",
+      "auto-group-39": "山岳地域の各村と協働し、成功事例の展開を通じて自立的な活性化を全力で支援します。",
+      "auto-group-41": "山岳民謡の薬草知識を福祉と平和へ繋げ、生態系との共生を目指す。",
+      "auto-group-47": "私は外国人として内政への干渉を避け、身の丈に合った活動を望みます。",
+      "auto-group-46": "ヒマラヤの自然と人々を愛するがゆえに、森林減少による地すべりと住民の困窮が痛ましい。",
+      "auto-group-44": "民謡は地域の記憶を継承しながら、時代の変化と共に芸術へと進化を遂げた。",
+      "auto-group-45": "山岳地域の村々と連携し、薬草の知恵を福祉と平和へ繋げ、自立的な活性化と生態系との共生を全力で支援する。",
+      "auto-group-49": "祭りの喧騒に溶け込む民謡は、地域の記憶を宿しながら芸術へと昇華した。",
+      "auto-group-50": "経済成長は福祉の必要条件だが、ネパールの近代化は伝統喪失や紛争の危機も招く。",
+      "auto-group-48": "ヒマラヤの薬草の知恵を活かし、環境保全と住民の自立を支援する。"
+    },
+    "constellationByGroupId": {},
+    "constellationSimilarityByGroupId": {},
+    "visibleAssocByGroupId": {}
+  },
+  "ui": {
+    "layoutMode": "layout",
+    "viewport": {
+      "x": 131.74960894853734,
+      "y": 375.2422126504558,
+      "zoom": 0.12336433120918555
+    },
+    "edgeKindMode": "rel",
+    "edgeEndpointMode": "floating",
+    "newRelationType": "normal",
+    "newLine": "dashed",
+    "newArrow": "forward",
+    "constellationZoom": 1,
+    "constellationPan": {
+      "x": 13,
+      "y": -100
+    }
+  }
+}

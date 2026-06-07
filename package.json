@@ -1,0 +1,22 @@
+{
+  "name": "ayatopos-mvp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run build -w @ayatopos/shared && concurrently -k -n api,web -c cyan,magenta \"npm run dev -w @ayatopos/api\" \"npm run dev -w @ayatopos/web\"",
+    "build": "npm run build -w @ayatopos/shared && npm run build -w @ayatopos/api && npm run build -w @ayatopos/web",
+    "e2e": "playwright test",
+    "test": "npm run test -w @ayatopos/shared && npm run build -w @ayatopos/shared && npm run test -w @ayatopos/api",
+    "typecheck": "npm run typecheck -w @ayatopos/shared && npm run typecheck -w @ayatopos/api && npm run typecheck -w @ayatopos/web"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "concurrently": "^9.2.1",
+    "typescript": "^5.9.3"
+  }
+}

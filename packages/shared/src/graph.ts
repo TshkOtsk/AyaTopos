@@ -1,0 +1,202 @@
+import { createFallbackPlacements, DEFAULT_CENTER, mapSemanticToGeo } from "./geo.js";
+import type {
+  AyaEdge,
+  AyaGraph,
+  AyaNode,
+  GeoCenter,
+  GeoPlacement,
+  HypoWeaveExport,
+  HypoWeaveNode,
+  PlacementNodeInput
+} from "./types.js";
+
+const PALETTE = ["#f26d5b", "#77b255", "#5aa9df", "#ba75d6", "#e4ac35", "#58b5a8", "#f08ab8", "#8f91e8"];
+
+export interface NormalizeOptions {
+  center?: GeoCenter;
+  placements?: GeoPlacement[];
+}
+
+export function normalizeHypoWeave(input: HypoWeaveExport, options: NormalizeOptions = {}): AyaGraph {
+  const center = options.center ?? DEFAULT_CENTER;
+  const rawNodes = input.snapshot?.nodes?.filter((node) => !node.hidden) ?? [];
+  const byId = new Map(rawNodes.map((node) => [node.id, node]));
+  const absoluteCache = new Map<string, { x: number; y: number }>();
+  const depthCache = new Map<string, number>();
+  const topCache = new Map<string, string>();
+
+  const absolutePositions = rawNodes.map((node) => absolutePosition(node, byId, absoluteCache));
+  const bounds = getBounds(absolutePositions);
+  const maxDepth = rawNodes.reduce((max, node) => Math.max(max, depthOf(node, byId, depthCache)), 0);
+  const placementMap = new Map((options.placements ?? []).map((placement) => [placement.nodeId, placement]));
+
+  const topOrder = Array.from(
+    new Set(rawNodes.map((node) => topAncestorOf(node, byId, topCache)).filter(Boolean))
+  ).sort();
+
+  const nodes: AyaNode[] = rawNodes.map((node) => {
+    const position = absolutePosition(node, byId, absoluteCache);
+    const depth = depthOf(node, byId, depthCache);
+    const topAncestorId = topAncestorOf(node, byId, topCache);
+    const semanticAltitude = (maxDepth - depth + 1) * 55;
+    const semantic = mapSemanticToGeo(position.x, position.y, bounds, center, semanticAltitude);
+    const placement = placementMap.get(node.id);
+    const fallbackGeo = fallbackPointForNode(node, center, rawNodes, byId, maxDepth);
+    const geo = {
+      x: position.x,
+      y: position.y,
+      lng: placement?.lng ?? fallbackGeo.lng,
+      lat: placement?.lat ?? fallbackGeo.lat,
+      altitude: depth <= 1 ? semanticAltitude : Math.max(0, semanticAltitude * 0.22)
+    };
+
+    return {
+      id: node.id,
+      type: node.type === "card" ? "card" : "group",
+      label: labelOf(node, input),
+      shortLabel: shortLabelOf(node, input),
+      parentId: node.parentId,
+      depth,
+      topAncestorId,
+      semantic,
+      geo,
+      color: colorForTopAncestor(topAncestorId, topOrder),
+      size: sizeFor(node, depth),
+      opacity: opacityFor(depth)
+    };
+  });
+
+  return {
+    nodes,
+    edges: normalizeEdges(input),
+    center,
+    bounds,
+    maxDepth
+  };
+}
+
+export function toPlacementInputs(graph: AyaGraph): PlacementNodeInput[] {
+  return graph.nodes.map((node) => ({
+    id: node.id,
+    label: node.label,
+    shortLabel: node.shortLabel,
+    type: node.type,
+    depth: node.depth,
+    topAncestorId: node.topAncestorId
+  }));
+}
+
+export function connectedIds(edges: AyaEdge[], nodeId: string): Set<string> {
+  const ids = new Set<string>([nodeId]);
+  for (const edge of edges) {
+    if (edge.source === nodeId) ids.add(edge.target);
+    if (edge.target === nodeId) ids.add(edge.source);
+  }
+  return ids;
+}
+
+function absolutePosition(
+  node: HypoWeaveNode,
+  byId: Map<string, HypoWeaveNode>,
+  cache: Map<string, { x: number; y: number }>
+): { x: number; y: number } {
+  const cached = cache.get(node.id);
+  if (cached) return cached;
+
+  const own = node.position ?? { x: 0, y: 0 };
+  const parent = node.parentId ? byId.get(node.parentId) : undefined;
+  const parentPosition = parent ? absolutePosition(parent, byId, cache) : { x: 0, y: 0 };
+  const value = { x: parentPosition.x + own.x, y: parentPosition.y + own.y };
+  cache.set(node.id, value);
+  return value;
+}
+
+function depthOf(node: HypoWeaveNode, byId: Map<string, HypoWeaveNode>, cache: Map<string, number>): number {
+  const cached = cache.get(node.id);
+  if (cached !== undefined) return cached;
+  const parent = node.parentId ? byId.get(node.parentId) : undefined;
+  const depth = parent ? depthOf(parent, byId, cache) + 1 : 0;
+  cache.set(node.id, depth);
+  return depth;
+}
+
+function topAncestorOf(node: HypoWeaveNode, byId: Map<string, HypoWeaveNode>, cache: Map<string, string>): string {
+  const cached = cache.get(node.id);
+  if (cached) return cached;
+  let current = node;
+  while (current.parentId && byId.has(current.parentId)) {
+    current = byId.get(current.parentId)!;
+  }
+  cache.set(node.id, current.id);
+  return current.id;
+}
+
+function getBounds(points: Array<{ x: number; y: number }>): AyaGraph["bounds"] {
+  if (points.length === 0) {
+    return { minX: -1, maxX: 1, minY: -1, maxY: 1 };
+  }
+  return points.reduce(
+    (bounds, point) => ({
+      minX: Math.min(bounds.minX, point.x),
+      maxX: Math.max(bounds.maxX, point.x),
+      minY: Math.min(bounds.minY, point.y),
+      maxY: Math.max(bounds.maxY, point.y)
+    }),
+    { minX: Infinity, maxX: -Infinity, minY: Infinity, maxY: -Infinity }
+  );
+}
+
+function normalizeEdges(input: HypoWeaveExport): AyaEdge[] {
+  return (input.snapshot?.edges ?? []).map((edge, index) => ({
+    id: `${edge.source}->${edge.target}:${index}`,
+    source: edge.source,
+    target: edge.target,
+    type: edge.type
+  }));
+}
+
+function labelOf(node: HypoWeaveNode, input: HypoWeaveExport): string {
+  return node.data?.label ?? input.ai?.pickedSentenceByGroupId?.[node.id] ?? node.id;
+}
+
+function shortLabelOf(node: HypoWeaveNode, input: HypoWeaveExport): string {
+  return node.data?.layoutTextBox?.text ?? input.ai?.pickedSentenceByGroupId?.[node.id] ?? labelOf(node, input);
+}
+
+function colorForTopAncestor(topAncestorId: string, topOrder: string[]): string {
+  const index = Math.max(0, topOrder.indexOf(topAncestorId));
+  return PALETTE[index % PALETTE.length] ?? PALETTE[0]!;
+}
+
+function sizeFor(node: HypoWeaveNode, depth: number): number {
+  if (depth === 0) return 176;
+  if (node.type === "group") return Math.max(96, 152 - depth * 11);
+  return Math.max(78, 124 - depth * 7);
+}
+
+function opacityFor(depth: number): number {
+  return Math.max(0.44, 1 - depth * 0.075);
+}
+
+function fallbackPointForNode(
+  node: HypoWeaveNode,
+  center: GeoCenter,
+  rawNodes: HypoWeaveNode[],
+  byId: Map<string, HypoWeaveNode>,
+  maxDepth: number
+): { lng: number; lat: number } {
+  const inputs = rawNodes.map((item) => {
+    const topCache = new Map<string, string>();
+    const depthCache = new Map<string, number>();
+    return {
+      id: item.id,
+      label: labelOf(item, {}),
+      shortLabel: shortLabelOf(item, {}),
+      type: item.type === "card" ? "card" : "group",
+      depth: depthOf(item, byId, depthCache),
+      topAncestorId: topAncestorOf(item, byId, topCache)
+    } satisfies PlacementNodeInput;
+  });
+  const placement = createFallbackPlacements(inputs, center).find((item) => item.nodeId === node.id);
+  return placement ?? { lng: center.lng, lat: center.lat + maxDepth * 0.001 };
+}
