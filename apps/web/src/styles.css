@@ -43,18 +43,21 @@ input {
 
 .scene {
   position: absolute;
-  inset: 10px;
+  inset: 0;
   overflow: hidden;
-  border: 1px solid rgba(96, 72, 54, 0.16);
-  border-radius: 8px;
+  border: 0;
+  border-radius: 0;
   background: #b9d9e7;
 }
 
 .map-canvas {
   position: absolute;
   inset: 0;
-  opacity: calc(0.18 + var(--blend) * 0.82);
-  transition: opacity 180ms ease;
+  opacity: 1;
+}
+
+.map-canvas canvas {
+  display: block;
 }
 
 .sky-wash {
@@ -62,10 +65,19 @@ input {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(255, 250, 239, calc(0.48 - var(--blend) * 0.34)), rgba(255, 246, 224, 0.08)),
-    radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.72), transparent 9%),
-    radial-gradient(circle at 86% 20%, rgba(255, 255, 255, 0.64), transparent 10%),
-    radial-gradient(circle at 74% 72%, rgba(255, 215, 156, 0.24), transparent 20%);
+    linear-gradient(180deg, rgba(246, 252, 255, 0.08), rgba(255, 246, 224, 0.02));
+}
+
+.maplibregl-ctrl-top-right {
+  top: 12px;
+  right: 12px;
+}
+
+.maplibregl-ctrl-top-right .maplibregl-ctrl {
+  margin: 0 0 10px;
+  border: 0;
+  border-radius: 8px;
+  box-shadow: 0 12px 26px rgba(32, 42, 45, 0.2);
 }
 
 .topbar {
@@ -103,6 +115,7 @@ input {
   pointer-events: auto;
   display: flex;
   gap: 14px;
+  margin-right: 78px;
 }
 
 .icon-button {
@@ -288,7 +301,7 @@ input {
 .outline-layer,
 .thread-layer,
 .geo-point-layer,
-.node-layer {
+.idea-hit-layer {
   pointer-events: none;
   position: absolute;
   inset: 0;
@@ -299,9 +312,9 @@ input {
 }
 
 .group-outline {
-  fill: color-mix(in srgb, var(--outline-color) 11%, transparent);
-  stroke: color-mix(in srgb, var(--outline-color) 72%, rgba(255, 246, 224, 0.94));
-  stroke-width: max(1.2px, calc(5px - var(--outline-depth) * 0.52px));
+  fill: color-mix(in srgb, var(--outline-color) 7%, transparent);
+  stroke: color-mix(in srgb, var(--outline-color) 62%, rgba(236, 251, 255, 0.82));
+  stroke-width: max(1px, calc(4px - var(--outline-depth) * 0.48px));
   stroke-linejoin: round;
   stroke-dasharray: 12 10;
   opacity: calc(var(--outline-fade) * max(0.16, 0.7 - var(--outline-depth) * 0.07));
@@ -325,16 +338,16 @@ input {
 
 .thread {
   fill: none;
-  stroke: rgba(255, 212, 138, 0.54);
-  stroke-width: 1.8;
+  stroke: rgba(221, 242, 255, 0.46);
+  stroke-width: 1.4;
   stroke-dasharray: 7 9;
-  filter: drop-shadow(0 0 7px rgba(255, 201, 115, 0.52));
+  filter: drop-shadow(0 0 9px rgba(147, 218, 255, 0.56));
   transition: opacity 140ms ease, stroke-width 140ms ease;
 }
 
 .thread.active {
-  stroke: rgba(255, 238, 182, 0.96);
-  stroke-width: 3.4;
+  stroke: rgba(255, 241, 189, 0.96);
+  stroke-width: 2.8;
   stroke-dasharray: 1 0;
   filter: drop-shadow(0 0 16px rgba(255, 218, 143, 0.95));
 }
@@ -380,85 +393,51 @@ input {
   transform: translate(-50%, -50%) scale(1.08);
 }
 
-.node-layer {
+.idea-hit-layer {
   z-index: 6;
 }
 
-.node-card {
+.idea-hit-target {
   pointer-events: auto;
   position: absolute;
-  width: var(--node-size);
-  min-height: calc(var(--node-size) * 0.52);
+  width: var(--hit-size);
+  height: var(--hit-size);
   transform: translate(-50%, -50%);
-  display: grid;
-  place-items: center;
-  padding: 10px 12px;
-  border: 1px solid color-mix(in srgb, var(--node-color) 45%, rgba(255, 255, 255, 0.7));
-  border-radius: 8px;
-  color: #3e3027;
-  background: color-mix(in srgb, var(--node-color) 13%, rgba(255, 248, 234, 0.92));
-  box-shadow:
-    0 0 0 1px rgba(255, 237, 204, 0.6),
-    0 10px 22px rgba(69, 43, 22, 0.18),
-    0 0 22px color-mix(in srgb, var(--node-color) 36%, transparent);
-  opacity: var(--node-opacity);
-  cursor: pointer;
-  transition: transform 150ms ease, opacity 150ms ease, filter 150ms ease;
-}
-
-.node-card span {
-  display: -webkit-box;
-  overflow: hidden;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  font-size: clamp(11px, calc(var(--node-size) / 11), 18px);
-  line-height: 1.35;
-  font-weight: 700;
-  text-align: center;
-  overflow-wrap: anywhere;
-}
-
-.node-card.group.depth-0 {
-  min-height: calc(var(--node-size) * 0.68);
+  border: 0;
   border-radius: 50%;
-  background:
-    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.98), transparent 32%),
-    color-mix(in srgb, var(--node-color) 20%, rgba(255, 244, 224, 0.9));
-  filter: blur(0);
+  background: transparent;
+  cursor: pointer;
+  transition: transform 150ms ease, opacity 150ms ease;
 }
 
-.node-card.group.depth-0::before,
-.node-card.group.depth-0::after {
+.idea-hit-target::after {
   content: "";
   position: absolute;
-  inset: 10%;
-  z-index: -1;
+  inset: 18%;
   border-radius: 50%;
-  background: color-mix(in srgb, var(--node-color) 19%, rgba(255, 245, 224, 0.84));
-  filter: blur(12px);
+  box-shadow: 0 0 22px 3px color-mix(in srgb, var(--node-color) 50%, transparent);
+  opacity: 0;
+  transition: opacity 150ms ease, inset 150ms ease;
 }
 
-.node-card.group.depth-0::after {
-  inset: 22% -8% 8% 26%;
-}
-
-.node-card.card {
-  background: color-mix(in srgb, var(--node-color) 10%, rgba(255, 247, 235, 0.95));
-}
-
-.node-card.hovered {
+.idea-hit-target.hovered,
+.idea-hit-target:focus-visible {
   z-index: 10;
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1.16);
-  filter: drop-shadow(0 0 20px color-mix(in srgb, var(--node-color) 70%, #ffd693));
+  transform: translate(-50%, -50%) scale(1.22);
+  outline: 0;
 }
 
-.node-card.dimmed {
-  opacity: 0.18;
-  filter: saturate(0.3);
+.idea-hit-target.hovered::after,
+.idea-hit-target:focus-visible::after {
+  inset: 6%;
+  opacity: 0.72;
 }
 
-.node-tooltip {
+.idea-hit-target.dimmed {
+  opacity: 0.42;
+}
+
+.idea-tooltip {
   position: absolute;
   z-index: 20;
   width: min(320px, calc(100vw - 40px));
@@ -471,13 +450,13 @@ input {
   backdrop-filter: blur(12px);
 }
 
-.node-tooltip strong {
+.idea-tooltip strong {
   display: block;
   margin-bottom: 8px;
   font-size: 15px;
 }
 
-.node-tooltip p {
+.idea-tooltip p {
   margin: 0;
   font-size: 13px;
   line-height: 1.6;

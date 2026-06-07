@@ -20,7 +20,8 @@ import {
 } from "@ayatopos/shared";
 import type { AyaGraph, AyaGroupOutline, AyaNode, AyaSpatialPoint, HypoWeaveExport } from "@ayatopos/shared";
 import { requestPlacements, resolveArea } from "./api";
-import { mapStyle } from "./mapStyle";
+import { addIdeaObjectLayer, type IdeaLayerDatum, type IdeaObjectLayer } from "./ideaLayer";
+import { ensureTerrain, mapStyle } from "./mapStyle";
 
 type LoadState = "idle" | "loading" | "ready" | "error";
 
@@ -266,6 +267,8 @@ function MapScene({
 }) {
   const mapNodeRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
+  const ideaLayerRef = useRef<IdeaObjectLayer | null>(null);
+  const frameRef = useRef<number | null>(null);
   const [tick, setTick] = useState(0);
 
   useEffect(() => {
@@ -275,24 +278,75 @@ function MapScene({
       container: mapNodeRef.current,
       style: mapStyle(),
       center: [DEFAULT_CENTER.lng, DEFAULT_CENTER.lat],
-      zoom: 14.2,
-      pitch: 42,
-      bearing: -18,
+      zoom: 12,
+      pitch: 70,
+      bearing: -22,
+      hash: true,
+      maxZoom: 18,
+      maxPitch: 85,
+      dragRotate: true,
+      pitchWithRotate: true,
+      touchZoomRotate: true,
       attributionControl: false
     });
+    map.dragRotate.enable();
+    map.touchZoomRotate.enableRotation();
     map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
+    map.addControl(
+      new maplibregl.NavigationControl({
+        visualizePitch: true,
+        showZoom: true,
+        showCompass: true
+      }),
+      "top-right"
+    );
+    map.addControl(
+      new maplibregl.TerrainControl({
+        source: "terrainSource",
+        exaggeration: 1
+      }),
+      "top-right"
+    );
     mapRef.current = map;
 
-    const rerender = () => setTick((value) => value + 1);
+    const rerender = () => {
+      if (frameRef.current !== null) return;
+      frameRef.current = window.requestAnimationFrame(() => {
+        frameRef.current = null;
+        setTick((value) => value + 1);
+      });
+    };
+    let initialized3d = false;
+    const initialize3d = () => {
+      if (initialized3d) return;
+      try {
+        ensureTerrain(map);
+        ideaLayerRef.current = addIdeaObjectLayer(map);
+        initialized3d = true;
+        rerender();
+      } catch {
+        // Style initialization can race with TileJSON loading; load/styledata will retry.
+      }
+    };
+
     map.on("move", rerender);
     map.on("zoom", rerender);
     map.on("pitch", rerender);
     map.on("rotate", rerender);
-    map.on("load", rerender);
+    map.on("terrain", rerender);
+    map.on("sourcedata", rerender);
+    map.on("idle", rerender);
+    map.on("styledata", initialize3d);
+    map.on("load", initialize3d);
+    window.requestAnimationFrame(initialize3d);
 
     return () => {
+      if (frameRef.current !== null) {
+        window.cancelAnimationFrame(frameRef.current);
+      }
       map.remove();
       mapRef.current = null;
+      ideaLayerRef.current = null;
     };
   }, []);
 
@@ -300,9 +354,9 @@ function MapScene({
     if (!graph || !mapRef.current) return;
     mapRef.current.easeTo({
       center: [graph.center.lng, graph.center.lat],
-      zoom: 14.2,
-      pitch: 42,
-      bearing: -16,
+      zoom: 12,
+      pitch: 70,
+      bearing: -22,
       duration: 900
     });
   }, [graph?.center.lat, graph?.center.lng, graph]);
@@ -319,7 +373,7 @@ function MapScene({
     return graph.nodes.map((node) => {
       const point = interpolatePoint(node.semantic, node.geo, blend);
       const projected = mapRef.current!.project([point.lng, point.lat]) as PointLike & { x: number; y: number };
-      const raisedY = projected.y - point.altitude * 0.18;
+      const raisedY = projected.y - point.altitude * 0.11;
       return {
         node,
         point,
@@ -339,6 +393,16 @@ function MapScene({
   );
 
   const visibleNodeIds = useMemo(() => new Set(visibleScreenNodes.map(({ node }) => node.id)), [visibleScreenNodes]);
+  const ideaNodes = useMemo<IdeaLayerDatum[]>(
+    () =>
+      screenNodes.map(({ node, point, related, dimmed }) => ({
+        node,
+        point,
+        related,
+        dimmed
+      })),
+    [screenNodes]
+  );
 
   const geoPointNodes = useMemo(() => {
     if (!graph || !mapRef.current) return [];
@@ -369,6 +433,10 @@ function MapScene({
 
   const nodeById = useMemo(() => new Map(visibleScreenNodes.map((item) => [item.node.id, item])), [visibleScreenNodes]);
   const hoveredNode = hoveredId ? nodeById.get(hoveredId) : undefined;
+
+  useEffect(() => {
+    ideaLayerRef.current?.setData(ideaNodes, hoveredId);
+  }, [hoveredId, ideaNodes]);
 
   return (
       <div className="scene">
@@ -429,11 +497,11 @@ function MapScene({
           />
         ))}
       </div>
-      <div className="node-layer">
+      <div className="idea-hit-layer">
         {visibleScreenNodes.map(({ node, screen, dimmed, related }) => (
           <button
             key={node.id}
-            className={`node-card ${node.type} depth-${Math.min(node.depth, 6)} ${dimmed ? "dimmed" : ""} ${
+            className={`idea-hit-target ${node.type} depth-${Math.min(node.depth, 6)} ${dimmed ? "dimmed" : ""} ${
               hoveredId === node.id ? "hovered" : ""
             } ${related ? "related" : ""}`}
             style={
@@ -442,21 +510,21 @@ function MapScene({
                 top: screen.y,
                 zIndex: renderRank(node, graph?.maxDepth ?? 0),
                 "--node-color": node.color,
-                "--node-size": `${node.size}px`,
-                "--node-opacity": node.opacity
+                "--hit-size": `${Math.max(34, node.size * 0.48)}px`
               } as React.CSSProperties
             }
             onPointerEnter={() => onHover(node.id)}
             onPointerLeave={() => onHover(null)}
+            onFocus={() => onHover(node.id)}
+            onBlur={() => onHover(null)}
             type="button"
-          >
-            <span>{node.shortLabel}</span>
-          </button>
+            aria-label={node.shortLabel}
+          />
         ))}
       </div>
       {hoveredNode ? (
         <aside
-          className="node-tooltip"
+          className="idea-tooltip"
           style={{
             left: Math.min(window.innerWidth - 340, Math.max(20, hoveredNode.screen.x + 22)),
             top: Math.min(window.innerHeight - 180, Math.max(90, hoveredNode.screen.y + 18))
@@ -471,9 +539,9 @@ function MapScene({
 }
 
 function isLabelVisibleAtZoom(node: AyaNode, zoom: number): boolean {
-  if (zoom < 13) return node.type === "group" && node.depth === 0;
-  if (zoom < 14.5) return node.type === "group" && node.depth <= 2;
-  if (zoom < 15.8) return node.type === "group" || node.depth <= 2;
+  if (zoom < 11) return node.type === "group" && node.depth === 0;
+  if (zoom < 13.5) return node.type === "group" && node.depth <= 2;
+  if (zoom < 15.2) return node.type === "group" || node.depth <= 2;
   return true;
 }
 
