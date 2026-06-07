@@ -1,5 +1,8 @@
 import type { AyaSpatialPoint, GeoCenter, GeoPlacement, PlacementNodeInput } from "./types.js";
 
+export const DEFAULT_LOCAL_RADIUS_METERS = 1500;
+const METERS_PER_DEGREE_LAT = 111_320;
+
 export const DEFAULT_CENTER: GeoCenter = {
   lng: 85.324,
   lat: 27.7172,
@@ -43,13 +46,18 @@ export function mapSemanticToGeo(
   const spanY = Math.max(1, bounds.maxY - bounds.minY);
   const nx = (x - bounds.minX) / spanX - 0.5;
   const ny = (y - bounds.minY) / spanY - 0.5;
-  const lngScale = 1.15;
-  const latScale = 0.76;
+  const point = offsetCenterByMeters(
+    center,
+    nx * DEFAULT_LOCAL_RADIUS_METERS * 2,
+    -ny * DEFAULT_LOCAL_RADIUS_METERS * 2
+  );
+  const clamped = clampLngLatToLocalRadius(point.lng, point.lat, center);
+
   return {
     x,
     y,
-    lng: center.lng + nx * lngScale,
-    lat: center.lat - ny * latScale,
+    lng: clamped.lng,
+    lat: clamped.lat,
     altitude
   };
 }
@@ -72,8 +80,8 @@ export function interpolatePoint(
 export function createFallbackPlacements(nodes: PlacementNodeInput[], center: GeoCenter): GeoPlacement[] {
   const groups = groupBy(nodes, (node) => node.topAncestorId);
   const topKeys = Array.from(groups.keys()).sort();
-  const ringBase = 0.34;
-  const ringStep = 0.14;
+  const ringBase = 180;
+  const ringStep = 155;
 
   return nodes.map((node) => {
     const topIndex = Math.max(0, topKeys.indexOf(node.topAncestorId));
@@ -84,17 +92,77 @@ export function createFallbackPlacements(nodes: PlacementNodeInput[], center: Ge
       topIndex * sector +
       (seededUnit(node.id) - 0.5) * sector * 0.78 +
       ((peerIndex % 5) - 2) * 0.035;
-    const radius = ringBase + node.depth * ringStep + (peerIndex % 9) * 0.035;
-    const jitter = (seededUnit(`${node.id}:jitter`) - 0.5) * 0.08;
+    const radiusMeters = ringBase + node.depth * ringStep + (peerIndex % 9) * 34;
+    const jitterMeters = (seededUnit(`${node.id}:jitter`) - 0.5) * 90;
+    const point = offsetCenterByMeters(
+      center,
+      Math.cos(angle) * (radiusMeters + jitterMeters),
+      Math.sin(angle) * (radiusMeters + jitterMeters)
+    );
+    const clamped = clampLngLatToLocalRadius(point.lng, point.lat, center);
 
     return {
       nodeId: node.id,
-      lng: center.lng + Math.cos(angle) * (radius + jitter),
-      lat: center.lat + Math.sin(angle) * (radius * 0.72 + jitter),
+      lng: clamped.lng,
+      lat: clamped.lat,
       confidence: 0.32,
       source: "fallback"
     };
   });
+}
+
+export function clampGeoPlacementToLocalRadius(
+  placement: GeoPlacement,
+  center: GeoCenter,
+  radiusMeters = DEFAULT_LOCAL_RADIUS_METERS
+): GeoPlacement {
+  const clamped = clampLngLatToLocalRadius(placement.lng, placement.lat, center, radiusMeters);
+  return {
+    ...placement,
+    lng: clamped.lng,
+    lat: clamped.lat
+  };
+}
+
+export function distanceFromCenterMeters(lng: number, lat: number, center: GeoCenter): number {
+  const local = lngLatToLocalMeters(lng, lat, center);
+  return Math.hypot(local.eastMeters, local.northMeters);
+}
+
+function clampLngLatToLocalRadius(
+  lng: number,
+  lat: number,
+  center: GeoCenter,
+  radiusMeters = DEFAULT_LOCAL_RADIUS_METERS
+): { lng: number; lat: number } {
+  const local = lngLatToLocalMeters(lng, lat, center);
+  const distance = Math.hypot(local.eastMeters, local.northMeters);
+  if (distance <= radiusMeters || distance === 0) return { lng, lat };
+
+  const ratio = radiusMeters / distance;
+  return offsetCenterByMeters(center, local.eastMeters * ratio, local.northMeters * ratio);
+}
+
+function lngLatToLocalMeters(
+  lng: number,
+  lat: number,
+  center: GeoCenter
+): { eastMeters: number; northMeters: number } {
+  return {
+    eastMeters: (lng - center.lng) * metersPerDegreeLng(center.lat),
+    northMeters: (lat - center.lat) * METERS_PER_DEGREE_LAT
+  };
+}
+
+function offsetCenterByMeters(center: GeoCenter, eastMeters: number, northMeters: number): { lng: number; lat: number } {
+  return {
+    lng: center.lng + eastMeters / metersPerDegreeLng(center.lat),
+    lat: center.lat + northMeters / METERS_PER_DEGREE_LAT
+  };
+}
+
+function metersPerDegreeLng(lat: number): number {
+  return Math.max(1, METERS_PER_DEGREE_LAT * Math.cos((lat * Math.PI) / 180));
 }
 
 function clamp(value: number, min: number, max: number): number {

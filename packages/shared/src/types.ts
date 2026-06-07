@@ -64,6 +64,15 @@ export interface AyaSpatialPoint {
   altitude: number;
 }
 
+export interface AyaGroupOutline {
+  id: string;
+  groupId: string;
+  depth: number;
+  topAncestorId: string;
+  color: string;
+  points: AyaSpatialPoint[];
+}
+
 export interface AyaNode {
   id: string;
   type: "group" | "card";
@@ -89,6 +98,7 @@ export interface AyaEdge {
 export interface AyaGraph {
   nodes: AyaNode[];
   edges: AyaEdge[];
+  outlines: AyaGroupOutline[];
   center: GeoCenter;
   bounds: {
     minX: number;

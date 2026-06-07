@@ -1,4 +1,5 @@
 import { GoogleGenAI, Type } from "@google/genai";
+import { clampGeoPlacementToLocalRadius, DEFAULT_LOCAL_RADIUS_METERS } from "@ayatopos/shared";
 import type { GeoCenter, GeoPlacement, PlacementRequest } from "@ayatopos/shared";
 
 interface GeminiAreaResponse {
@@ -72,6 +73,7 @@ export async function generateGeoPlacements(request: PlacementRequest): Promise<
       contents: [
         "Place KJ-method discussion nodes around the requested geographic area.",
         "Use rough, plausible coordinates near the center. Abstract nodes may stay close to the center.",
+        `All placements must remain within ${DEFAULT_LOCAL_RADIUS_METERS} meters of the center point.`,
         "Return one placement for each node id. Do not explain meanings.",
         `Area: ${request.areaText}`,
         `Center: ${JSON.stringify(request.center)}`,
@@ -106,13 +108,18 @@ export async function generateGeoPlacements(request: PlacementRequest): Promise<
     const placements = (parsed?.placements ?? [])
       .filter((placement) => placement.nodeId && allowed.has(placement.nodeId))
       .filter((placement) => isLngLat(placement.lng, placement.lat))
-      .map((placement) => ({
-        nodeId: placement.nodeId!,
-        lng: placement.lng!,
-        lat: placement.lat!,
-        confidence: clamp(placement.confidence ?? 0.5, 0, 1),
-        source: "gemini" as const
-      }));
+      .map((placement) =>
+        clampGeoPlacementToLocalRadius(
+          {
+            nodeId: placement.nodeId!,
+            lng: placement.lng!,
+            lat: placement.lat!,
+            confidence: clamp(placement.confidence ?? 0.5, 0, 1),
+            source: "gemini" as const
+          },
+          request.center
+        )
+      );
 
     return placements.length > 0 ? placements : undefined;
   } catch {

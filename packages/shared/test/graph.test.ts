@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { interpolatePoint, normalizeHypoWeave, toPlacementInputs } from "../src/index.js";
+import {
+  createFallbackPlacements,
+  DEFAULT_LOCAL_RADIUS_METERS,
+  distanceFromCenterMeters,
+  interpolatePoint,
+  normalizeHypoWeave,
+  toPlacementInputs
+} from "../src/index.js";
 import type { HypoWeaveExport } from "../src/index.js";
 
 const fixture: HypoWeaveExport = {
@@ -9,7 +16,18 @@ const fixture: HypoWeaveExport = {
         id: "root-a",
         type: "group",
         position: { x: 100, y: 200 },
-        data: { label: "Root A", layoutTextBox: { text: "A" } }
+        data: {
+          label: "Root A",
+          layoutTextBox: { text: "A" },
+          w: 100,
+          h: 80,
+          layoutHullPoints: [
+            { x: 0, y: 0 },
+            { x: 100, y: 0 },
+            { x: 100, y: 100 },
+            { x: 0, y: 100 }
+          ]
+        }
       },
       {
         id: "child-a",
@@ -44,6 +62,37 @@ describe("normalizeHypoWeave", () => {
     expect(graph.edges).toHaveLength(1);
   });
 
+  it("keeps semantic and geographic placements inside the local radius", () => {
+    const center = { lng: 85, lat: 28, label: "Nepal" };
+    const graph = normalizeHypoWeave(fixture, {
+      center,
+      placements: [{ nodeId: "card-a", lng: 88, lat: 31, confidence: 0.9, source: "gemini" }]
+    });
+
+    for (const node of graph.nodes) {
+      expect(distanceFromCenterMeters(node.semantic.lng, node.semantic.lat, center)).toBeLessThanOrEqual(
+        DEFAULT_LOCAL_RADIUS_METERS + 1
+      );
+      expect(distanceFromCenterMeters(node.geo.lng, node.geo.lat, center)).toBeLessThanOrEqual(
+        DEFAULT_LOCAL_RADIUS_METERS + 1
+      );
+    }
+  });
+
+  it("creates group outlines from hull data and descendant bounds", () => {
+    const graph = normalizeHypoWeave(fixture);
+    const rootOutline = graph.outlines.find((outline) => outline.groupId === "root-a");
+    const childOutline = graph.outlines.find((outline) => outline.groupId === "child-a");
+
+    expect(rootOutline?.points).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ x: 100, y: 200 }),
+        expect.objectContaining({ x: 200, y: 280 })
+      ])
+    );
+    expect(childOutline?.points).toHaveLength(4);
+  });
+
   it("creates placement inputs for the backend boundary", () => {
     const graph = normalizeHypoWeave(fixture);
     expect(toPlacementInputs(graph)).toEqual(
@@ -51,6 +100,25 @@ describe("normalizeHypoWeave", () => {
         expect.objectContaining({ id: "card-a", type: "card", depth: 2, topAncestorId: "root-a" })
       ])
     );
+  });
+});
+
+describe("createFallbackPlacements", () => {
+  it("keeps fallback placements inside the local radius", () => {
+    const center = { lng: 85, lat: 28, label: "Nepal" };
+    const placements = createFallbackPlacements(
+      [
+        { id: "a", label: "A", shortLabel: "A", type: "group", depth: 0, topAncestorId: "a" },
+        { id: "b", label: "B", shortLabel: "B", type: "card", depth: 7, topAncestorId: "a" }
+      ],
+      center
+    );
+
+    for (const placement of placements) {
+      expect(distanceFromCenterMeters(placement.lng, placement.lat, center)).toBeLessThanOrEqual(
+        DEFAULT_LOCAL_RADIUS_METERS + 1
+      );
+    }
   });
 });
 

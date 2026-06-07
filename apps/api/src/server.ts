@@ -1,6 +1,7 @@
 import cors from "@fastify/cors";
 import fastify from "fastify";
 import {
+  clampGeoPlacementToLocalRadius,
   createFallbackPlacements,
   parseManualCenter,
   placementRequestSchema,
@@ -43,8 +44,12 @@ export function createApp() {
     "/api/geo/placements",
     { schema: { body: placementRequestSchema } },
     async (request) => {
-      const fallback = createFallbackPlacements(request.body.nodes, request.body.center);
-      const gemini = await generateGeoPlacements(request.body);
+      const fallback = createFallbackPlacements(request.body.nodes, request.body.center).map((placement) =>
+        clampGeoPlacementToLocalRadius(placement, request.body.center)
+      );
+      const gemini = (await generateGeoPlacements(request.body))?.map((placement) =>
+        clampGeoPlacementToLocalRadius(placement, request.body.center)
+      );
 
       if (!gemini) {
         return { mode: "fallback" as const, placements: fallback };
@@ -54,7 +59,7 @@ export function createApp() {
       const merged = request.body.nodes.map((node) => {
         const generated = gemini.find((placement) => placement.nodeId === node.id);
         const backup = fallbackById.get(node.id);
-        return generated ?? backup!;
+        return clampGeoPlacementToLocalRadius(generated ?? backup!, request.body.center);
       });
 
       return { mode: "gemini" as const, placements: merged };

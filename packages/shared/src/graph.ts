@@ -1,8 +1,10 @@
-import { createFallbackPlacements, DEFAULT_CENTER, mapSemanticToGeo } from "./geo.js";
+import { clampGeoPlacementToLocalRadius, createFallbackPlacements, DEFAULT_CENTER, mapSemanticToGeo } from "./geo.js";
 import type {
   AyaEdge,
   AyaGraph,
+  AyaGroupOutline,
   AyaNode,
+  AyaSpatialPoint,
   GeoCenter,
   GeoPlacement,
   HypoWeaveExport,
@@ -28,7 +30,12 @@ export function normalizeHypoWeave(input: HypoWeaveExport, options: NormalizeOpt
   const absolutePositions = rawNodes.map((node) => absolutePosition(node, byId, absoluteCache));
   const bounds = getBounds(absolutePositions);
   const maxDepth = rawNodes.reduce((max, node) => Math.max(max, depthOf(node, byId, depthCache)), 0);
-  const placementMap = new Map((options.placements ?? []).map((placement) => [placement.nodeId, placement]));
+  const placementMap = new Map(
+    (options.placements ?? []).map((placement) => [
+      placement.nodeId,
+      clampGeoPlacementToLocalRadius(placement, center)
+    ])
+  );
 
   const topOrder = Array.from(
     new Set(rawNodes.map((node) => topAncestorOf(node, byId, topCache)).filter(Boolean))
@@ -65,10 +72,12 @@ export function normalizeHypoWeave(input: HypoWeaveExport, options: NormalizeOpt
       opacity: opacityFor(depth)
     };
   });
+  const outlines = createGroupOutlines(rawNodes, byId, absoluteCache, depthCache, topCache, bounds, center, topOrder);
 
   return {
     nodes,
     edges: normalizeEdges(input),
+    outlines,
     center,
     bounds,
     maxDepth
@@ -144,6 +153,121 @@ function getBounds(points: Array<{ x: number; y: number }>): AyaGraph["bounds"] 
     }),
     { minX: Infinity, maxX: -Infinity, minY: Infinity, maxY: -Infinity }
   );
+}
+
+function createGroupOutlines(
+  rawNodes: HypoWeaveNode[],
+  byId: Map<string, HypoWeaveNode>,
+  absoluteCache: Map<string, { x: number; y: number }>,
+  depthCache: Map<string, number>,
+  topCache: Map<string, string>,
+  bounds: AyaGraph["bounds"],
+  center: GeoCenter,
+  topOrder: string[]
+): AyaGroupOutline[] {
+  return rawNodes
+    .filter((node) => node.type !== "card")
+    .map((node) => {
+      const points = outlinePointsForGroup(node, rawNodes, byId, absoluteCache);
+      if (points.length < 3) return undefined;
+      const depth = depthOf(node, byId, depthCache);
+      const topAncestorId = topAncestorOf(node, byId, topCache);
+      const spatialPoints = points.map((point) => semanticOutlinePoint(point, bounds, center));
+
+      return {
+        id: `${node.id}:outline`,
+        groupId: node.id,
+        depth,
+        topAncestorId,
+        color: colorForTopAncestor(topAncestorId, topOrder),
+        points: spatialPoints
+      } satisfies AyaGroupOutline;
+    })
+    .filter((outline): outline is AyaGroupOutline => Boolean(outline));
+}
+
+function outlinePointsForGroup(
+  node: HypoWeaveNode,
+  rawNodes: HypoWeaveNode[],
+  byId: Map<string, HypoWeaveNode>,
+  absoluteCache: Map<string, { x: number; y: number }>
+): Array<{ x: number; y: number }> {
+  const position = absolutePosition(node, byId, absoluteCache);
+  const width = nodeWidth(node);
+  const height = nodeHeight(node);
+  const hull = node.data?.layoutHullPoints;
+
+  if (hull && hull.length >= 3 && width > 0 && height > 0) {
+    return hull.map((point) => ({
+      x: position.x + (point.x / 100) * width,
+      y: position.y + (point.y / 100) * height
+    }));
+  }
+
+  const descendants = rawNodes.filter((item) => item.id !== node.id && isDescendantOf(item, node.id, byId));
+  const boxes = (descendants.length > 0 ? descendants : [node]).map((item) => nodeBox(item, byId, absoluteCache));
+  const outlineBounds = boxes.reduce(
+    (value, box) => ({
+      minX: Math.min(value.minX, box.minX),
+      maxX: Math.max(value.maxX, box.maxX),
+      minY: Math.min(value.minY, box.minY),
+      maxY: Math.max(value.maxY, box.maxY)
+    }),
+    { minX: Infinity, maxX: -Infinity, minY: Infinity, maxY: -Infinity }
+  );
+  const padding = 72;
+
+  return [
+    { x: outlineBounds.minX - padding, y: outlineBounds.minY - padding },
+    { x: outlineBounds.maxX + padding, y: outlineBounds.minY - padding },
+    { x: outlineBounds.maxX + padding, y: outlineBounds.maxY + padding },
+    { x: outlineBounds.minX - padding, y: outlineBounds.maxY + padding }
+  ];
+}
+
+function semanticOutlinePoint(
+  point: { x: number; y: number },
+  bounds: AyaGraph["bounds"],
+  center: GeoCenter
+): AyaSpatialPoint {
+  return mapSemanticToGeo(point.x, point.y, bounds, center, 0);
+}
+
+function nodeBox(
+  node: HypoWeaveNode,
+  byId: Map<string, HypoWeaveNode>,
+  absoluteCache: Map<string, { x: number; y: number }>
+): { minX: number; maxX: number; minY: number; maxY: number } {
+  const position = absolutePosition(node, byId, absoluteCache);
+  const width = nodeWidth(node);
+  const height = nodeHeight(node);
+  return {
+    minX: position.x,
+    maxX: position.x + width,
+    minY: position.y,
+    maxY: position.y + height
+  };
+}
+
+function nodeWidth(node: HypoWeaveNode): number {
+  return numberOrDefault(node.width, numberOrDefault(node.data?.w, node.type === "card" ? 620 : 360));
+}
+
+function nodeHeight(node: HypoWeaveNode): number {
+  return numberOrDefault(node.height, numberOrDefault(node.data?.h, node.type === "card" ? 220 : 220));
+}
+
+function numberOrDefault(value: unknown, fallback: number): number {
+  return typeof value === "number" && Number.isFinite(value) ? value : fallback;
+}
+
+function isDescendantOf(node: HypoWeaveNode, ancestorId: string, byId: Map<string, HypoWeaveNode>): boolean {
+  let parentId = node.parentId;
+  while (parentId) {
+    if (parentId === ancestorId) return true;
+    parentId = byId.get(parentId)?.parentId;
+  }
+  return false;
 }
 
 function normalizeEdges(input: HypoWeaveExport): AyaEdge[] {

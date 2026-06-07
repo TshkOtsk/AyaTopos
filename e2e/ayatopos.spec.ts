@@ -8,8 +8,10 @@ test("loads the sample graph and supports map blending plus hover focus", async 
   await page.getByPlaceholder(/中心エリア/).fill("ネパール");
   await page.getByRole("button", { name: /可視化/ }).click();
 
-  await expect(page.locator(".node-card")).toHaveCount(115);
-  await expect(page.locator(".thread")).toHaveCount(6);
+  await expect(page.locator(".node-card")).toHaveCount(14);
+  await expect(page.locator(".geo-point-glow")).toHaveCount(65);
+  await expect(page.locator(".group-outline")).toHaveCount(14);
+  await expect(page.locator(".thread")).toHaveCount(4);
   await expect(page.locator(".inspector-strip")).toContainText("115 nodes");
 
   const slider = page.locator(".blend-control input");
@@ -20,7 +22,7 @@ test("loads the sample graph and supports map blending plus hover focus", async 
     input.dispatchEvent(new Event("change", { bubbles: true }));
   });
 
-  await page.locator(".node-card.card").last().hover();
+  await page.locator(".node-card.group").last().hover();
   await expect(page.locator(".node-tooltip")).toBeVisible();
   await page.screenshot({
     path: `test-results/ayatopos-${testInfo.project.name}.png`,

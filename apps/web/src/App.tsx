@@ -18,7 +18,7 @@ import {
   parseManualCenter,
   toPlacementInputs
 } from "@ayatopos/shared";
-import type { AyaGraph, AyaNode, AyaSpatialPoint, HypoWeaveExport } from "@ayatopos/shared";
+import type { AyaGraph, AyaGroupOutline, AyaNode, AyaSpatialPoint, HypoWeaveExport } from "@ayatopos/shared";
 import { requestPlacements, resolveArea } from "./api";
 import { mapStyle } from "./mapStyle";
 
@@ -27,6 +27,13 @@ type LoadState = "idle" | "loading" | "ready" | "error";
 interface ScreenNode {
   node: AyaNode;
   point: AyaSpatialPoint;
+  screen: { x: number; y: number };
+  related: boolean;
+  dimmed: boolean;
+}
+
+interface ScreenGeoPoint {
+  node: AyaNode;
   screen: { x: number; y: number };
   related: boolean;
   dimmed: boolean;
@@ -268,8 +275,8 @@ function MapScene({
       container: mapNodeRef.current,
       style: mapStyle(),
       center: [DEFAULT_CENTER.lng, DEFAULT_CENTER.lat],
-      zoom: 6.2,
-      pitch: 48,
+      zoom: 14.2,
+      pitch: 42,
       bearing: -18,
       attributionControl: false
     });
@@ -293,16 +300,21 @@ function MapScene({
     if (!graph || !mapRef.current) return;
     mapRef.current.easeTo({
       center: [graph.center.lng, graph.center.lat],
-      zoom: 6.7,
-      pitch: 50,
+      zoom: 14.2,
+      pitch: 42,
       bearing: -16,
       duration: 900
     });
   }, [graph?.center.lat, graph?.center.lng, graph]);
 
+  const zoom = mapRef.current?.getZoom() ?? 0;
+  const relatedIds = useMemo(
+    () => (graph && hoveredId ? connectedIds(graph.edges, hoveredId) : new Set<string>()),
+    [graph, hoveredId]
+  );
+
   const screenNodes = useMemo(() => {
     if (!graph || !mapRef.current) return [];
-    const related = hoveredId ? connectedIds(graph.edges, hoveredId) : new Set<string>();
 
     return graph.nodes.map((node) => {
       const point = interpolatePoint(node.semantic, node.geo, blend);
@@ -312,19 +324,77 @@ function MapScene({
         node,
         point,
         screen: { x: projected.x, y: raisedY },
-        related: hoveredId ? related.has(node.id) : true,
-        dimmed: hoveredId ? !related.has(node.id) : false
+        related: hoveredId ? relatedIds.has(node.id) : true,
+        dimmed: hoveredId ? !relatedIds.has(node.id) : false
       } satisfies ScreenNode;
     });
-  }, [blend, graph, hoveredId, tick]);
+  }, [blend, graph, hoveredId, relatedIds, tick]);
 
-  const nodeById = useMemo(() => new Map(screenNodes.map((item) => [item.node.id, item])), [screenNodes]);
+  const visibleScreenNodes = useMemo(
+    () =>
+      screenNodes
+        .filter(({ node }) => isLabelVisibleAtZoom(node, zoom))
+        .sort((a, b) => renderRank(a.node, graph?.maxDepth ?? 0) - renderRank(b.node, graph?.maxDepth ?? 0)),
+    [graph?.maxDepth, screenNodes, zoom]
+  );
+
+  const visibleNodeIds = useMemo(() => new Set(visibleScreenNodes.map(({ node }) => node.id)), [visibleScreenNodes]);
+
+  const geoPointNodes = useMemo(() => {
+    if (!graph || !mapRef.current) return [];
+    return graph.nodes
+      .filter((node) => node.type === "card")
+      .sort((a, b) => renderRank(a, graph.maxDepth) - renderRank(b, graph.maxDepth))
+      .map((node) => {
+        const projected = mapRef.current!.project([node.geo.lng, node.geo.lat]) as PointLike & { x: number; y: number };
+        return {
+          node,
+          screen: { x: projected.x, y: projected.y },
+          related: hoveredId ? relatedIds.has(node.id) : true,
+          dimmed: hoveredId ? !relatedIds.has(node.id) : false
+        } satisfies ScreenGeoPoint;
+      });
+  }, [graph, hoveredId, relatedIds, tick]);
+
+  const screenOutlines = useMemo(() => {
+    if (!graph || !mapRef.current) return [];
+    return graph.outlines
+      .filter((outline) => visibleNodeIds.has(outline.groupId))
+      .map((outline) => ({
+        outline,
+        path: outlinePath(outline, mapRef.current!)
+      }))
+      .filter((item) => item.path.length > 0);
+  }, [graph, tick, visibleNodeIds]);
+
+  const nodeById = useMemo(() => new Map(visibleScreenNodes.map((item) => [item.node.id, item])), [visibleScreenNodes]);
   const hoveredNode = hoveredId ? nodeById.get(hoveredId) : undefined;
 
   return (
-    <div className="scene">
+      <div className="scene">
       <div className="map-canvas" ref={mapNodeRef} />
       <div className="sky-wash" />
+      <svg
+        className="outline-layer"
+        aria-hidden="true"
+        style={{ "--outline-fade": Math.max(0, 1 - blend) } as React.CSSProperties}
+      >
+        {screenOutlines.map(({ outline, path }) => (
+          <path
+            key={outline.id}
+            className={`group-outline depth-${Math.min(outline.depth, 6)} ${
+              hoveredId && !relatedIds.has(outline.groupId) ? "muted" : ""
+            } ${hoveredId === outline.groupId ? "active" : ""}`}
+            d={path}
+            style={
+              {
+                "--outline-color": outline.color,
+                "--outline-depth": Math.min(outline.depth, 6)
+              } as React.CSSProperties
+            }
+          />
+        ))}
+      </svg>
       <svg className="thread-layer" aria-hidden="true">
         {graph?.edges.map((edge) => {
           const source = nodeById.get(edge.source);
@@ -342,8 +412,25 @@ function MapScene({
           );
         })}
       </svg>
+      <div className="geo-point-layer" aria-hidden="true">
+        {geoPointNodes.map(({ node, screen, dimmed, related }) => (
+          <span
+            key={`${node.id}:geo-point`}
+            className={`geo-point-glow ${dimmed ? "dimmed" : ""} ${related ? "related" : ""}`}
+            style={
+              {
+                left: screen.x,
+                top: screen.y,
+                zIndex: renderRank(node, graph?.maxDepth ?? 0),
+                "--node-color": node.color,
+                "--geo-glow-opacity": Math.max(0.08, 0.12 + blend * 0.78)
+              } as React.CSSProperties
+            }
+          />
+        ))}
+      </div>
       <div className="node-layer">
-        {screenNodes.map(({ node, screen, dimmed, related }) => (
+        {visibleScreenNodes.map(({ node, screen, dimmed, related }) => (
           <button
             key={node.id}
             className={`node-card ${node.type} depth-${Math.min(node.depth, 6)} ${dimmed ? "dimmed" : ""} ${
@@ -353,6 +440,7 @@ function MapScene({
               {
                 left: screen.x,
                 top: screen.y,
+                zIndex: renderRank(node, graph?.maxDepth ?? 0),
                 "--node-color": node.color,
                 "--node-size": `${node.size}px`,
                 "--node-opacity": node.opacity
@@ -380,4 +468,23 @@ function MapScene({
       ) : null}
     </div>
   );
+}
+
+function isLabelVisibleAtZoom(node: AyaNode, zoom: number): boolean {
+  if (zoom < 13) return node.type === "group" && node.depth === 0;
+  if (zoom < 14.5) return node.type === "group" && node.depth <= 2;
+  if (zoom < 15.8) return node.type === "group" || node.depth <= 2;
+  return true;
+}
+
+function renderRank(node: AyaNode, maxDepth: number): number {
+  const rootProximity = Math.max(0, maxDepth - node.depth + 1);
+  const typeOffset = node.type === "card" ? 80 : 20;
+  return typeOffset + rootProximity;
+}
+
+function outlinePath(outline: AyaGroupOutline, map: MapLibreMap): string {
+  const points = outline.points.map((point) => map.project([point.lng, point.lat]) as PointLike & { x: number; y: number });
+  if (points.length < 3) return "";
+  return points.map((point, index) => `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`).join(" ") + " Z";
 }
