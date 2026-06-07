@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import maplibregl, { type Map as MapLibreMap, type PointLike } from "maplibre-gl";
+import maplibregl, { MercatorCoordinate, type Map as MapLibreMap, type PointLike } from "maplibre-gl";
 import {
   Blend,
   CircleHelp,
@@ -19,7 +19,7 @@ import {
 } from "@ayatopos/shared";
 import type { AyaGraph, AyaGroupOutline, AyaNode, AyaSpatialPoint, HypoWeaveExport } from "@ayatopos/shared";
 import { requestPlacements, resolveArea } from "./api";
-import { addIdeaObjectLayer, type IdeaLayerDatum, type IdeaObjectLayer } from "./ideaLayer";
+import { addIdeaObjectLayer, nodeElevationMeters, type IdeaLayerDatum, type IdeaObjectLayer } from "./ideaLayer";
 import { ensureTerrain, mapStyle } from "./mapStyle";
 
 type LoadState = "idle" | "loading" | "ready" | "error";
@@ -27,13 +27,6 @@ type LoadState = "idle" | "loading" | "ready" | "error";
 interface ScreenNode {
   node: AyaNode;
   point: AyaSpatialPoint;
-  screen: { x: number; y: number };
-  related: boolean;
-  dimmed: boolean;
-}
-
-interface ScreenGlowPoint {
-  node: AyaNode;
   screen: { x: number; y: number };
   related: boolean;
   dimmed: boolean;
@@ -386,12 +379,11 @@ function MapScene({
 
     return graph.nodes.map((node) => {
       const point = visualPointForNode(node, blend);
-      const projected = mapRef.current!.project([point.lng, point.lat]) as PointLike & { x: number; y: number };
-      const raisedY = projected.y - displayLift(node, point, graph.maxDepth);
+      const projected = projectNodeGlowToScreen(mapRef.current!, node, point);
       return {
         node,
         point,
-        screen: { x: projected.x, y: raisedY },
+        screen: projected,
         related: hoveredId ? relatedIds.has(node.id) : true,
         dimmed: hoveredId ? !relatedIds.has(node.id) : false
       } satisfies ScreenNode;
@@ -419,11 +411,10 @@ function MapScene({
     [screenNodes]
   );
 
-  const glowNodes = useMemo(
+  const nodeHitTargets = useMemo(
     () =>
       [...screenNodes]
-        .sort((a, b) => renderRank(a.node, graph?.maxDepth ?? 0) - renderRank(b.node, graph?.maxDepth ?? 0))
-        .map(({ node, screen, related, dimmed }) => ({ node, screen, related, dimmed } satisfies ScreenGlowPoint)),
+        .sort((a, b) => renderRank(a.node, graph?.maxDepth ?? 0) - renderRank(b.node, graph?.maxDepth ?? 0)),
     [graph?.maxDepth, screenNodes]
   );
 
@@ -487,12 +478,10 @@ function MapScene({
         })}
       </svg>
       <div className="geo-point-layer">
-        {glowNodes.map(({ node, screen, dimmed, related }) => (
+        {nodeHitTargets.map(({ node, screen, dimmed, related }) => (
           <button
-            key={`${node.id}:geo-point`}
-            className={`geo-point-glow ${node.type} ${
-              node.type === "card" && node.geoPlacementSource === "fallback" ? "abstract" : "mapped"
-            } depth-${Math.min(node.depth, 6)} ${
+            key={`${node.id}:geo-hit-target`}
+            className={`geo-point-hit-target ${node.type} ${placementClassForNode(node)} depth-${Math.min(node.depth, 6)} ${
               dimmed ? "dimmed" : ""
             } ${related ? "related" : ""} ${hoveredId === node.id ? "hovered" : ""}`}
             style={
@@ -500,8 +489,7 @@ function MapScene({
                 left: screen.x,
                 top: screen.y,
                 zIndex: renderRank(node, graph?.maxDepth ?? 0),
-                "--node-color": node.color,
-                "--geo-glow-opacity": Math.max(0.08, 0.12 + blend * 0.78)
+                "--node-color": node.color
               } as React.CSSProperties
             }
             onPointerEnter={() => onHover(node.id)}
@@ -543,19 +531,46 @@ function visualPointForNode(node: AyaNode, blend: number): AyaSpatialPoint {
   return interpolatePoint(node.semantic, node.geo, blend);
 }
 
+function placementClassForNode(node: AyaNode): "abstract" | "mapped" {
+  return node.type === "card" && node.geoPlacementSource === "fallback" ? "abstract" : "mapped";
+}
+
 function renderRank(node: AyaNode, maxDepth: number): number {
   const rootProximity = Math.max(0, maxDepth - node.depth + 1);
   const typeOffset = node.type === "card" ? 80 : 20;
   return typeOffset + rootProximity;
 }
 
-function displayLift(node: AyaNode, point: AyaSpatialPoint, maxDepth: number): number {
-  if (node.type === "card" && node.geoPlacementSource !== "fallback") return 0;
-  const hierarchy = Math.max(1, maxDepth - node.depth + 1);
-  const altitudeLift = point.altitude * (node.type === "card" ? 0.34 : 0.22);
-  const hierarchyLift = hierarchy * (node.type === "card" ? 34 : 24);
-  const floor = node.type === "card" ? 96 : 48;
-  return Math.max(floor, altitudeLift + hierarchyLift);
+interface CustomLayerProjectionTransform {
+  getProjectionDataForCustomLayer?: () => { mainMatrix: ArrayLike<number> };
+}
+
+function projectNodeGlowToScreen(map: MapLibreMap, node: AyaNode, point: AyaSpatialPoint): { x: number; y: number } {
+  const transform = (map as unknown as { transform?: CustomLayerProjectionTransform }).transform;
+  const matrix = transform?.getProjectionDataForCustomLayer?.().mainMatrix;
+  if (!matrix) {
+    const fallback = map.project([point.lng, point.lat]) as PointLike & { x: number; y: number };
+    return { x: fallback.x, y: fallback.y };
+  }
+
+  const elevation = nodeElevationMeters(map, node, point);
+  const coordinate = MercatorCoordinate.fromLngLat([point.lng, point.lat], elevation);
+  const clipX = matrix[0]! * coordinate.x + matrix[4]! * coordinate.y + matrix[8]! * coordinate.z + matrix[12]!;
+  const clipY = matrix[1]! * coordinate.x + matrix[5]! * coordinate.y + matrix[9]! * coordinate.z + matrix[13]!;
+  const clipW = matrix[3]! * coordinate.x + matrix[7]! * coordinate.y + matrix[11]! * coordinate.z + matrix[15]!;
+
+  if (!Number.isFinite(clipW) || Math.abs(clipW) < 1e-9) {
+    const fallback = map.project([point.lng, point.lat]) as PointLike & { x: number; y: number };
+    return { x: fallback.x, y: fallback.y };
+  }
+
+  const container = map.getContainer();
+  const normalizedX = clipX / clipW;
+  const normalizedY = clipY / clipW;
+  return {
+    x: ((normalizedX + 1) / 2) * container.clientWidth,
+    y: ((1 - normalizedY) / 2) * container.clientHeight
+  };
 }
 
 function createVisualThreads(graph: AyaGraph): VisualThread[] {

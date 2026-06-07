@@ -15,9 +15,7 @@ export interface IdeaLayerDatum {
 }
 
 interface IdeaObject {
-  root: THREE.Group;
-  solid: THREE.Mesh<THREE.BufferGeometry, THREE.MeshStandardMaterial>;
-  wire: THREE.LineSegments<THREE.EdgesGeometry, THREE.LineBasicMaterial>;
+  glow: THREE.Points<THREE.BufferGeometry, THREE.PointsMaterial>;
 }
 
 export class IdeaObjectLayer implements CustomLayerInterface {
@@ -32,6 +30,7 @@ export class IdeaObjectLayer implements CustomLayerInterface {
   private data: IdeaLayerDatum[] = [];
   private hoveredId: string | null = null;
   private objects = new Map<string, IdeaObject>();
+  private glowTexture: THREE.CanvasTexture | null = null;
 
   onAdd(map: MapLibreMap, gl: WebGLRenderingContext | WebGL2RenderingContext): void {
     this.map = map;
@@ -43,10 +42,6 @@ export class IdeaObjectLayer implements CustomLayerInterface {
     this.renderer.autoClear = false;
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
 
-    this.scene.add(new THREE.HemisphereLight(0xfff6de, 0x33464d, 1.35));
-    const keyLight = new THREE.DirectionalLight(0xffffff, 1.4);
-    keyLight.position.set(0.2, -0.7, 1);
-    this.scene.add(keyLight);
     this.syncObjects();
   }
 
@@ -54,6 +49,8 @@ export class IdeaObjectLayer implements CustomLayerInterface {
     this.objects.forEach((object) => this.disposeObject(object));
     this.objects.clear();
     this.scene.clear();
+    this.glowTexture?.dispose();
+    this.glowTexture = null;
     this.renderer?.dispose();
     this.renderer = null;
     this.map = null;
@@ -64,7 +61,7 @@ export class IdeaObjectLayer implements CustomLayerInterface {
 
     this.syncObjects();
     this.updateTransforms();
-    this.camera.projectionMatrix = new THREE.Matrix4().fromArray(options.modelViewProjectionMatrix);
+    this.camera.projectionMatrix = new THREE.Matrix4().fromArray(options.defaultProjectionData.mainMatrix);
 
     this.renderer.resetState();
     gl.depthMask(true);
@@ -84,7 +81,7 @@ export class IdeaObjectLayer implements CustomLayerInterface {
 
     this.objects.forEach((object, id) => {
       if (!expectedIds.has(id)) {
-        this.scene.remove(object.root);
+        this.scene.remove(object.glow);
         this.disposeObject(object);
         this.objects.delete(id);
       }
@@ -99,64 +96,48 @@ export class IdeaObjectLayer implements CustomLayerInterface {
 
       const object = this.createObject(item);
       this.objects.set(item.node.id, object);
-      this.scene.add(object.root);
+      this.scene.add(object.glow);
     }
   }
 
   private createObject(item: IdeaLayerDatum): IdeaObject {
-    const root = new THREE.Group();
-    root.matrixAutoUpdate = false;
-
-    const geometry =
-      item.node.type === "group" ? new THREE.IcosahedronGeometry(1, 1) : new THREE.OctahedronGeometry(1, 1);
-    const color = new THREE.Color(item.node.color);
-    const solid = new THREE.Mesh(
-      geometry,
-      new THREE.MeshStandardMaterial({
-        color,
-        emissive: color,
-        emissiveIntensity: item.node.type === "group" ? 0.2 : 0.32,
-        roughness: 0.5,
-        metalness: 0.18,
-        transparent: true,
-        depthWrite: true,
-        opacity: item.node.opacity
-      })
-    );
-    solid.rotation.set(0.58, 0.42, 0.2);
-
-    const wire = new THREE.LineSegments(
-      new THREE.EdgesGeometry(geometry),
-      new THREE.LineBasicMaterial({
-        color: color.clone().lerp(new THREE.Color("#fff4d6"), 0.55),
-        transparent: true,
-        depthWrite: false,
-        opacity: 0.58
-      })
-    );
-    wire.rotation.copy(solid.rotation);
-
-    root.add(solid, wire);
-    const object = { root, solid, wire };
+    const glow = this.createNodeGlow(item);
+    const object = { glow };
     this.updateMaterial(object, item);
     return object;
+  }
+
+  private createNodeGlow(item: IdeaLayerDatum): THREE.Points<THREE.BufferGeometry, THREE.PointsMaterial> {
+    const color = new THREE.Color(item.node.color);
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute("position", new THREE.Float32BufferAttribute([0, 0, 0], 3));
+    const material = new THREE.PointsMaterial({
+      color: color.clone().lerp(new THREE.Color("#fff7cf"), 0.22),
+      map: this.getGlowTexture(),
+      transparent: true,
+      opacity: nodeGlowOpacity(item, false),
+      size: nodeGlowSizePixels(item, false),
+      sizeAttenuation: false,
+      blending: THREE.AdditiveBlending,
+      depthTest: false,
+      depthWrite: false
+    });
+
+    const glow = new THREE.Points(geometry, material);
+    glow.matrixAutoUpdate = false;
+    glow.frustumCulled = false;
+    glow.renderOrder = 50;
+    return glow;
   }
 
   private updateMaterial(object: IdeaObject, item: IdeaLayerDatum): void {
     const active = this.hoveredId === item.node.id;
     const color = new THREE.Color(item.node.color);
-    const dimOpacity = item.dimmed ? 0.13 : 1;
-    const relatedBoost = item.related ? 1 : 0.72;
 
-    object.solid.material.color.copy(color);
-    object.solid.material.emissive.copy(color);
-    object.solid.material.emissiveIntensity = active ? 0.84 : item.node.type === "group" ? 0.24 : 0.34;
-    object.solid.material.opacity = Math.min(0.92, item.node.opacity * dimOpacity * relatedBoost + (active ? 0.18 : 0));
-    object.solid.material.needsUpdate = true;
-
-    object.wire.material.color.copy(color.clone().lerp(new THREE.Color("#fff2ce"), active ? 0.8 : 0.52));
-    object.wire.material.opacity = active ? 0.95 : item.dimmed ? 0.12 : 0.52;
-    object.wire.material.needsUpdate = true;
+    object.glow.material.color.copy(color.clone().lerp(new THREE.Color("#fff7cf"), active ? 0.46 : 0.24));
+    object.glow.material.opacity = nodeGlowOpacity(item, active);
+    object.glow.material.size = nodeGlowSizePixels(item, active);
+    object.glow.material.needsUpdate = true;
   }
 
   private updateTransforms(): void {
@@ -166,31 +147,73 @@ export class IdeaObjectLayer implements CustomLayerInterface {
       const object = this.objects.get(item.node.id);
       if (!object) continue;
 
-      const terrainElevation = this.map.queryTerrainElevation([item.point.lng, item.point.lat]) ?? 0;
-      const mappedCard = item.node.type === "card" && item.node.geoPlacementSource !== "fallback";
-      const elevation = mappedCard
-        ? terrainElevation + 8
-        : terrainElevation + item.point.altitude * 0.82 + (item.node.type === "group" ? 34 : 18);
+      const elevation = nodeElevationMeters(this.map, item.node, item.point);
       const coordinate = MercatorCoordinate.fromLngLat([item.point.lng, item.point.lat], elevation);
-      const meterScale = coordinate.meterInMercatorCoordinateUnits();
-      const sizeMeters = item.node.type === "group" ? 42 + item.node.size * 0.32 : 22 + item.node.size * 0.18;
-      const hoverScale = this.hoveredId === item.node.id ? 1.28 : 1;
-      const scale = meterScale * sizeMeters * hoverScale;
-
-      object.root.matrix.compose(
+      object.glow.matrix.compose(
         new THREE.Vector3(coordinate.x, coordinate.y, coordinate.z),
         new THREE.Quaternion(),
-        new THREE.Vector3(scale, -scale, scale)
+        new THREE.Vector3(1, 1, 1)
       );
     }
   }
 
   private disposeObject(object: IdeaObject): void {
-    object.solid.geometry.dispose();
-    object.solid.material.dispose();
-    object.wire.geometry.dispose();
-    object.wire.material.dispose();
+    object.glow.geometry.dispose();
+    object.glow.material.dispose();
   }
+
+  private getGlowTexture(): THREE.CanvasTexture {
+    if (this.glowTexture) return this.glowTexture;
+
+    const size = 128;
+    const canvas = document.createElement("canvas");
+    canvas.width = size;
+    canvas.height = size;
+    const context = canvas.getContext("2d");
+    if (!context) throw new Error("Unable to create mapped card glow texture.");
+
+    const center = size / 2;
+    const gradient = context.createRadialGradient(center, center, 0, center, center, center);
+    gradient.addColorStop(0, "rgba(255, 255, 232, 1)");
+    gradient.addColorStop(0.13, "rgba(255, 249, 216, 0.95)");
+    gradient.addColorStop(0.34, "rgba(255, 221, 142, 0.42)");
+    gradient.addColorStop(0.68, "rgba(255, 197, 82, 0.18)");
+    gradient.addColorStop(1, "rgba(255, 197, 82, 0)");
+
+    context.fillStyle = gradient;
+    context.fillRect(0, 0, size, size);
+
+    this.glowTexture = new THREE.CanvasTexture(canvas);
+    this.glowTexture.colorSpace = THREE.SRGBColorSpace;
+    this.glowTexture.needsUpdate = true;
+    return this.glowTexture;
+  }
+}
+
+export function nodeElevationMeters(map: MapLibreMap, node: AyaNode, point: AyaSpatialPoint): number {
+  const terrainElevation = map.queryTerrainElevation([point.lng, point.lat]) ?? 0;
+  return isMappedCard(node)
+    ? terrainElevation + 8
+    : terrainElevation + point.altitude * 0.82 + (node.type === "group" ? 34 : 18);
+}
+
+function isMappedCard(node: AyaNode): boolean {
+  return node.type === "card" && node.geoPlacementSource !== "fallback";
+}
+
+function nodeGlowSizePixels(item: IdeaLayerDatum, active: boolean): number {
+  const activeScale = active ? 1.18 : 1;
+  if (item.node.type === "group" && item.node.depth === 0) return 76 * activeScale;
+  if (item.node.type === "group") return 64 * activeScale;
+  if (item.node.geoPlacementSource === "fallback") return 52 * activeScale;
+  return 42 * activeScale;
+}
+
+function nodeGlowOpacity(item: IdeaLayerDatum, active: boolean): number {
+  const dimOpacity = item.dimmed ? 0.18 : 1;
+  const relatedOpacity = item.related ? 1 : 0.66;
+  const typeOpacity = item.node.type === "group" ? 0.62 : item.node.geoPlacementSource === "fallback" ? 0.7 : 0.66;
+  return Math.min(1, (active ? 0.98 : typeOpacity) * dimOpacity * relatedOpacity);
 }
 
 export function addIdeaObjectLayer(map: MapLibreMap): IdeaObjectLayer {

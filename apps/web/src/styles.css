@@ -388,82 +388,37 @@ input {
   z-index: 5;
 }
 
-.geo-point-glow {
+.geo-point-hit-target {
   pointer-events: auto;
   appearance: none;
   position: absolute;
-  width: 13px;
-  height: 13px;
+  width: 48px;
+  height: 48px;
   padding: 0;
   border: 0;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  background: #fff9d8;
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--node-color) 58%, rgba(255, 255, 255, 0.9)),
-    0 0 14px 5px color-mix(in srgb, var(--node-color) 52%, transparent),
-    0 0 32px 11px rgba(255, 226, 144, 0.56);
-  opacity: var(--geo-glow-opacity);
-  mix-blend-mode: screen;
+  background: transparent;
+  opacity: 0;
   cursor: pointer;
-  transition: opacity 150ms ease, transform 150ms ease, filter 150ms ease;
 }
 
-.geo-point-glow::before {
-  content: "";
-  position: absolute;
-  inset: -18px;
-  border-radius: 50%;
+.geo-point-hit-target.group {
+  width: 60px;
+  height: 60px;
 }
 
-.geo-point-glow::after {
-  content: "";
-  position: absolute;
-  inset: -11px;
-  border-radius: 50%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--node-color) 34%, transparent), transparent 68%);
+.geo-point-hit-target.group.depth-0 {
+  width: 72px;
+  height: 72px;
 }
 
-.geo-point-glow.abstract {
-  width: 16px;
-  height: 16px;
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--node-color) 62%, rgba(255, 255, 255, 0.9)),
-    0 0 18px 7px color-mix(in srgb, var(--node-color) 58%, transparent),
-    0 0 44px 16px rgba(255, 240, 180, 0.6);
+.geo-point-hit-target.card.abstract {
+  width: 54px;
+  height: 54px;
 }
 
-.geo-point-glow.group {
-  width: 18px;
-  height: 18px;
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--node-color) 64%, rgba(255, 255, 255, 0.92)),
-    0 0 20px 8px color-mix(in srgb, var(--node-color) 46%, transparent),
-    0 0 58px 22px rgba(214, 247, 255, 0.5);
-}
-
-.geo-point-glow.group.depth-0 {
-  width: 24px;
-  height: 24px;
-}
-
-.geo-point-glow.dimmed {
-  opacity: calc(var(--geo-glow-opacity) * 0.22);
-  filter: saturate(0.5);
-}
-
-.geo-point-glow.related,
-.geo-point-glow.hovered,
-.geo-point-glow:focus-visible {
-  transform: translate(-50%, -50%) scale(1.18);
-}
-
-.geo-point-glow.hovered,
-.geo-point-glow:focus-visible {
-  opacity: 1;
-  filter:
-    drop-shadow(0 0 14px color-mix(in srgb, var(--node-color) 78%, #ffe7a8))
-    drop-shadow(0 0 30px rgba(255, 230, 160, 0.86));
+.geo-point-hit-target:focus-visible {
   outline: 0;
 }
 
