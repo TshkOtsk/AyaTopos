@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("loads the sample graph and supports map blending plus hover focus", async ({ page }, testInfo) => {
+test("loads the sample graph and supports map blending plus hover focus", async ({ page }) => {
   test.setTimeout(120_000);
   await page.goto("/");
 
@@ -10,11 +10,15 @@ test("loads the sample graph and supports map blending plus hover focus", async 
   await page.getByRole("button", { name: /可視化/ }).click();
 
   await expect(page.locator(".map-canvas")).toHaveAttribute("data-terrain", "ready");
-  await expect(page.locator(".idea-hit-target")).toHaveCount(14);
+  await expect(page.locator(".idea-hit-target.card")).toHaveCount(0);
+  await expect(page.locator(".idea-hit-target")).toHaveCount(0);
+  await expect(page.locator(".card-stem")).toHaveCount(0);
+  await expect(page.locator(".node-card")).toHaveCount(0);
   await expect(page.locator(".map-canvas canvas")).toHaveCount(1);
-  await expect(page.locator(".geo-point-glow")).toHaveCount(65);
+  await expect(page.locator(".geo-point-glow")).toHaveCount(115);
   await expect(page.locator(".group-outline")).toHaveCount(14);
-  await expect(page.locator(".thread")).toHaveCount(4);
+  await expect(page.locator(".thread")).toHaveCount(0);
+  await expect(page.locator(".idea-tooltip")).toHaveCount(0);
   await expect(page.locator(".inspector-strip")).toContainText("115 nodes");
 
   const slider = page.locator(".blend-control input");
@@ -25,10 +29,7 @@ test("loads the sample graph and supports map blending plus hover focus", async 
     input.dispatchEvent(new Event("change", { bubbles: true }));
   });
 
-  await page.locator(".idea-hit-target.group").last().focus();
+  await page.locator(".geo-point-glow.card").first().focus();
   await expect(page.locator(".idea-tooltip")).toBeVisible();
-  await page.screenshot({
-    path: `test-results/ayatopos-${testInfo.project.name}.png`,
-    fullPage: false
-  });
+  expect(await page.locator(".thread").count()).toBeGreaterThan(0);
 });

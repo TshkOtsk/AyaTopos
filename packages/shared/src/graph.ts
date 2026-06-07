@@ -47,13 +47,13 @@ export function normalizeHypoWeave(input: HypoWeaveExport, options: NormalizeOpt
     const topAncestorId = topAncestorOf(node, byId, topCache);
     const semanticAltitude = (maxDepth - depth + 1) * 55;
     const semantic = mapSemanticToGeo(position.x, position.y, bounds, center, semanticAltitude);
-    const placement = placementMap.get(node.id);
-    const fallbackGeo = fallbackPointForNode(node, center, rawNodes, byId, maxDepth);
+    const fallbackPlacement = fallbackPlacementForNode(node, center, rawNodes, byId);
+    const placement = placementMap.get(node.id) ?? fallbackPlacement;
     const geo = {
       x: position.x,
       y: position.y,
-      lng: placement?.lng ?? fallbackGeo.lng,
-      lat: placement?.lat ?? fallbackGeo.lat,
+      lng: placement.lng,
+      lat: placement.lat,
       altitude: depth <= 1 ? semanticAltitude : Math.max(0, semanticAltitude * 0.22)
     };
 
@@ -67,6 +67,8 @@ export function normalizeHypoWeave(input: HypoWeaveExport, options: NormalizeOpt
       topAncestorId,
       semantic,
       geo,
+      geoPlacementSource: placement.source,
+      geoPlacementConfidence: placement.confidence,
       color: colorForTopAncestor(topAncestorId, topOrder),
       size: sizeFor(node, depth),
       opacity: opacityFor(depth)
@@ -302,13 +304,12 @@ function opacityFor(depth: number): number {
   return Math.max(0.44, 1 - depth * 0.075);
 }
 
-function fallbackPointForNode(
+function fallbackPlacementForNode(
   node: HypoWeaveNode,
   center: GeoCenter,
   rawNodes: HypoWeaveNode[],
-  byId: Map<string, HypoWeaveNode>,
-  maxDepth: number
-): { lng: number; lat: number } {
+  byId: Map<string, HypoWeaveNode>
+): GeoPlacement {
   const inputs = rawNodes.map((item) => {
     const topCache = new Map<string, string>();
     const depthCache = new Map<string, number>();
@@ -322,5 +323,13 @@ function fallbackPointForNode(
     } satisfies PlacementNodeInput;
   });
   const placement = createFallbackPlacements(inputs, center).find((item) => item.nodeId === node.id);
-  return placement ?? { lng: center.lng, lat: center.lat + maxDepth * 0.001 };
+  return (
+    placement ?? {
+      nodeId: node.id,
+      lng: center.lng,
+      lat: center.lat,
+      confidence: 0,
+      source: "fallback"
+    }
+  );
 }

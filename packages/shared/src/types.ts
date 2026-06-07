@@ -64,6 +64,8 @@ export interface AyaSpatialPoint {
   altitude: number;
 }
 
+export type GeoPlacementSource = "gemini" | "fallback" | "preset";
+
 export interface AyaGroupOutline {
   id: string;
   groupId: string;
@@ -83,6 +85,8 @@ export interface AyaNode {
   topAncestorId: string;
   semantic: AyaSpatialPoint;
   geo: AyaSpatialPoint;
+  geoPlacementSource: GeoPlacementSource;
+  geoPlacementConfidence: number;
   color: string;
   size: number;
   opacity: number;
@@ -114,7 +118,7 @@ export interface GeoPlacement {
   lng: number;
   lat: number;
   confidence: number;
-  source: "gemini" | "fallback" | "preset";
+  source: GeoPlacementSource;
 }
 
 export interface PlacementNodeInput {

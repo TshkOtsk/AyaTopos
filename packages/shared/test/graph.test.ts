@@ -59,6 +59,8 @@ describe("normalizeHypoWeave", () => {
     expect(card?.semantic.y).toBe(188);
     expect(card?.depth).toBe(2);
     expect(card?.topAncestorId).toBe("root-a");
+    expect(card?.geoPlacementSource).toBe("fallback");
+    expect(card?.geoPlacementConfidence).toBeGreaterThan(0);
     expect(graph.edges).toHaveLength(1);
   });
 
@@ -77,6 +79,7 @@ describe("normalizeHypoWeave", () => {
         DEFAULT_LOCAL_RADIUS_METERS + 1
       );
     }
+    expect(graph.nodes.find((node) => node.id === "card-a")?.geoPlacementSource).toBe("gemini");
   });
 
   it("creates group outlines from hull data and descendant bounds", () => {

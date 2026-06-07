@@ -167,7 +167,10 @@ export class IdeaObjectLayer implements CustomLayerInterface {
       if (!object) continue;
 
       const terrainElevation = this.map.queryTerrainElevation([item.point.lng, item.point.lat]) ?? 0;
-      const elevation = terrainElevation + item.point.altitude * 0.82 + (item.node.type === "group" ? 34 : 18);
+      const mappedCard = item.node.type === "card" && item.node.geoPlacementSource !== "fallback";
+      const elevation = mappedCard
+        ? terrainElevation + 8
+        : terrainElevation + item.point.altitude * 0.82 + (item.node.type === "group" ? 34 : 18);
       const coordinate = MercatorCoordinate.fromLngLat([item.point.lng, item.point.lat], elevation);
       const meterScale = coordinate.meterInMercatorCoordinateUnits();
       const sizeMeters = item.node.type === "group" ? 42 + item.node.size * 0.32 : 22 + item.node.size * 0.18;

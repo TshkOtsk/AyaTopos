@@ -11,7 +11,6 @@ import {
   Upload
 } from "lucide-react";
 import {
-  connectedIds,
   DEFAULT_CENTER,
   interpolatePoint,
   normalizeHypoWeave,
@@ -33,11 +32,18 @@ interface ScreenNode {
   dimmed: boolean;
 }
 
-interface ScreenGeoPoint {
+interface ScreenGlowPoint {
   node: AyaNode;
   screen: { x: number; y: number };
   related: boolean;
   dimmed: boolean;
+}
+
+interface VisualThread {
+  id: string;
+  source: string;
+  target: string;
+  kind: "json" | "parent" | "sibling";
 }
 
 export function App() {
@@ -362,18 +368,26 @@ function MapScene({
   }, [graph?.center.lat, graph?.center.lng, graph]);
 
   const zoom = mapRef.current?.getZoom() ?? 0;
+  const visualThreads = useMemo(() => (graph ? createVisualThreads(graph) : []), [graph]);
+  const activeVisualThreads = useMemo(
+    () =>
+      hoveredId
+        ? visualThreads.filter((edge) => edge.source === hoveredId || edge.target === hoveredId)
+        : [],
+    [hoveredId, visualThreads]
+  );
   const relatedIds = useMemo(
-    () => (graph && hoveredId ? connectedIds(graph.edges, hoveredId) : new Set<string>()),
-    [graph, hoveredId]
+    () => (graph && hoveredId ? connectedVisualIds(visualThreads, hoveredId) : new Set<string>()),
+    [graph, hoveredId, visualThreads]
   );
 
   const screenNodes = useMemo(() => {
     if (!graph || !mapRef.current) return [];
 
     return graph.nodes.map((node) => {
-      const point = interpolatePoint(node.semantic, node.geo, blend);
+      const point = visualPointForNode(node, blend);
       const projected = mapRef.current!.project([point.lng, point.lat]) as PointLike & { x: number; y: number };
-      const raisedY = projected.y - point.altitude * 0.11;
+      const raisedY = projected.y - displayLift(node, point, graph.maxDepth);
       return {
         node,
         point,
@@ -384,15 +398,16 @@ function MapScene({
     });
   }, [blend, graph, hoveredId, relatedIds, tick]);
 
-  const visibleScreenNodes = useMemo(
+  const visibleOutlineNodeIds = useMemo(
     () =>
-      screenNodes
-        .filter(({ node }) => isLabelVisibleAtZoom(node, zoom))
-        .sort((a, b) => renderRank(a.node, graph?.maxDepth ?? 0) - renderRank(b.node, graph?.maxDepth ?? 0)),
+      new Set(
+        screenNodes
+          .filter(({ node }) => node.type === "group" && isGroupOutlineVisibleAtZoom(node, zoom))
+          .map(({ node }) => node.id)
+      ),
     [graph?.maxDepth, screenNodes, zoom]
   );
 
-  const visibleNodeIds = useMemo(() => new Set(visibleScreenNodes.map(({ node }) => node.id)), [visibleScreenNodes]);
   const ideaNodes = useMemo<IdeaLayerDatum[]>(
     () =>
       screenNodes.map(({ node, point, related, dimmed }) => ({
@@ -404,34 +419,26 @@ function MapScene({
     [screenNodes]
   );
 
-  const geoPointNodes = useMemo(() => {
-    if (!graph || !mapRef.current) return [];
-    return graph.nodes
-      .filter((node) => node.type === "card")
-      .sort((a, b) => renderRank(a, graph.maxDepth) - renderRank(b, graph.maxDepth))
-      .map((node) => {
-        const projected = mapRef.current!.project([node.geo.lng, node.geo.lat]) as PointLike & { x: number; y: number };
-        return {
-          node,
-          screen: { x: projected.x, y: projected.y },
-          related: hoveredId ? relatedIds.has(node.id) : true,
-          dimmed: hoveredId ? !relatedIds.has(node.id) : false
-        } satisfies ScreenGeoPoint;
-      });
-  }, [graph, hoveredId, relatedIds, tick]);
+  const glowNodes = useMemo(
+    () =>
+      [...screenNodes]
+        .sort((a, b) => renderRank(a.node, graph?.maxDepth ?? 0) - renderRank(b.node, graph?.maxDepth ?? 0))
+        .map(({ node, screen, related, dimmed }) => ({ node, screen, related, dimmed } satisfies ScreenGlowPoint)),
+    [graph?.maxDepth, screenNodes]
+  );
 
   const screenOutlines = useMemo(() => {
     if (!graph || !mapRef.current) return [];
     return graph.outlines
-      .filter((outline) => visibleNodeIds.has(outline.groupId))
+      .filter((outline) => visibleOutlineNodeIds.has(outline.groupId))
       .map((outline) => ({
         outline,
         path: outlinePath(outline, mapRef.current!)
       }))
       .filter((item) => item.path.length > 0);
-  }, [graph, tick, visibleNodeIds]);
+  }, [graph, tick, visibleOutlineNodeIds]);
 
-  const nodeById = useMemo(() => new Map(visibleScreenNodes.map((item) => [item.node.id, item])), [visibleScreenNodes]);
+  const nodeById = useMemo(() => new Map(screenNodes.map((item) => [item.node.id, item])), [screenNodes]);
   const hoveredNode = hoveredId ? nodeById.get(hoveredId) : undefined;
 
   useEffect(() => {
@@ -464,27 +471,30 @@ function MapScene({
         ))}
       </svg>
       <svg className="thread-layer" aria-hidden="true">
-        {graph?.edges.map((edge) => {
+        {activeVisualThreads.map((edge) => {
           const source = nodeById.get(edge.source);
           const target = nodeById.get(edge.target);
           if (!source || !target) return null;
-          const active = hoveredId ? edge.source === hoveredId || edge.target === hoveredId : false;
           const mx = (source.screen.x + target.screen.x) / 2;
           const my = (source.screen.y + target.screen.y) / 2 - Math.min(120, Math.abs(source.screen.x - target.screen.x) * 0.18);
           return (
             <path
               key={edge.id}
-              className={`thread ${active ? "active" : hoveredId ? "muted" : ""}`}
+              className={`thread ${edge.kind} active`}
               d={`M ${source.screen.x} ${source.screen.y} Q ${mx} ${my} ${target.screen.x} ${target.screen.y}`}
             />
           );
         })}
       </svg>
-      <div className="geo-point-layer" aria-hidden="true">
-        {geoPointNodes.map(({ node, screen, dimmed, related }) => (
-          <span
+      <div className="geo-point-layer">
+        {glowNodes.map(({ node, screen, dimmed, related }) => (
+          <button
             key={`${node.id}:geo-point`}
-            className={`geo-point-glow ${dimmed ? "dimmed" : ""} ${related ? "related" : ""}`}
+            className={`geo-point-glow ${node.type} ${
+              node.type === "card" && node.geoPlacementSource === "fallback" ? "abstract" : "mapped"
+            } depth-${Math.min(node.depth, 6)} ${
+              dimmed ? "dimmed" : ""
+            } ${related ? "related" : ""} ${hoveredId === node.id ? "hovered" : ""}`}
             style={
               {
                 left: screen.x,
@@ -492,25 +502,6 @@ function MapScene({
                 zIndex: renderRank(node, graph?.maxDepth ?? 0),
                 "--node-color": node.color,
                 "--geo-glow-opacity": Math.max(0.08, 0.12 + blend * 0.78)
-              } as React.CSSProperties
-            }
-          />
-        ))}
-      </div>
-      <div className="idea-hit-layer">
-        {visibleScreenNodes.map(({ node, screen, dimmed, related }) => (
-          <button
-            key={node.id}
-            className={`idea-hit-target ${node.type} depth-${Math.min(node.depth, 6)} ${dimmed ? "dimmed" : ""} ${
-              hoveredId === node.id ? "hovered" : ""
-            } ${related ? "related" : ""}`}
-            style={
-              {
-                left: screen.x,
-                top: screen.y,
-                zIndex: renderRank(node, graph?.maxDepth ?? 0),
-                "--node-color": node.color,
-                "--hit-size": `${Math.max(34, node.size * 0.48)}px`
               } as React.CSSProperties
             }
             onPointerEnter={() => onHover(node.id)}
@@ -538,17 +529,78 @@ function MapScene({
   );
 }
 
-function isLabelVisibleAtZoom(node: AyaNode, zoom: number): boolean {
+function isGroupOutlineVisibleAtZoom(node: AyaNode, zoom: number): boolean {
   if (zoom < 11) return node.type === "group" && node.depth === 0;
   if (zoom < 13.5) return node.type === "group" && node.depth <= 2;
   if (zoom < 15.2) return node.type === "group" || node.depth <= 2;
   return true;
 }
 
+function visualPointForNode(node: AyaNode, blend: number): AyaSpatialPoint {
+  if (node.type === "card") {
+    return node.geoPlacementSource === "fallback" ? node.semantic : node.geo;
+  }
+  return interpolatePoint(node.semantic, node.geo, blend);
+}
+
 function renderRank(node: AyaNode, maxDepth: number): number {
   const rootProximity = Math.max(0, maxDepth - node.depth + 1);
   const typeOffset = node.type === "card" ? 80 : 20;
   return typeOffset + rootProximity;
+}
+
+function displayLift(node: AyaNode, point: AyaSpatialPoint, maxDepth: number): number {
+  if (node.type === "card" && node.geoPlacementSource !== "fallback") return 0;
+  const hierarchy = Math.max(1, maxDepth - node.depth + 1);
+  const altitudeLift = point.altitude * (node.type === "card" ? 0.34 : 0.22);
+  const hierarchyLift = hierarchy * (node.type === "card" ? 34 : 24);
+  const floor = node.type === "card" ? 96 : 48;
+  return Math.max(floor, altitudeLift + hierarchyLift);
+}
+
+function createVisualThreads(graph: AyaGraph): VisualThread[] {
+  const threads = new Map<string, VisualThread>();
+  const nodeIds = new Set(graph.nodes.map((node) => node.id));
+
+  const addThread = (source: string, target: string, kind: VisualThread["kind"], id?: string) => {
+    if (source === target || !nodeIds.has(source) || !nodeIds.has(target)) return;
+    const [a, b] = source < target ? [source, target] : [target, source];
+    const key = `${kind}:${a}->${b}`;
+    if (!threads.has(key)) {
+      threads.set(key, { id: id ?? key, source, target, kind });
+    }
+  };
+
+  for (const edge of graph.edges) {
+    addThread(edge.source, edge.target, "json", `json:${edge.id}`);
+  }
+
+  const siblingsByParent = new Map<string, AyaNode[]>();
+  for (const node of graph.nodes) {
+    if (!node.parentId) continue;
+    addThread(node.parentId, node.id, "parent");
+    const siblings = siblingsByParent.get(node.parentId) ?? [];
+    siblings.push(node);
+    siblingsByParent.set(node.parentId, siblings);
+  }
+
+  siblingsByParent.forEach((siblings, parentId) => {
+    const sorted = [...siblings].sort((a, b) => a.depth - b.depth || a.id.localeCompare(b.id));
+    for (let index = 1; index < sorted.length; index += 1) {
+      addThread(sorted[index - 1]!.id, sorted[index]!.id, "sibling", `sibling:${parentId}:${index}`);
+    }
+  });
+
+  return [...threads.values()];
+}
+
+function connectedVisualIds(threads: VisualThread[], nodeId: string): Set<string> {
+  const ids = new Set<string>([nodeId]);
+  for (const thread of threads) {
+    if (thread.source === nodeId) ids.add(thread.target);
+    if (thread.target === nodeId) ids.add(thread.source);
+  }
+  return ids;
 }
 
 function outlinePath(outline: AyaGroupOutline, map: MapLibreMap): string {
