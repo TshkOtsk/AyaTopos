@@ -737,21 +737,26 @@ function MapScene({
   const visualThreads = useMemo(() => (graph ? createVisualThreads(graph) : []), [graph]);
   const focusNodeId = isRelatedOverview ? overviewNodeId : hoveredId;
   const layerActiveNodeId = isRelatedOverview ? hoveredId ?? overviewNodeId : hoveredId;
+  const overviewLineageNodeIds = useMemo(
+    () => (graph && overviewNodeId ? lineageNodeIds(graph, overviewNodeId) : []),
+    [graph, overviewNodeId]
+  );
+  const overviewLineageIdSet = useMemo(() => new Set(overviewLineageNodeIds), [overviewLineageNodeIds]);
   const relatedIds = useMemo(
-    () =>
-      graph && focusNodeId
-        ? connectedVisualIds(visualThreads, focusNodeId)
-        : new Set<string>(),
-    [focusNodeId, graph, visualThreads]
+    () => {
+      if (!graph || !focusNodeId) return new Set<string>();
+      return isRelatedOverview ? overviewLineageIdSet : connectedVisualIds(visualThreads, focusNodeId);
+    },
+    [focusNodeId, graph, isRelatedOverview, overviewLineageIdSet, visualThreads]
   );
   const activeVisualThreads = useMemo(
     () =>
       isRelatedOverview
-        ? visualThreads.filter((edge) => edge.source === overviewNodeId || edge.target === overviewNodeId)
+        ? visualThreads.filter((edge) => overviewLineageIdSet.has(edge.source) && overviewLineageIdSet.has(edge.target))
         : hoveredId && !isGeoEditing
           ? visualThreads.filter((edge) => edge.source === hoveredId || edge.target === hoveredId)
           : [],
-    [hoveredId, isGeoEditing, isRelatedOverview, overviewNodeId, visualThreads]
+    [hoveredId, isGeoEditing, isRelatedOverview, overviewLineageIdSet, visualThreads]
   );
 
   const screenNodes = useMemo(() => {
@@ -805,10 +810,7 @@ function MapScene({
     const container = mapRef.current?.getContainer();
     if (!container || !isRelatedOverview || !overviewNodeId) return new Map<string, IdeaLayerCardLayout>();
 
-    const orderedIds = [
-      overviewNodeId,
-      ...activeVisualThreads.map((edge) => (edge.source === overviewNodeId ? edge.target : edge.source))
-    ];
+    const orderedIds = overviewLineageNodeIds;
     const seen = new Set<string>();
     const cards = orderedIds
       .filter((id) => {
@@ -829,7 +831,7 @@ function MapScene({
         ({ item, layout }) => [item.node.id, layout]
       )
     );
-  }, [activeVisualThreads, graph?.maxDepth, isRelatedOverview, nodeById, overviewNodeId, screenNodes]);
+  }, [graph?.maxDepth, isRelatedOverview, nodeById, overviewLineageNodeIds, overviewNodeId, screenNodes]);
   useEffect(() => {
     if (!isRelatedOverview || !shouldLockOverviewLayout || lockedOverviewCardLayouts.size > 0 || computedOverviewCardLayouts.size === 0) {
       return;
@@ -1040,9 +1042,8 @@ function MapScene({
     const map = mapRef.current;
     if (!map || !graph || !overviewNodeId || !isRelatedOverview) return;
 
-    const ids = connectedVisualIds(visualThreads, overviewNodeId);
     const points = graph.nodes
-      .filter((node) => ids.has(node.id))
+      .filter((node) => overviewLineageIdSet.has(node.id))
       .map((node) => visualPointForNode(node, blend))
       .filter(isFiniteSpatialPoint);
 
@@ -1052,7 +1053,7 @@ function MapScene({
     setShouldLockOverviewLayout(false);
     map.once("moveend", () => setShouldLockOverviewLayout(true));
     focusMapOnPoints2d(map, points);
-  }, [blend, graph, isRelatedOverview, overviewNodeId, visualThreads]);
+  }, [blend, graph, isRelatedOverview, overviewLineageIdSet, overviewNodeId]);
 
   const handleSceneClick = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
@@ -1773,6 +1774,44 @@ function connectedVisualIds(threads: VisualThread[], nodeId: string): Set<string
     if (thread.source === nodeId) ids.add(thread.target);
     if (thread.target === nodeId) ids.add(thread.source);
   }
+  return ids;
+}
+
+function lineageNodeIds(graph: AyaGraph, nodeId: string): string[] {
+  const nodeById = new Map(graph.nodes.map((node) => [node.id, node]));
+  const childrenByParent = new Map<string, AyaNode[]>();
+  for (const node of graph.nodes) {
+    if (!node.parentId) continue;
+    const children = childrenByParent.get(node.parentId) ?? [];
+    children.push(node);
+    childrenByParent.set(node.parentId, children);
+  }
+  childrenByParent.forEach((children) => children.sort((a, b) => a.depth - b.depth || a.id.localeCompare(b.id)));
+
+  const ids: string[] = [];
+  const seen = new Set<string>();
+  const add = (id: string) => {
+    if (seen.has(id) || !nodeById.has(id)) return false;
+    seen.add(id);
+    ids.push(id);
+    return true;
+  };
+
+  add(nodeId);
+
+  let current = nodeById.get(nodeId);
+  while (current?.parentId && add(current.parentId)) {
+    current = nodeById.get(current.parentId);
+  }
+
+  const addDescendants = (parentId: string) => {
+    for (const child of childrenByParent.get(parentId) ?? []) {
+      if (!add(child.id)) continue;
+      addDescendants(child.id);
+    }
+  };
+  addDescendants(nodeId);
+
   return ids;
 }
 

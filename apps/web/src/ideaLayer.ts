@@ -313,7 +313,7 @@ export class IdeaObjectLayer implements CustomLayerInterface {
     if (!this.map) return;
     const pixelRatio = canvasPixelRatio(this.map);
     const canvas = this.map.getCanvas();
-    const activeScale = active ? 1.14 : 1;
+    const activeScale = active ? 1.28 : 1;
     const width = layout.width * pixelRatio * activeScale;
     const height = layout.height * pixelRatio * activeScale;
     const x = (layout.left + layout.width / 2) * pixelRatio - canvas.width / 2;
