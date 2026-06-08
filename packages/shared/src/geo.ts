@@ -4,12 +4,13 @@ export const DEFAULT_LOCAL_RADIUS_METERS = 1500;
 const METERS_PER_DEGREE_LAT = 111_320;
 
 export const DEFAULT_CENTER: GeoCenter = {
-  lng: 85.324,
-  lat: 27.7172,
-  label: "Kathmandu, Nepal"
+  lng: 129.882173,
+  lat: 33.183323,
+  label: "Arita, Saga, Japan"
 };
 
 export const AREA_PRESETS: GeoCenter[] = [
+  { lng: 129.882173, lat: 33.183323, label: "Arita, Saga, Japan" },
   { lng: 85.324, lat: 27.7172, label: "Kathmandu, Nepal" },
   { lng: 84.124, lat: 28.3949, label: "Nepal" },
   { lng: 138.2529, lat: 36.2048, label: "Japan" },

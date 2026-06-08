@@ -4,7 +4,6 @@ import {
   Blend,
   CircleHelp,
   Eye,
-  FileJson,
   Map as MapIcon,
   MapPin,
   RotateCcw,
@@ -67,6 +66,23 @@ interface StoredMapView {
   bearing: number;
 }
 
+interface MapPadding {
+  top: number;
+  right: number;
+  bottom: number;
+  left: number;
+}
+
+interface FocusMapOptions {
+  padding?: MapPadding;
+  maxZoom?: number;
+  duration?: number;
+  pitch?: number;
+  bearing?: number;
+  majorityFraction?: number;
+  singlePointZoom?: number;
+}
+
 interface TooltipLayout {
   item: ScreenNode;
   left: number;
@@ -75,10 +91,19 @@ interface TooltipLayout {
 
 type OverviewRelationKind = "selected" | "parent" | "sibling" | "other";
 
+const DEFAULT_AREA_TEXT = "33.183323,129.882173";
+const DEFAULT_SAMPLE_PATH = "/samples/arita-demo.json";
+const DEFAULT_SAMPLE_FILENAME = "arita-demo.json";
+const INITIAL_MAP_CENTER: GeoCenter = {
+  lng: 139.767125,
+  lat: 35.681236,
+  label: "Tokyo Station, Japan"
+};
+
 export function App() {
   const [rawExport, setRawExport] = useState<HypoWeaveExport | null>(null);
   const [fileName, setFileName] = useState("");
-  const [areaText, setAreaText] = useState("");
+  const [areaText, setAreaText] = useState(DEFAULT_AREA_TEXT);
   const [graph, setGraph] = useState<AyaGraph | null>(null);
   const [blend, setBlend] = useState(0.28);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
@@ -201,14 +226,14 @@ export function App() {
     }
   }, []);
 
-  const loadSample = useCallback(async () => {
+  const loadDefaultExport = useCallback(async () => {
     try {
       setStatus("loading");
-      const response = await fetch("/samples/minyo-nepal.json");
-      if (!response.ok) throw new Error("サンプルJSONが見つかりません。");
+      const response = await fetch(DEFAULT_SAMPLE_PATH);
+      if (!response.ok) throw new Error("デフォルトJSONが見つかりません。");
       const parsed = (await response.json()) as HypoWeaveExport;
       setRawExport(parsed);
-      setFileName("民謡とネパール.json");
+      setFileName(DEFAULT_SAMPLE_FILENAME);
       setGraph(null);
       setCurrentCenter(null);
       setBasePlacements([]);
@@ -220,17 +245,22 @@ export function App() {
       setMessage(`${getHypoWeaveSnapshot(parsed).nodes.length} ノードを読み込みました。`);
     } catch (error) {
       setStatus("error");
-      setMessage(error instanceof Error ? error.message : "サンプルの読み込みに失敗しました。");
+      setMessage(error instanceof Error ? error.message : "デフォルトJSONの読み込みに失敗しました。");
     }
   }, []);
 
+  useEffect(() => {
+    void loadDefaultExport();
+  }, [loadDefaultExport]);
+
   const visualize = useCallback(async () => {
+    const trimmedArea = areaText.trim();
     if (!rawExport) {
       setStatus("error");
       setMessage("先にJSONを読み込んでください。");
       return;
     }
-    if (!areaText.trim()) {
+    if (!trimmedArea) {
       setStatus("error");
       setMessage("中心エリアを入力してください。");
       return;
@@ -239,9 +269,9 @@ export function App() {
     try {
       setStatus("loading");
       setMessage("中心エリアを解決しています。");
-      const resolved = await resolveArea(areaText.trim());
-      const manual = parseManualCenter(areaText.trim());
-      const center = resolved.center ?? manual;
+      const manual = parseManualCenter(trimmedArea);
+      const resolved = manual ? undefined : await resolveArea(trimmedArea);
+      const center = manual ?? resolved?.center;
 
       if (!center) {
         setStatus("error");
@@ -255,16 +285,16 @@ export function App() {
       setViewMode("view");
       setSelectedCardId(null);
       setGraph(semanticGraph);
-      setBlend(0.18);
+      setBlend(1);
       setMessage("地理配置を推定しています。");
 
       const response = await requestPlacements({
-        areaText: areaText.trim(),
+        areaText: trimmedArea,
         center,
         nodes: toPlacementInputs(semanticGraph)
       });
       setBasePlacements(response.placements);
-      setBlend(response.mode === "gemini" ? 0.62 : 0.42);
+      setBlend(1);
       setStatus("ready");
       setMessage(
         response.mode === "gemini"
@@ -272,13 +302,14 @@ export function App() {
           : "フォールバック配置で可視化しました。"
       );
     } catch (error) {
-      const center = parseManualCenter(areaText.trim()) ?? DEFAULT_CENTER;
+      const center = parseManualCenter(trimmedArea) ?? DEFAULT_CENTER;
       const fallbackGraph = normalizeHypoWeave(rawExport, { center });
       setCurrentCenter(center);
       setBasePlacements([]);
       setViewMode("view");
       setSelectedCardId(null);
       setGraph(fallbackGraph);
+      setBlend(1);
       setStatus("error");
       setMessage(error instanceof Error ? `${error.message} フォールバック表示に切り替えました。` : "フォールバック表示に切り替えました。");
     }
@@ -333,10 +364,6 @@ export function App() {
             />
           </div>
           <div className="action-row">
-            <button className="secondary-action" type="button" onClick={loadSample}>
-              <FileJson size={18} />
-              サンプル
-            </button>
             <button className="primary-action" type="button" onClick={visualize} disabled={status === "loading"}>
               <Blend size={19} />
               可視化
@@ -558,7 +585,7 @@ function MapScene({
     const map = new maplibregl.Map({
       container: mapNodeRef.current,
       style: mapStyle(),
-      center: [DEFAULT_CENTER.lng, DEFAULT_CENTER.lat],
+      center: [INITIAL_MAP_CENTER.lng, INITIAL_MAP_CENTER.lat],
       zoom: 12,
       pitch: 70,
       bearing: -22,
@@ -682,14 +709,19 @@ function MapScene({
     overviewReturnViewRef.current = null;
     setLockedOverviewCardLayouts(new Map());
     setShouldLockOverviewLayout(false);
-    mapRef.current.easeTo({
-      center: [graph.center.lng, graph.center.lat],
-      zoom: 12,
+    const points = graph.nodes
+      .filter((node) => node.type === "card")
+      .map((node) => visualPointForNode(node, blend));
+    focusMapOnPoints2d(mapRef.current, points.length > 0 ? points : graph.nodes.map((node) => visualPointForNode(node, blend)), {
+      padding: visualizationPaddingForContainer(mapRef.current.getContainer()),
+      maxZoom: 17,
+      duration: 900,
       pitch: 70,
       bearing: -22,
-      duration: 900
+      majorityFraction: 0.6,
+      singlePointZoom: 16.2
     });
-  }, [graph?.center.lat, graph?.center.lng]);
+  }, [graph]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -2010,18 +2042,21 @@ function snapshotMapView(map: MapLibreMap): StoredMapView {
   };
 }
 
-function focusMapOnPoints2d(map: MapLibreMap, points: AyaSpatialPoint[]): void {
-  const finitePoints = points.filter(isFiniteSpatialPoint);
+function focusMapOnPoints2d(map: MapLibreMap, points: AyaSpatialPoint[], options: FocusMapOptions = {}): void {
+  const allFinitePoints = points.filter(isFiniteSpatialPoint);
+  const finitePoints = options.majorityFraction
+    ? centralMajorityPoints(allFinitePoints, options.majorityFraction)
+    : allFinitePoints;
   if (finitePoints.length === 0) return;
 
   if (finitePoints.length === 1) {
     const point = finitePoints[0]!;
     map.easeTo({
       center: [point.lng, point.lat],
-      zoom: 15,
-      pitch: 0,
-      bearing: 0,
-      duration: 620
+      zoom: options.singlePointZoom ?? 15,
+      pitch: options.pitch ?? 0,
+      bearing: options.bearing ?? 0,
+      duration: options.duration ?? 620
     });
     return;
   }
@@ -2033,11 +2068,11 @@ function focusMapOnPoints2d(map: MapLibreMap, points: AyaSpatialPoint[]): void {
   }
 
   map.fitBounds(bounds, {
-    padding: overviewPaddingForContainer(map.getContainer()),
-    maxZoom: 15.4,
-    duration: 680,
-    pitch: 0,
-    bearing: 0
+    padding: options.padding ?? overviewPaddingForContainer(map.getContainer()),
+    maxZoom: options.maxZoom ?? 15.4,
+    duration: options.duration ?? 680,
+    pitch: options.pitch ?? 0,
+    bearing: options.bearing ?? 0
   });
 }
 
@@ -2063,6 +2098,37 @@ function overviewPaddingForContainer(container: HTMLElement): { top: number; rig
   return narrow
     ? { top: 230, right: 34, bottom: 150, left: 34 }
     : { top: 130, right: 128, bottom: 130, left: 430 };
+}
+
+function visualizationPaddingForContainer(container: HTMLElement): MapPadding {
+  const narrow = container.clientWidth <= 760;
+  return narrow
+    ? { top: 72, right: 18, bottom: 64, left: 18 }
+    : { top: 52, right: 44, bottom: 58, left: 180 };
+}
+
+function centralMajorityPoints(points: AyaSpatialPoint[], fraction: number): AyaSpatialPoint[] {
+  if (points.length < 4) return points;
+  const center = {
+    lng: median(points.map((point) => point.lng)),
+    lat: median(points.map((point) => point.lat))
+  };
+  const keepCount = Math.max(2, Math.ceil(points.length * clamp(fraction, 0.1, 1)));
+  return [...points]
+    .sort((a, b) => squaredLngLatDistance(a, center) - squaredLngLatDistance(b, center))
+    .slice(0, keepCount);
+}
+
+function median(values: number[]): number {
+  const sorted = [...values].sort((a, b) => a - b);
+  const midpoint = Math.floor(sorted.length / 2);
+  return sorted.length % 2 === 0 ? ((sorted[midpoint - 1] ?? 0) + (sorted[midpoint] ?? 0)) / 2 : (sorted[midpoint] ?? 0);
+}
+
+function squaredLngLatDistance(point: AyaSpatialPoint, center: { lng: number; lat: number }): number {
+  const lng = point.lng - center.lng;
+  const lat = point.lat - center.lat;
+  return lng * lng + lat * lat;
 }
 
 function isFiniteSpatialPoint(point: AyaSpatialPoint): boolean {

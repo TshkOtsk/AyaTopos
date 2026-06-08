@@ -1,14 +1,9 @@
 import { expect, type Locator, type Page, test } from "@playwright/test";
 
-test("loads the sample graph and supports map blending plus hover focus", async ({ page }) => {
+test("loads the default graph and supports map blending plus hover focus", async ({ page }) => {
   test.setTimeout(180_000);
   await routePlacements(page, "fallback");
-  await page.goto("/");
-
-  await expect(page.locator(".drop-zone")).toBeVisible();
-  await page.locator(".secondary-action").click();
-  await page.locator(".area-row input").fill("Nepal");
-  await page.locator(".primary-action").click();
+  await visualizeDefaultGraph(page);
 
   await expect(page.locator(".map-canvas")).toHaveAttribute("data-terrain", "ready");
   await expect(page.locator(".idea-hit-target.card")).toHaveCount(0);
@@ -17,11 +12,11 @@ test("loads the sample graph and supports map blending plus hover focus", async 
   await expect(page.locator(".node-card")).toHaveCount(0);
   await expect(page.locator(".map-canvas canvas")).toHaveCount(1);
   await expect(page.locator(".geo-point-glow")).toHaveCount(0);
-  await expect(page.locator(".geo-point-hit-target")).toHaveCount(115);
-  await expect(page.locator(".group-outline")).toHaveCount(14);
+  await expect(page.locator(".geo-point-hit-target")).toHaveCount(66);
+  await expect(page.locator(".group-outline")).toHaveCount(0);
   await expect(page.locator(".thread")).toHaveCount(0);
   await expect(page.locator(".idea-tooltip")).toHaveCount(0);
-  await expect(page.locator(".inspector-strip")).toContainText("115 nodes");
+  await expect(page.locator(".inspector-strip")).toContainText("66 nodes");
 
   const slider = page.locator(".blend-control input");
   await slider.evaluate((element) => {
@@ -40,17 +35,14 @@ test("renders node glows inside the MapLibre custom layer while keeping DOM hit 
   test.setTimeout(180_000);
   await routePlacements(page, "gemini");
 
-  await page.goto("/");
-  await page.locator(".secondary-action").click();
-  await page.locator(".area-row input").fill("Nepal");
-  await page.locator(".primary-action").click();
+  await visualizeDefaultGraph(page);
 
   await expect(page.locator(".map-canvas")).toHaveAttribute("data-terrain", "ready");
   await expect(page.locator(".map-canvas canvas")).toHaveCount(1);
   await expect(page.locator(".geo-point-glow")).toHaveCount(0);
-  await expect(page.locator(".geo-point-hit-target.card.mapped")).toHaveCount(65);
-  await expect(page.locator(".geo-point-hit-target.group.mapped")).toHaveCount(50);
-  await expect(page.locator(".geo-point-hit-target")).toHaveCount(115);
+  await expect(page.locator(".geo-point-hit-target.card.mapped")).toHaveCount(39);
+  await expect(page.locator(".geo-point-hit-target.group.mapped")).toHaveCount(27);
+  await expect(page.locator(".geo-point-hit-target")).toHaveCount(66);
 
   await page.locator(".geo-point-hit-target.card.mapped").first().focus();
   await expect(page.locator(".idea-tooltip").first()).toBeVisible();
@@ -60,13 +52,10 @@ test("keeps map wheel zoom available over custom-layer hover affordances", async
   test.setTimeout(180_000);
   await routePlacements(page, "gemini");
 
-  await page.goto("/");
-  await page.locator(".secondary-action").click();
-  await page.locator(".area-row input").fill("Nepal");
-  await page.locator(".primary-action").click();
+  await visualizeDefaultGraph(page);
 
   await expect(page.locator(".map-canvas")).toHaveAttribute("data-terrain", "ready");
-  await expect(page.locator(".geo-point-hit-target.card.mapped")).toHaveCount(65);
+  await expect(page.locator(".geo-point-hit-target.card.mapped")).toHaveCount(39);
 
   const hitPoint = await visiblePointFor(page, ".geo-point-hit-target.card.mapped");
   await page.mouse.move(hitPoint.x, hitPoint.y);
@@ -82,15 +71,12 @@ test("allows card geographic coordinates to be edited and restored from local st
   test.setTimeout(180_000);
   await routePlacements(page, "fallback");
 
-  await page.goto("/");
-  await page.locator(".secondary-action").click();
-  await page.locator(".area-row input").fill("Nepal");
-  await page.locator(".primary-action").click();
+  await visualizeDefaultGraph(page);
 
-  await expect(page.locator(".geo-point-hit-target.card")).toHaveCount(65);
+  await expect(page.locator(".geo-point-hit-target.card")).toHaveCount(39);
   await setBlend(page, "1");
   await page.getByTestId("geo-edit-toggle").click();
-  await expect(page.locator(".geo-point-hit-target.card.geo-edit-target")).toHaveCount(65);
+  await expect(page.locator(".geo-point-hit-target.card.geo-edit-target")).toHaveCount(39);
 
   const editableCard = page.locator(".geo-point-hit-target.card.geo-edit-target.depth-0").first();
   await editableCard.click();
@@ -109,9 +95,7 @@ test("allows card geographic coordinates to be edited and restored from local st
   expect(saved?.[1]).toContain('"source":"manual"');
 
   await page.reload();
-  await page.locator(".secondary-action").click();
-  await page.locator(".area-row input").fill("Nepal");
-  await page.locator(".primary-action").click();
+  await visualizeDefaultGraph(page);
   await setBlend(page, "1");
   await page.getByTestId("geo-edit-toggle").click();
   await expect(page.locator(".geo-edit-panel")).toContainText("1 saved");
@@ -120,6 +104,13 @@ test("allows card geographic coordinates to be edited and restored from local st
   await expect(page.locator(".geo-edit-fields input").nth(0)).toHaveValue(editedLng);
   await expect(page.locator(".geo-edit-fields input").nth(1)).toHaveValue(editedLat);
 });
+
+async function visualizeDefaultGraph(page: Page): Promise<void> {
+  await page.goto("/");
+  await expect(page.locator(".drop-zone")).toContainText("arita-demo.json");
+  await expect(page.locator(".area-row input")).toHaveValue("33.183323,129.882173");
+  await page.locator(".primary-action").click();
+}
 
 async function routePlacements(page: Page, source: "fallback" | "gemini"): Promise<void> {
   await page.route("**/api/geo/placements", async (route) => {

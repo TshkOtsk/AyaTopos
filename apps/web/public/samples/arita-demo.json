@@ -1,0 +1,4732 @@
+{
+  "version": 2,
+  "app": "HypoWeave",
+  "generatedAt": "2026-06-08T06:55:23.124Z",
+  "workspaces": {
+    "board": {
+      "snapshot": {
+        "nodes": [
+          {
+            "id": "c-19ea5e14f6f-caad-0",
+            "type": "card",
+            "position": {
+              "x": 1633.2792355379604,
+              "y": 554.6459294486292
+            },
+            "data": {
+              "kind": "card",
+              "label": "あり菜の大将は嬉野でやっていた焼き肉屋がつぶれて一時期肉体労働をやっていた",
+              "w": 620,
+              "h": 320,
+              "layoutTextBox": {
+                "text": "苦労",
+                "x": 223.26980496321195,
+                "y": 320
+              },
+              "mode": "layout",
+              "isEditing": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "useCollapsedCardStyle": true,
+              "layoutTextBoxEnabled": true,
+              "layoutTextBoxNeedsInit": false,
+              "layoutTextBoxFontPx": 154
+            },
+            "style": {
+              "--card-font-size": "44px",
+              "--edge-handle-size": "12px",
+              "--card-max-width": "620px",
+              "--card-fixed-width": "620px"
+            },
+            "className": "",
+            "hidden": false,
+            "selected": false
+          },
+          {
+            "id": "auto-group-8",
+            "type": "group",
+            "position": {
+              "x": -1679.6136306705803,
+              "y": -152.67734401402538
+            },
+            "data": {
+              "label": "約380年の歴史を誇る柿右衛門窯は、ドイツのマイセン窯にも多大な影響を与えた名門として知られる。",
+              "kind": "group",
+              "w": 951.384615384615,
+              "h": 460,
+              "collapsed": false,
+              "stackCount": 2,
+              "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+              "mode": "layout",
+              "isEditing": false,
+              "hasParent": false,
+              "layoutHullPoints": [
+                {
+                  "x": 2.1021992238033644,
+                  "y": 12.153274235058596
+                },
+                {
+                  "x": 4.462271832878521,
+                  "y": 4.475403103187487
+                },
+                {
+                  "x": 97.89780077619663,
+                  "y": 7.434944237918216
+                },
+                {
+                  "x": 97.89780077619663,
+                  "y": 92.56505576208178
+                },
+                {
+                  "x": 73.93272962483827,
+                  "y": 92.56505576208178
+                },
+                {
+                  "x": 49.96765847347993,
+                  "y": 92.56505576208178
+                },
+                {
+                  "x": 2.1021992238033644,
+                  "y": 84.6439805547612
+                }
+              ],
+              "hasManualLayoutHull": true,
+              "layoutTitleOffsetPx": 26.453367714647328,
+              "layoutTitleWidthPx": 888.9312476699675,
+              "layoutTextBox": {
+                "text": "マイセン交流",
+                "x": 3.25,
+                "y": -647.0916748046875
+              },
+              "layoutTextBoxEnabled": true,
+              "layoutTextBoxNeedsInit": false,
+              "layoutTextBoxFontPx": 154,
+              "layoutTextBoxExtraRangePx": {
+                "top": 259
+              },
+              "layoutTextBoxRenderOffsetPx": {
+                "x": 0,
+                "y": 191
+              },
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "isAddTarget": false,
+              "layoutHullManualPoints": [
+                {
+                  "x": 2.1021992238033644,
+                  "y": 12.153274235058596
+                },
+                {
+                  "x": 4.462271832878521,
+                  "y": 4.475403103187487
+                },
+                {
+                  "x": 97.89780077619663,
+                  "y": 7.434944237918216
+                },
+                {
+                  "x": 97.89780077619663,
+                  "y": 92.56505576208178
+                },
+                {
+                  "x": 73.93272962483827,
+                  "y": 92.56505576208178
+                },
+                {
+                  "x": 49.96765847347993,
+                  "y": 92.56505576208178
+                },
+                {
+                  "x": 2.1021992238033644,
+                  "y": 84.6439805547612
+                }
+              ]
+            },
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "--collapsed-card-width": "620px",
+              "--collapsed-card-height": "148px",
+              "--collapsed-card-max-width": "620px",
+              "--group-border": "12px",
+              "--group-title-size": "44px",
+              "--group-label-outset": "191px",
+              "--group-title-line-clamp": "6",
+              "--edge-handle-size": "12px",
+              "--card-font-size": "44px",
+              "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16)",
+              "width": 951.384615384615,
+              "height": 460,
+              "pointerEvents": "none"
+            },
+            "className": "-layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+            "hidden": false,
+            "width": 951.384615384615,
+            "height": 460,
+            "selected": false
+          },
+          {
+            "id": "auto-group-9",
+            "type": "group",
+            "position": {
+              "x": 466.15878276217757,
+              "y": -430.59518520443606
+            },
+            "data": {
+              "label": "有田中学校と西有田中学校は炎の博記念堂へ統合され、有田小学校も含めて、新築されたばかりの校舎を誇ることになる。",
+              "kind": "group",
+              "w": 952.9798564492817,
+              "h": 464.8423685444069,
+              "collapsed": false,
+              "stackCount": 2,
+              "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+              "mode": "layout",
+              "isEditing": false,
+              "hasParent": false,
+              "layoutHullPoints": [
+                {
+                  "x": 1.809576837416481,
+                  "y": 7.291082445316883
+                },
+                {
+                  "x": 96.07791692983166,
+                  "y": 6.8239885058948335
+                },
+                {
+                  "x": 98.19042316258351,
+                  "y": 9.22602355580481
+                },
+                {
+                  "x": 98.19042316258351,
+                  "y": 92.70891755468311
+                },
+                {
+                  "x": 56.93207126948775,
+                  "y": 92.70891755468311
+                },
+                {
+                  "x": 29.370824053452115,
+                  "y": 90.7739764441952
+                },
+                {
+                  "x": 1.809576837416481,
+                  "y": 90.7739764441952
+                }
+              ],
+              "hasManualLayoutHull": true,
+              "layoutTitleOffsetPx": 1.2449027475510306,
+              "layoutTitleWidthPx": 898.3582920898187,
+              "layoutTextBox": {
+                "text": "ピカピカ校舎",
+                "x": 3.25,
+                "y": -647.0916748046875
+              },
+              "layoutTextBoxEnabled": true,
+              "layoutTextBoxNeedsInit": false,
+              "layoutTextBoxFontPx": 154,
+              "layoutTextBoxExtraRangePx": {
+                "top": 259
+              },
+              "layoutTextBoxRenderOffsetPx": {
+                "x": 0,
+                "y": 191
+              },
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "isAddTarget": false,
+              "layoutHullManualPoints": [
+                {
+                  "x": 1.809576837416481,
+                  "y": 7.291082445316883
+                },
+                {
+                  "x": 96.07791692983166,
+                  "y": 6.8239885058948335
+                },
+                {
+                  "x": 98.19042316258351,
+                  "y": 9.22602355580481
+                },
+                {
+                  "x": 98.19042316258351,
+                  "y": 92.70891755468311
+                },
+                {
+                  "x": 56.93207126948775,
+                  "y": 92.70891755468311
+                },
+                {
+                  "x": 29.370824053452115,
+                  "y": 90.7739764441952
+                },
+                {
+                  "x": 1.809576837416481,
+                  "y": 90.7739764441952
+                }
+              ]
+            },
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "--collapsed-card-width": "620px",
+              "--collapsed-card-height": "148px",
+              "--collapsed-card-max-width": "620px",
+              "--group-border": "12px",
+              "--group-title-size": "44px",
+              "--group-label-outset": "191px",
+              "--group-title-line-clamp": "6",
+              "--edge-handle-size": "12px",
+              "--card-font-size": "44px",
+              "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16)",
+              "width": 952.9798564492817,
+              "height": 464.8423685444069,
+              "pointerEvents": "none"
+            },
+            "className": "group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+            "hidden": false,
+            "width": 952.9798564492817,
+            "height": 464.8423685444069,
+            "selected": false
+          },
+          {
+            "id": "auto-group-31",
+            "type": "group",
+            "position": {
+              "x": -2487.107307773363,
+              "y": 613.1425522302188
+            },
+            "data": {
+              "label": "焼き物の町で、職人の息吹と文化の匂いを感じながら、お気に入りの器を探すお祭りに参加できる。",
+              "kind": "group",
+              "w": 3880.4372730032765,
+              "h": 2831.9256057002394,
+              "mode": "layout",
+              "isEditing": false,
+              "hasParent": false,
+              "hasManualLayoutHull": false,
+              "layoutTextBox": {
+                "text": "ハレ⇔ケ",
+                "x": 235.46827097554944,
+                "y": -272.9725199582126
+              },
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "isAddTarget": false,
+              "collapsed": false
+            },
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "--group-border": "12px",
+              "--group-title-size": "44px",
+              "--group-label-outset": "356px",
+              "--group-title-line-clamp": "6",
+              "--edge-handle-size": "12px",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "--collapsed-card-width": "620px",
+              "--collapsed-card-height": "114px",
+              "--collapsed-card-max-width": "620px",
+              "--card-font-size": "44px",
+              "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12), 0 11px 12px rgba(0,0,0,0.10), 0 14px 14px rgba(0,0,0,0.08)",
+              "width": 3880.4372730032765,
+              "height": 2831.9256057002394
+            },
+            "className": "group-wrapper group-wrapper-collapsed",
+            "hidden": false,
+            "width": 3880.4372730032765,
+            "height": 2831.9256057002394,
+            "selected": false
+          },
+          {
+            "id": "auto-group-28",
+            "type": "group",
+            "position": {
+              "x": -1726.5886667402597,
+              "y": 3815.6875523181893
+            },
+            "data": {
+              "label": "岳の棚田や黒髪山など、焼き物だけでなく、四季の自然や散策を楽しめる魅力的なスポットが満載だ。",
+              "kind": "group",
+              "w": 2384.6140324074568,
+              "h": 559.9656063034154,
+              "collapsed": false,
+              "stackCount": 5,
+              "stackShadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14)",
+              "mode": "layout",
+              "isEditing": false,
+              "hasParent": false,
+              "layoutHullPoints": [
+                {
+                  "x": 1.7615176151761516,
+                  "y": 2.200592467202709
+                },
+                {
+                  "x": 94.71931673377391,
+                  "y": 1.5122431066538256
+                },
+                {
+                  "x": 98.23848238482384,
+                  "y": 4.384257300042316
+                },
+                {
+                  "x": 98.23848238482384,
+                  "y": 14.947101142615315
+                },
+                {
+                  "x": 97.88617886178862,
+                  "y": 94.71857807871349
+                },
+                {
+                  "x": 73.57723577235772,
+                  "y": 94.71857807871349
+                },
+                {
+                  "x": 49.268292682926834,
+                  "y": 94.71857807871349
+                },
+                {
+                  "x": 2.113821138211382,
+                  "y": 80.31316123571732
+                },
+                {
+                  "x": 1.7615176151761516,
+                  "y": 12.763436309775708
+                }
+              ],
+              "hasManualLayoutHull": true,
+              "layoutTitleOffsetPx": 26.0053962348197,
+              "layoutTitleWidthPx": 2216.6847219992173,
+              "layoutTextBox": {
+                "text": "自然も魅力",
+                "x": 2069.778366650308,
+                "y": -431.4732745065028
+              },
+              "layoutTextBoxEnabled": true,
+              "layoutTextBoxNeedsInit": false,
+              "layoutTextBoxFontPx": 154,
+              "layoutTextBoxExtraRangePx": {
+                "top": 160
+              },
+              "layoutTextBoxRenderOffsetPx": {
+                "x": 0,
+                "y": 92
+              },
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "isAddTarget": false,
+              "layoutHullManualPoints": [
+                {
+                  "x": 1.7615176151761516,
+                  "y": 2.200592467202709
+                },
+                {
+                  "x": 94.71931673377391,
+                  "y": 1.5122431066538256
+                },
+                {
+                  "x": 98.23848238482384,
+                  "y": 4.384257300042316
+                },
+                {
+                  "x": 98.23848238482384,
+                  "y": 14.947101142615315
+                },
+                {
+                  "x": 97.88617886178862,
+                  "y": 94.71857807871349
+                },
+                {
+                  "x": 73.57723577235772,
+                  "y": 94.71857807871349
+                },
+                {
+                  "x": 49.268292682926834,
+                  "y": 94.71857807871349
+                },
+                {
+                  "x": 2.113821138211382,
+                  "y": 80.31316123571732
+                },
+                {
+                  "x": 1.7615176151761516,
+                  "y": 12.763436309775708
+                }
+              ]
+            },
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "--collapsed-card-width": "620px",
+              "--collapsed-card-height": "114px",
+              "--collapsed-card-max-width": "620px",
+              "--group-border": "12px",
+              "--group-title-size": "44px",
+              "--group-label-outset": "92px",
+              "--group-title-line-clamp": "6",
+              "--edge-handle-size": "12px",
+              "--card-font-size": "44px",
+              "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14)",
+              "width": 2384.6140324074568,
+              "height": 559.9656063034154,
+              "pointerEvents": "none"
+            },
+            "className": "-layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+            "hidden": false,
+            "width": 2384.6140324074568,
+            "height": 559.9656063034154,
+            "selected": false
+          },
+          {
+            "id": "auto-group-24",
+            "type": "group",
+            "position": {
+              "x": 68,
+              "y": 161.97113320672634
+            },
+            "data": {
+              "label": "伝統の内山の町並みで路地裏を歩き、職人の息吹と風情を感じながら、お祭りでお気に入りの器を探すことができる。",
+              "kind": "group",
+              "w": 1114.2944866241712,
+              "h": 1616.3585135350268,
+              "collapsed": false,
+              "stackCount": 10,
+              "stackShadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12), 0 11px 12px rgba(0,0,0,0.10)",
+              "mode": "layout",
+              "isEditing": false,
+              "hasParent": true,
+              "layoutHullPoints": [
+                {
+                  "x": -2.133316351954061,
+                  "y": 51.559227316794654
+                },
+                {
+                  "x": 0.7873603001316356,
+                  "y": 5.0287778561701355
+                },
+                {
+                  "x": 48.406841117630094,
+                  "y": 0.26948969503869447
+                },
+                {
+                  "x": 95.69535358594511,
+                  "y": 0.26948969503869447
+                },
+                {
+                  "x": 102.13331635195406,
+                  "y": 51.559227316794654
+                },
+                {
+                  "x": 102.13331635195406,
+                  "y": 101.07795878015477
+                },
+                {
+                  "x": 73.33354560057424,
+                  "y": 101.07795878015477
+                },
+                {
+                  "x": 44.533774849194415,
+                  "y": 101.07795878015477
+                },
+                {
+                  "x": -2.133316351954061,
+                  "y": 96.57141943764267
+                }
+              ],
+              "hasManualLayoutHull": false,
+              "layoutTitleOffsetPx": 528.5812974521932,
+              "layoutTitleWidthPx": 532,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "isAddTarget": false,
+              "layoutHullManualPoints": [
+                {
+                  "x": -2.1538291975857824,
+                  "y": 52.07812042830023
+                },
+                {
+                  "x": 5.121893959941478,
+                  "y": 4.617846441652337
+                },
+                {
+                  "x": 6.029538053692839,
+                  "y": 0.5432196279574503
+                },
+                {
+                  "x": 97.57705696072898,
+                  "y": 0.2666029461568832
+                },
+                {
+                  "x": 102.15382919758578,
+                  "y": 52.07812042830023
+                },
+                {
+                  "x": 102.15382919758578,
+                  "y": 101.06641178462755
+                },
+                {
+                  "x": 73.07713503017771,
+                  "y": 101.06641178462755
+                },
+                {
+                  "x": 44.00044086276966,
+                  "y": 101.06641178462755
+                },
+                {
+                  "x": -2.1538291975857824,
+                  "y": 99.46465493894453
+                }
+              ]
+            },
+            "parentId": "auto-group-31",
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "--group-border": "8px",
+              "--group-title-size": "36px",
+              "--group-label-outset": "116px",
+              "--group-title-line-clamp": "6",
+              "--edge-handle-size": "10.8px",
+              "width": 1114.2944866241712,
+              "height": 1616.3585135350268,
+              "pointerEvents": "none"
+            },
+            "className": "-layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+            "hidden": false,
+            "width": 1114.2944866241712,
+            "height": 1616.3585135350268,
+            "selected": false
+          },
+          {
+            "id": "auto-group-30",
+            "type": "group",
+            "position": {
+              "x": 1357.7612454556277,
+              "y": 160
+            },
+            "data": {
+              "label": "陶製の鳥居などの特徴がある焼き物の町で、歴史をかけて培われた土地の文化と匠の技に触れることができる。",
+              "kind": "group",
+              "w": 2454.676027547649,
+              "h": 2603.9256057002394,
+              "mode": "layout",
+              "stackCount": 19,
+              "stackShadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12), 0 11px 12px rgba(0,0,0,0.10), 0 14px 14px rgba(0,0,0,0.08)",
+              "isEditing": false,
+              "hasParent": true,
+              "layoutHullPoints": [
+                {
+                  "x": -3.0546544275149836,
+                  "y": 3.9391168924422097
+                },
+                {
+                  "x": 0.16511645554135046,
+                  "y": 0.1575646756976884
+                },
+                {
+                  "x": 72.6314194105821,
+                  "y": 0.1575646756976884
+                },
+                {
+                  "x": 94.0676468973448,
+                  "y": 1.6209387982749364
+                },
+                {
+                  "x": 99.83488354445865,
+                  "y": 6.559157649674736
+                },
+                {
+                  "x": 100.99069873324811,
+                  "y": 15.067650137349908
+                },
+                {
+                  "x": 100.99069873324811,
+                  "y": 44.92615618206186
+                },
+                {
+                  "x": 74.81921244650499,
+                  "y": 94.68426205095716
+                },
+                {
+                  "x": 53.95513133075197,
+                  "y": 101.92744361004698
+                },
+                {
+                  "x": 31.61980123616861,
+                  "y": 102.59981714901186
+                },
+                {
+                  "x": 14.282573404326815,
+                  "y": 102.59981714901186
+                },
+                {
+                  "x": -3.0546544275149836,
+                  "y": 102.59981714901186
+                }
+              ],
+              "hasManualLayoutHull": false,
+              "layoutTitleOffsetPx": -12,
+              "layoutTitleWidthPx": 1755.5198291400548,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "isAddTarget": false,
+              "collapsed": false
+            },
+            "parentId": "auto-group-31",
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "--group-border": "8px",
+              "--group-title-size": "36px",
+              "--group-label-outset": "76px",
+              "--group-title-line-clamp": "6",
+              "--edge-handle-size": "10.8px",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "--collapsed-card-width": "384px",
+              "--collapsed-card-height": "165px",
+              "--collapsed-card-max-width": "384px",
+              "--card-font-size": "25px",
+              "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12), 0 11px 12px rgba(0,0,0,0.10), 0 14px 14px rgba(0,0,0,0.08)",
+              "width": 2454.676027547649,
+              "height": 2603.9256057002394,
+              "pointerEvents": "none"
+            },
+            "className": "-layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+            "hidden": false,
+            "width": 2454.676027547649,
+            "height": 2603.9256057002394,
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-a18e-22",
+            "type": "card",
+            "position": {
+              "x": 523.384615384615,
+              "y": 259
+            },
+            "data": {
+              "kind": "card",
+              "label": "柿右衛門様式は、ドイツのマイセン窯にも影響を及ぼしたと紹介されている",
+              "w": 360,
+              "h": 133,
+              "mode": "layout",
+              "isEditing": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "useCollapsedCardStyle": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false
+            },
+            "parentId": "auto-group-8",
+            "style": {
+              "--card-font-size": "25px",
+              "--edge-handle-size": "10.8px"
+            },
+            "className": "",
+            "hidden": false,
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-cdd0-23",
+            "type": "card",
+            "position": {
+              "x": 68,
+              "y": 271.6923076923076
+            },
+            "data": {
+              "kind": "card",
+              "label": "柿右衛門窯は380年の歴史を持つ窯元として知られる",
+              "w": 360,
+              "h": 99,
+              "mode": "layout",
+              "isEditing": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "useCollapsedCardStyle": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false
+            },
+            "parentId": "auto-group-8",
+            "style": {
+              "--card-font-size": "25px",
+              "--edge-handle-size": "10.8px"
+            },
+            "className": "",
+            "hidden": false,
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f6f-79ee-1",
+            "type": "card",
+            "position": {
+              "x": 68,
+              "y": 263.8423685444069
+            },
+            "data": {
+              "kind": "card",
+              "label": "有田中学校と西有田中学校が、炎の博記念堂の敷地に統合校舎を建てる予定だ",
+              "w": 360,
+              "h": 133,
+              "mode": "layout",
+              "isEditing": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "useCollapsedCardStyle": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false
+            },
+            "parentId": "auto-group-9",
+            "style": {
+              "--card-font-size": "25px",
+              "--edge-handle-size": "10.8px"
+            },
+            "className": "",
+            "hidden": false,
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f6f-4e61-2",
+            "type": "card",
+            "position": {
+              "x": 524.9798564492817,
+              "y": 259
+            },
+            "data": {
+              "kind": "card",
+              "label": "有田小学校は数年前に建て替わったばかりでとてもきれいな校舎がある",
+              "w": 360,
+              "h": 133,
+              "mode": "layout",
+              "isEditing": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "useCollapsedCardStyle": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false
+            },
+            "parentId": "auto-group-9",
+            "style": {
+              "--card-font-size": "25px",
+              "--edge-handle-size": "10.8px"
+            },
+            "className": "",
+            "hidden": false,
+            "selected": false
+          },
+          {
+            "id": "auto-group-27",
+            "type": "group",
+            "position": {
+              "x": 995.4565547005052,
+              "y": 160
+            },
+            "data": {
+              "label": "岳の棚田や国見湖畔公園、桜ヶ丘公園では、四季折々の美しい自然や静かな風景をゆったりと楽しめる。",
+              "kind": "group",
+              "w": 1321.1574777069513,
+              "h": 324.79000907641785,
+              "mode": "layout",
+              "stackCount": 3,
+              "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+              "isEditing": false,
+              "hasParent": true,
+              "layoutHullPoints": [
+                {
+                  "x": 0.30276481551181506,
+                  "y": 8.520526990305672
+                },
+                {
+                  "x": 4.679284823726026,
+                  "y": 2.9962379900865317
+                },
+                {
+                  "x": 99.69723518448819,
+                  "y": 1.9158004818784151
+                },
+                {
+                  "x": 99.69723518448819,
+                  "y": 91.47947300969432
+                },
+                {
+                  "x": 66.04110795791162,
+                  "y": 95.42327378971414
+                },
+                {
+                  "x": 34.81795378385873,
+                  "y": 98.08419951812158
+                },
+                {
+                  "x": 17.56035929968527,
+                  "y": 98.08419951812158
+                },
+                {
+                  "x": 0.30276481551181506,
+                  "y": 98.08419951812158
+                }
+              ],
+              "hasManualLayoutHull": true,
+              "layoutTitleOffsetPx": 45.82072135186293,
+              "layoutTitleWidthPx": 1255.3367563550885,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "isAddTarget": false,
+              "collapsed": false,
+              "layoutHullManualPoints": [
+                {
+                  "x": 0.30276481551181506,
+                  "y": 8.520526990305672
+                },
+                {
+                  "x": 4.679284823726026,
+                  "y": 2.9962379900865317
+                },
+                {
+                  "x": 99.69723518448819,
+                  "y": 1.9158004818784151
+                },
+                {
+                  "x": 99.69723518448819,
+                  "y": 91.47947300969432
+                },
+                {
+                  "x": 66.04110795791162,
+                  "y": 95.42327378971414
+                },
+                {
+                  "x": 34.81795378385873,
+                  "y": 98.08419951812158
+                },
+                {
+                  "x": 17.56035929968527,
+                  "y": 98.08419951812158
+                },
+                {
+                  "x": 0.30276481551181506,
+                  "y": 98.08419951812158
+                }
+              ]
+            },
+            "parentId": "auto-group-28",
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "--group-border": "8px",
+              "--group-title-size": "36px",
+              "--group-label-outset": "116px",
+              "--group-title-line-clamp": "6",
+              "--edge-handle-size": "10.8px",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "width": 1321.1574777069513,
+              "height": 324.79000907641785,
+              "pointerEvents": "none"
+            },
+            "className": "-layout-hit -hull-hit  -layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+            "hidden": false,
+            "width": 1321.1574777069513,
+            "height": 324.79000907641785,
+            "selected": false
+          },
+          {
+            "id": "g-19ea5f1b0c0-0e00",
+            "type": "group",
+            "position": {
+              "x": 68,
+              "y": 169.8706554909868
+            },
+            "data": {
+              "label": "自然歩道や黒髪山など、焼き物だけでなく散策や登山が楽しめる魅力的なスポットもある。",
+              "kind": "group",
+              "w": 871.2609009513968,
+              "h": 322.0949508124286,
+              "mode": "layout",
+              "stackCount": 2,
+              "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+              "isEditing": false,
+              "hasParent": true,
+              "layoutHullPoints": [
+                {
+                  "x": 0.4535845406534815,
+                  "y": 2.2975830211928057
+                },
+                {
+                  "x": 4.481472702278673,
+                  "y": 0.7380611895320759
+                },
+                {
+                  "x": 99.54641545934652,
+                  "y": 2.046123915786538
+                },
+                {
+                  "x": 99.54641545934652,
+                  "y": 97.7024169788072
+                },
+                {
+                  "x": 52.162222175150376,
+                  "y": 97.95387608421346
+                },
+                {
+                  "x": 26.307903357901928,
+                  "y": 97.95387608421346
+                },
+                {
+                  "x": 0.4535845406534815,
+                  "y": 97.95387608421346
+                }
+              ],
+              "hasManualLayoutHull": true,
+              "layoutTitleOffsetPx": 23.04531944176408,
+              "layoutTitleWidthPx": 828.263676754159,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "isAddTarget": false,
+              "collapsed": false,
+              "layoutHullManualPoints": [
+                {
+                  "x": 0.4535845406534815,
+                  "y": 2.2975830211928057
+                },
+                {
+                  "x": 4.481472702278673,
+                  "y": 0.7380611895320759
+                },
+                {
+                  "x": 99.54641545934652,
+                  "y": 2.046123915786538
+                },
+                {
+                  "x": 99.54641545934652,
+                  "y": 97.7024169788072
+                },
+                {
+                  "x": 52.162222175150376,
+                  "y": 97.95387608421346
+                },
+                {
+                  "x": 26.307903357901928,
+                  "y": 97.95387608421346
+                },
+                {
+                  "x": 0.4535845406534815,
+                  "y": 97.95387608421346
+                }
+              ]
+            },
+            "parentId": "auto-group-28",
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "--group-border": "8px",
+              "--group-title-size": "36px",
+              "--group-label-outset": "116px",
+              "--group-title-line-clamp": "6",
+              "--edge-handle-size": "10.8px",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "width": 871.2609009513968,
+              "height": 322.0949508124286,
+              "pointerEvents": "none"
+            },
+            "className": "-layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+            "hidden": false,
+            "width": 871.2609009513968,
+            "height": 322.0949508124286,
+            "selected": false
+          },
+          {
+            "id": "auto-group-25",
+            "type": "group",
+            "position": {
+              "x": 52,
+              "y": 128
+            },
+            "data": {
+              "label": "約400年前の職人の息遣いを肌で感じ、土地で培われた文化と風情を楽しみながら、有田焼の歴史を体系的に学ぶことができる。",
+              "kind": "group",
+              "w": 1659.5198291400548,
+              "h": 2423.9256057002394,
+              "collapsed": false,
+              "mode": "group-build",
+              "isEditing": false,
+              "hasParent": false,
+              "hasManualLayoutHull": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "isAddTarget": false
+            },
+            "parentId": "auto-group-30",
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "--collapsed-card-width": "360px",
+              "--collapsed-card-height": "199px",
+              "--collapsed-card-max-width": "360px",
+              "--group-border": "12px",
+              "--group-title-size": "27px",
+              "--group-label-outset": "92px",
+              "--group-title-line-clamp": "2",
+              "--edge-handle-size": "12px",
+              "--card-font-size": "25px",
+              "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14), 0 8px 10px rgba(0,0,0,0.12), 0 11px 12px rgba(0,0,0,0.10), 0 14px 14px rgba(0,0,0,0.08)",
+              "width": 1659.5198291400548,
+              "height": 2423.9256057002394
+            },
+            "className": "group-wrapper group-wrapper-collapsed",
+            "hidden": false,
+            "width": 1659.5198291400548,
+            "height": 2423.9256057002394,
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-be1b-19",
+            "type": "card",
+            "position": {
+              "x": 1870.8194329616588,
+              "y": 154.4353334394658
+            },
+            "data": {
+              "kind": "card",
+              "label": "陶山神社には、焼き物の町らしい陶製の鳥居や狛犬があることで知られる",
+              "w": 360,
+              "h": 91,
+              "mode": "layout",
+              "isEditing": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "useCollapsedCardStyle": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false
+            },
+            "parentId": "auto-group-30",
+            "style": {
+              "--card-font-size": "22px",
+              "--edge-handle-size": "9.6px"
+            },
+            "className": "",
+            "hidden": false,
+            "selected": false
+          },
+          {
+            "id": "auto-group-16",
+            "type": "group",
+            "position": {
+              "x": 1868.6760275476488,
+              "y": 408.3725578074393
+            },
+            "data": {
+              "label": "樹齢1000年の天然記念物・大イチョウの傍らには、かつて陶石の搬出を監視した口屋番所跡が今も残っている。",
+              "kind": "group",
+              "w": 534,
+              "h": 863,
+              "collapsed": false,
+              "stackCount": 3,
+              "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+              "mode": "layout",
+              "isEditing": false,
+              "hasParent": true,
+              "layoutHullPoints": [
+                {
+                  "x": -1.8726591760299627,
+                  "y": -1.5698587127158554
+                },
+                {
+                  "x": 105.24344569288388,
+                  "y": -1.5698587127158554
+                },
+                {
+                  "x": 105.24344569288388,
+                  "y": 102.35478806907379
+                },
+                {
+                  "x": 1.8726591760299627,
+                  "y": 102.35478806907379
+                },
+                {
+                  "x": -1.8726591760299627,
+                  "y": 27.78649921507064
+                }
+              ],
+              "hasManualLayoutHull": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "isAddTarget": false
+            },
+            "parentId": "auto-group-30",
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "width": 534,
+              "height": 863,
+              "pointerEvents": "none",
+              "--group-border": "6px",
+              "--group-title-size": "32px",
+              "--group-label-outset": "226px",
+              "--group-title-line-clamp": "6",
+              "--edge-handle-size": "9.6px"
+            },
+            "className": "-layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit  -layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+            "hidden": false,
+            "width": 534,
+            "height": 863,
+            "selected": false
+          },
+          {
+            "id": "auto-group-1",
+            "type": "group",
+            "position": {
+              "x": 105.07298200636433,
+              "y": 233.28425222930514
+            },
+            "data": {
+              "label": "江戸後期から昭和初期のレトロな建物が並ぶ内山の町並みは、国の重伝建保存地区に選定されている。",
+              "kind": "group",
+              "w": 441.35723423566833,
+              "h": 569.6427657643314,
+              "collapsed": false,
+              "stackCount": 2,
+              "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+              "mode": "layout",
+              "isEditing": false,
+              "hasParent": true,
+              "layoutHullPoints": [
+                {
+                  "x": -2.2657383235867323,
+                  "y": -2.90999869523165
+                },
+                {
+                  "x": 102.26573832358675,
+                  "y": -2.90999869523165
+                },
+                {
+                  "x": 102.26573832358675,
+                  "y": 102.90999869523165
+                },
+                {
+                  "x": -1.0519292319682714,
+                  "y": 102.90999869523165
+                },
+                {
+                  "x": -2.2657383235867323,
+                  "y": 59.94597312177199
+                }
+              ],
+              "hasManualLayoutHull": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "isAddTarget": false
+            },
+            "parentId": "auto-group-24",
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "--collapsed-card-width": "360px",
+              "--collapsed-card-height": "165px",
+              "--collapsed-card-max-width": "360px",
+              "--group-border": "6px",
+              "--group-title-size": "32px",
+              "--group-label-outset": "226px",
+              "--group-title-line-clamp": "6",
+              "--edge-handle-size": "9.6px",
+              "--card-font-size": "25px",
+              "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16)",
+              "width": 441.35723423566833,
+              "height": 569.6427657643314,
+              "pointerEvents": "none"
+            },
+            "className": "-layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+            "hidden": false,
+            "width": 441.35723423566833,
+            "height": 569.6427657643314,
+            "selected": false
+          },
+          {
+            "id": "auto-group-17",
+            "type": "group",
+            "position": {
+              "x": 603.2957659235301,
+              "y": 168
+            },
+            "data": {
+              "label": "昔の職人が住んでいた裏通りの雰囲気を感じつつ、陶芸体験や名窯の美を堪能できる。",
+              "kind": "group",
+              "w": 436,
+              "h": 673,
+              "collapsed": false,
+              "stackCount": 3,
+              "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+              "mode": "layout",
+              "isEditing": false,
+              "hasParent": true,
+              "layoutHullPoints": [
+                {
+                  "x": -2.293577981651376,
+                  "y": -2.237136465324385
+                },
+                {
+                  "x": 102.29357798165137,
+                  "y": -2.237136465324385
+                },
+                {
+                  "x": 102.29357798165137,
+                  "y": 99.32885906040269
+                },
+                {
+                  "x": -2.293577981651376,
+                  "y": 99.32885906040269
+                }
+              ],
+              "hasManualLayoutHull": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "isAddTarget": false
+            },
+            "parentId": "auto-group-24",
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "width": 436,
+              "height": 673,
+              "pointerEvents": "none",
+              "--group-border": "6px",
+              "--group-title-size": "32px",
+              "--group-label-outset": "226px",
+              "--group-title-line-clamp": "6",
+              "--edge-handle-size": "9.6px"
+            },
+            "className": "-layout-hit -hull-hit  -layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+            "hidden": false,
+            "width": 436,
+            "height": 673,
+            "selected": false
+          },
+          {
+            "id": "auto-group-15",
+            "type": "group",
+            "position": {
+              "x": 52,
+              "y": 849.3585135350265
+            },
+            "data": {
+              "label": "陶磁器のお祭りが魅力的で、駅周辺を散策しながらアリタセラでお気に入りの器を探すことができる。",
+              "kind": "group",
+              "w": 1010.2944866241712,
+              "h": 715.0000000000002,
+              "collapsed": false,
+              "stackCount": 5,
+              "stackShadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14)",
+              "mode": "layout",
+              "isEditing": false,
+              "hasParent": true,
+              "layoutHullPoints": [
+                {
+                  "x": -1.984126984126984,
+                  "y": -1.3812154696132597
+                },
+                {
+                  "x": 101.19047619047619,
+                  "y": -1.3812154696132597
+                },
+                {
+                  "x": 101.19047619047619,
+                  "y": 54.69613259668509
+                },
+                {
+                  "x": -1.984126984126984,
+                  "y": 54.69613259668509
+                }
+              ],
+              "hasManualLayoutHull": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "isAddTarget": false
+            },
+            "parentId": "auto-group-24",
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "width": 1010.2944866241712,
+              "height": 715.0000000000002,
+              "pointerEvents": "none",
+              "--group-border": "6px",
+              "--group-title-size": "32px",
+              "--group-label-outset": "186px",
+              "--group-title-line-clamp": "6",
+              "--edge-handle-size": "9.6px"
+            },
+            "className": "group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+            "hidden": false,
+            "width": 1010.2944866241712,
+            "height": 715.0000000000002,
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-188a-35",
+            "type": "card",
+            "position": {
+              "x": 909.1574777069513,
+              "y": 168
+            },
+            "data": {
+              "kind": "card",
+              "label": "岳の棚田では、山あいの田園風景を楽しめる",
+              "w": 360,
+              "h": 91,
+              "mode": "layout",
+              "isEditing": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "useCollapsedCardStyle": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false
+            },
+            "parentId": "auto-group-27",
+            "style": {
+              "--card-font-size": "22px",
+              "--edge-handle-size": "9.6px"
+            },
+            "className": "",
+            "hidden": false,
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-c850-33",
+            "type": "card",
+            "position": {
+              "x": 459.2609009513968,
+              "y": 168
+            },
+            "data": {
+              "kind": "card",
+              "label": "黒髪山は自然散策や登山で親しまれる有田の自然スポット",
+              "w": 360,
+              "h": 91,
+              "mode": "layout",
+              "isEditing": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "useCollapsedCardStyle": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false
+            },
+            "parentId": "g-19ea5f1b0c0-0e00",
+            "style": {
+              "--card-font-size": "22px",
+              "--edge-handle-size": "9.6px"
+            },
+            "className": "",
+            "hidden": false,
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-a79a-34",
+            "type": "card",
+            "position": {
+              "x": 52,
+              "y": 179.09495081242858
+            },
+            "data": {
+              "kind": "card",
+              "label": "九州自然歩道のコースもあり、焼き物だけでなく山歩きの魅力もある",
+              "w": 360,
+              "h": 91,
+              "mode": "layout",
+              "isEditing": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "useCollapsedCardStyle": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false
+            },
+            "parentId": "g-19ea5f1b0c0-0e00",
+            "style": {
+              "--card-font-size": "22px",
+              "--edge-handle-size": "9.6px"
+            },
+            "className": "",
+            "hidden": false,
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-967f-36",
+            "type": "card",
+            "position": {
+              "x": 52,
+              "y": 181.79000907641785
+            },
+            "data": {
+              "kind": "card",
+              "label": "国見湖畔公園は、静かな水辺の景色を味わえる穴場的スポット",
+              "w": 360,
+              "h": 91
+            },
+            "parentId": "auto-group-27",
+            "style": {},
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-c8d4-37",
+            "type": "card",
+            "position": {
+              "x": 464.50703614647,
+              "y": 176.23426200655922
+            },
+            "data": {
+              "kind": "card",
+              "label": "桜ヶ丘公園は、春の花見スポットとしても楽しめる",
+              "w": 360,
+              "h": 91,
+              "mode": "layout",
+              "isEditing": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "useCollapsedCardStyle": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false
+            },
+            "parentId": "auto-group-27",
+            "style": {
+              "--card-font-size": "22px",
+              "--edge-handle-size": "9.6px"
+            },
+            "className": "",
+            "hidden": false,
+            "selected": false
+          },
+          {
+            "id": "auto-group-21",
+            "type": "group",
+            "position": {
+              "x": 512.6517208598402,
+              "y": 893.0127929935836
+            },
+            "data": {
+              "label": "有田の町では、歴史あるトンバイ塀が並ぶ小路（しゅうじ）を巡りながら、焼き物の文化と風情を深く楽しむことができます。",
+              "kind": "group",
+              "w": 1103.437892038182,
+              "h": 765.0691441082884,
+              "collapsed": false,
+              "stackCount": 4,
+              "stackShadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14)",
+              "mode": "layout",
+              "isEditing": false,
+              "hasParent": true,
+              "layoutHullPoints": [
+                {
+                  "x": -3.237410071942446,
+                  "y": -1.9189765458422179
+                },
+                {
+                  "x": 90.28776978417267,
+                  "y": -1.9189765458422179
+                },
+                {
+                  "x": 90.28776978417267,
+                  "y": 41.15138592750534
+                },
+                {
+                  "x": -3.237410071942446,
+                  "y": 41.15138592750534
+                }
+              ],
+              "hasManualLayoutHull": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "isAddTarget": false
+            },
+            "parentId": "auto-group-25",
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "width": 1103.437892038182,
+              "height": 765.0691441082884,
+              "pointerEvents": "none",
+              "--group-border": "4px",
+              "--group-title-size": "22px",
+              "--group-label-outset": "109px",
+              "--group-title-line-clamp": "6",
+              "--edge-handle-size": "8.4px"
+            },
+            "className": "-layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+            "hidden": false,
+            "width": 1103.437892038182,
+            "height": 765.0691441082884,
+            "selected": false
+          },
+          {
+            "id": "auto-group-22",
+            "type": "group",
+            "position": {
+              "x": 38,
+              "y": 1693.9781518878913
+            },
+            "data": {
+              "label": "原料を採掘した泉山磁石場や、それを焼成した天狗谷窯跡は、有田焼の歴史が築かれた重要な地だ。",
+              "kind": "group",
+              "w": 1583.5198291400548,
+              "h": 691.9474538123482,
+              "collapsed": false,
+              "stackCount": 6,
+              "stackShadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14)",
+              "mode": "layout",
+              "isEditing": false,
+              "hasParent": true,
+              "layoutHullPoints": [
+                {
+                  "x": -3.237410071942446,
+                  "y": -1.712654614652712
+                },
+                {
+                  "x": 90.28776978417267,
+                  "y": -1.712654614652712
+                },
+                {
+                  "x": 90.28776978417267,
+                  "y": 51.28449096098955
+                },
+                {
+                  "x": -3.237410071942446,
+                  "y": 51.28449096098955
+                }
+              ],
+              "hasManualLayoutHull": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "isAddTarget": false
+            },
+            "parentId": "auto-group-25",
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "width": 1583.5198291400548,
+              "height": 691.9474538123482,
+              "pointerEvents": "none",
+              "--group-border": "4px",
+              "--group-title-size": "22px",
+              "--group-label-outset": "109px",
+              "--group-title-line-clamp": "6",
+              "--edge-handle-size": "8.4px"
+            },
+            "className": "group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+            "hidden": false,
+            "width": 1583.5198291400548,
+            "height": 691.9474538123482,
+            "selected": false
+          },
+          {
+            "id": "auto-group-13",
+            "type": "group",
+            "position": {
+              "x": 105.50191894903787,
+              "y": 144
+            },
+            "data": {
+              "label": "佐賀藩の元で欧州へ渡った有田焼の400年の歴史を、九州陶磁文化館では体系的に学べる。",
+              "kind": "group",
+              "w": 969.5800181528346,
+              "h": 728,
+              "collapsed": false,
+              "stackCount": 5,
+              "stackShadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14)",
+              "mode": "layout",
+              "isEditing": false,
+              "hasParent": true,
+              "layoutHullPoints": [
+                {
+                  "x": -4.434909877982028,
+                  "y": -2.7820710973724885
+                },
+                {
+                  "x": 104.43490987798202,
+                  "y": -2.7820710973724885
+                },
+                {
+                  "x": 104.43490987798202,
+                  "y": 104.63678516228747
+                },
+                {
+                  "x": 47.503043537375525,
+                  "y": 104.63678516228747
+                },
+                {
+                  "x": -4.434909877982028,
+                  "y": 93.25518889238693
+                }
+              ],
+              "hasManualLayoutHull": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "isAddTarget": false
+            },
+            "parentId": "auto-group-25",
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "width": 969.5800181528346,
+              "height": 728,
+              "pointerEvents": "none",
+              "--group-border": "4px",
+              "--group-title-size": "22px",
+              "--group-label-outset": "81px",
+              "--group-title-line-clamp": "6",
+              "--edge-handle-size": "8.4px"
+            },
+            "className": "-layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+            "hidden": false,
+            "width": 969.5800181528346,
+            "height": 728,
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-bde8-16",
+            "type": "card",
+            "position": {
+              "x": 38,
+              "y": 264
+            },
+            "data": {
+              "kind": "card",
+              "label": "有田の大公孫樹は樹齢約1000年とされる大きなイチョウ",
+              "w": 360,
+              "h": 91
+            },
+            "parentId": "auto-group-16",
+            "style": {},
+            "selected": false
+          },
+          {
+            "id": "auto-group-10",
+            "type": "group",
+            "position": {
+              "x": 76,
+              "y": 377
+            },
+            "data": {
+              "label": "国の天然記念物である大公孫樹の近くには、かつて陶石の持ち出しを監視した口屋番所跡が残っている。",
+              "kind": "group",
+              "w": 420,
+              "h": 448,
+              "collapsed": false
+            },
+            "parentId": "auto-group-16",
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "width": 420,
+              "height": 448
+            },
+            "width": 420,
+            "height": 448,
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-746d-13",
+            "type": "card",
+            "position": {
+              "x": 38,
+              "y": 264
+            },
+            "data": {
+              "kind": "card",
+              "label": "内山地区には、江戸後期から昭和初期までの建物が並ぶレトロな町並みがある",
+              "w": 360,
+              "h": 120,
+              "mode": "layout",
+              "isEditing": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "useCollapsedCardStyle": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false
+            },
+            "parentId": "auto-group-1",
+            "style": {
+              "--card-font-size": "22px",
+              "--edge-handle-size": "8.4px"
+            },
+            "className": "",
+            "hidden": false,
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-d61f-14",
+            "type": "card",
+            "position": {
+              "x": 43.35723423566833,
+              "y": 411.64276576433144
+            },
+            "data": {
+              "kind": "card",
+              "label": "内山地区の町並みは、国の重要伝統的建造物群保存地区に選定されている",
+              "w": 360,
+              "h": 120,
+              "mode": "layout",
+              "isEditing": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "useCollapsedCardStyle": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false
+            },
+            "parentId": "auto-group-1",
+            "style": {
+              "--card-font-size": "22px",
+              "--edge-handle-size": "8.4px"
+            },
+            "className": "",
+            "hidden": false,
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-2260-12",
+            "type": "card",
+            "position": {
+              "x": 38,
+              "y": 264
+            },
+            "data": {
+              "kind": "card",
+              "label": "昔の窯元や絵付師は、表通りではなく裏通りに住むことが多かった",
+              "w": 360,
+              "h": 91
+            },
+            "parentId": "auto-group-17",
+            "style": {},
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-6e42-25",
+            "type": "card",
+            "position": {
+              "x": 38,
+              "y": 502
+            },
+            "data": {
+              "kind": "card",
+              "label": "町内には源右衛門、今右衛門、香蘭社、深川製磁など名窯・老舗の資料館や展示施設がある",
+              "w": 360,
+              "h": 120
+            },
+            "parentId": "auto-group-17",
+            "style": {},
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-0aa3-28",
+            "type": "card",
+            "position": {
+              "x": 38,
+              "y": 383
+            },
+            "data": {
+              "kind": "card",
+              "label": "絵付け体験やろくろ体験ができ、見るだけでなく作る楽しみもある",
+              "w": 360,
+              "h": 91
+            },
+            "parentId": "auto-group-17",
+            "style": {},
+            "selected": false
+          },
+          {
+            "id": "auto-group-4",
+            "type": "group",
+            "position": {
+              "x": 38,
+              "y": 209.96790479966535
+            },
+            "data": {
+              "label": "春に賑わう有田陶器市だけでなく、秋には落ち着いた雰囲気の「陶磁器まつり」も楽しめる。",
+              "kind": "group",
+              "w": 420,
+              "h": 448.0000000000002,
+              "collapsed": false,
+              "stackCount": 2,
+              "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+              "mode": "layout",
+              "isEditing": false,
+              "hasParent": true,
+              "layoutHullPoints": [
+                {
+                  "x": -4.285714285714286,
+                  "y": -5.769230769230765
+                },
+                {
+                  "x": 104.28571428571429,
+                  "y": -5.769230769230765
+                },
+                {
+                  "x": 104.28571428571429,
+                  "y": 101.60256410256403
+                },
+                {
+                  "x": -4.285714285714286,
+                  "y": 101.60256410256403
+                }
+              ],
+              "hasManualLayoutHull": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "isAddTarget": false
+            },
+            "parentId": "auto-group-15",
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "--collapsed-card-width": "384px",
+              "--collapsed-card-height": "120px",
+              "--collapsed-card-max-width": "384px",
+              "--group-border": "4px",
+              "--group-title-size": "22px",
+              "--group-label-outset": "136px",
+              "--group-title-line-clamp": "6",
+              "--edge-handle-size": "8.4px",
+              "--card-font-size": "22px",
+              "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16)",
+              "width": 420,
+              "height": 448.0000000000002,
+              "pointerEvents": "none"
+            },
+            "className": "group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+            "hidden": false,
+            "width": 420,
+            "height": 448.0000000000002,
+            "selected": false
+          },
+          {
+            "id": "auto-group-6",
+            "type": "group",
+            "position": {
+              "x": 552.2944866241712,
+              "y": 144
+            },
+            "data": {
+              "label": "駅周辺から散策しはじめて、アリタセラで有田焼を見比べながら日常の器を探すことができる。",
+              "kind": "group",
+              "w": 420,
+              "h": 533.0000000000002,
+              "collapsed": false,
+              "stackCount": 3,
+              "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+              "mode": "layout",
+              "isEditing": false,
+              "hasParent": true,
+              "layoutHullPoints": [
+                {
+                  "x": -4.285714285714286,
+                  "y": -4.534005037783373
+                },
+                {
+                  "x": 104.28571428571429,
+                  "y": -4.534005037783373
+                },
+                {
+                  "x": 104.28571428571429,
+                  "y": 102.51889168765742
+                },
+                {
+                  "x": -4.285714285714286,
+                  "y": 102.51889168765742
+                }
+              ],
+              "hasManualLayoutHull": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "isAddTarget": false
+            },
+            "parentId": "auto-group-15",
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "width": 420,
+              "height": 533.0000000000002,
+              "pointerEvents": "none",
+              "--group-border": "4px",
+              "--group-title-size": "22px",
+              "--group-label-outset": "136px",
+              "--group-title-line-clamp": "6",
+              "--edge-handle-size": "8.4px"
+            },
+            "className": "-layout-hit -hull-hit  -layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+            "hidden": false,
+            "width": 420,
+            "height": 533.0000000000002,
+            "selected": false
+          },
+          {
+            "id": "auto-group-11",
+            "type": "group",
+            "position": {
+              "x": 1147.5198291400548,
+              "y": 86
+            },
+            "data": {
+              "label": "天狗谷窯跡は、日本で最初の磁器が誕生した歴史を知る上で極めて重要な場所です。",
+              "kind": "group",
+              "w": 406,
+              "h": 400,
+              "collapsed": false,
+              "stackCount": 2,
+              "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+              "mode": "layout",
+              "isEditing": false,
+              "hasParent": true,
+              "layoutHullPoints": [
+                {
+                  "x": -6.157635467980295,
+                  "y": -9.469696969696969
+                },
+                {
+                  "x": 106.1576354679803,
+                  "y": -9.469696969696969
+                },
+                {
+                  "x": 106.1576354679803,
+                  "y": 106.43939393939394
+                },
+                {
+                  "x": -6.157635467980295,
+                  "y": 106.43939393939394
+                }
+              ],
+              "hasManualLayoutHull": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "isAddTarget": false
+            },
+            "parentId": "auto-group-22",
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "width": 406,
+              "height": 400,
+              "pointerEvents": "none",
+              "--group-border": "3px",
+              "--group-title-size": "22px",
+              "--group-label-outset": "136px",
+              "--group-title-line-clamp": "6",
+              "--edge-handle-size": "7.2px"
+            },
+            "className": "group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+            "hidden": false,
+            "width": 406,
+            "height": 400,
+            "selected": false
+          },
+          {
+            "id": "auto-group-14",
+            "type": "group",
+            "position": {
+              "x": 30,
+              "y": 237.7848918789839
+            },
+            "data": {
+              "label": "有田の町では、表通りの店巡りと共に、焼き物の歴史を今に伝える独特なトンバイ塀の散策が楽しめる。",
+              "kind": "group",
+              "w": 1043.437892038182,
+              "h": 497.28425222930446,
+              "collapsed": false,
+              "stackCount": 3,
+              "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+              "mode": "layout",
+              "isEditing": false,
+              "hasParent": true,
+              "layoutHullPoints": [
+                {
+                  "x": -2.3959260240364344,
+                  "y": -6.005511826623
+                },
+                {
+                  "x": 104.79185204807287,
+                  "y": -6.005511826623
+                },
+                {
+                  "x": 104.79185204807287,
+                  "y": 105.04462993436331
+                },
+                {
+                  "x": 69.36577014308519,
+                  "y": 109.62542875299965
+                },
+                {
+                  "x": 16.46372353236071,
+                  "y": 109.62542875299965
+                },
+                {
+                  "x": -2.3959260240364344,
+                  "y": 38.91571663651705
+                }
+              ],
+              "hasManualLayoutHull": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "isAddTarget": false
+            },
+            "parentId": "auto-group-21",
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "width": 1043.437892038182,
+              "height": 497.28425222930446,
+              "pointerEvents": "none",
+              "--group-border": "3px",
+              "--group-title-size": "22px",
+              "--group-label-outset": "81px",
+              "--group-title-line-clamp": "6",
+              "--edge-handle-size": "7.2px"
+            },
+            "className": "-layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+            "hidden": false,
+            "width": 1043.437892038182,
+            "height": 497.28425222930446,
+            "selected": false
+          },
+          {
+            "id": "auto-group-18",
+            "type": "group",
+            "position": {
+              "x": 30,
+              "y": 144.87830970405912
+            },
+            "data": {
+              "label": "李参平が礎を築いた有田焼の原料は、国指定の史跡である泉山磁石場で採れていた。",
+              "kind": "group",
+              "w": 993.0806578025138,
+              "h": 517.069144108289,
+              "collapsed": false,
+              "stackCount": 4,
+              "stackShadow": "0 2px 6px rgba(0,0,0,0.16), 0 5px 8px rgba(0,0,0,0.14)",
+              "mode": "layout",
+              "isEditing": false,
+              "hasParent": true,
+              "layoutHullPoints": [
+                {
+                  "x": -5.274261603375527,
+                  "y": -4.3478260869565215
+                },
+                {
+                  "x": 104.43037974683544,
+                  "y": -4.3478260869565215
+                },
+                {
+                  "x": 104.43037974683544,
+                  "y": 66.26086956521739
+                },
+                {
+                  "x": -5.274261603375527,
+                  "y": 66.26086956521739
+                }
+              ],
+              "hasManualLayoutHull": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "isAddTarget": false
+            },
+            "parentId": "auto-group-22",
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "width": 993.0806578025138,
+              "height": 517.069144108289,
+              "pointerEvents": "none",
+              "--group-border": "3px",
+              "--group-title-size": "22px",
+              "--group-label-outset": "109px",
+              "--group-title-line-clamp": "6",
+              "--edge-handle-size": "7.2px"
+            },
+            "className": "-layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+            "hidden": false,
+            "width": 993.0806578025138,
+            "height": 517.069144108289,
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-e58a-15",
+            "type": "card",
+            "position": {
+              "x": 220.71830636941195,
+              "y": 111
+            },
+            "data": {
+              "kind": "card",
+              "label": "有田では路地のことを「小路（しゅうじ）」と呼ぶ",
+              "w": 360,
+              "h": 91
+            },
+            "parentId": "auto-group-21",
+            "style": {},
+            "selected": false
+          },
+          {
+            "id": "auto-group-2",
+            "type": "group",
+            "position": {
+              "x": 30,
+              "y": 190.3610721337434
+            },
+            "data": {
+              "label": "佐賀県立九州陶磁文化館では、約400年の歴史を持つ有田焼の歩みを体系的に学べる。",
+              "kind": "group",
+              "w": 406,
+              "h": 434,
+              "collapsed": false,
+              "stackCount": 2,
+              "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+              "mode": "layout",
+              "isEditing": false,
+              "hasParent": true,
+              "layoutHullPoints": [
+                {
+                  "x": -6.157635467980295,
+                  "y": -8.389261744966444
+                },
+                {
+                  "x": 106.1576354679803,
+                  "y": -8.389261744966444
+                },
+                {
+                  "x": 106.1576354679803,
+                  "y": 104.02684563758389
+                },
+                {
+                  "x": -6.157635467980295,
+                  "y": 104.02684563758389
+                }
+              ],
+              "hasManualLayoutHull": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "isAddTarget": false
+            },
+            "parentId": "auto-group-13",
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "--collapsed-card-width": "384px",
+              "--collapsed-card-height": "120px",
+              "--collapsed-card-max-width": "384px",
+              "--group-border": "3px",
+              "--group-title-size": "22px",
+              "--group-label-outset": "136px",
+              "--group-title-line-clamp": "6",
+              "--edge-handle-size": "7.2px",
+              "--card-font-size": "22px",
+              "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16)",
+              "width": 406,
+              "height": 434,
+              "pointerEvents": "none"
+            },
+            "className": "group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+            "hidden": false,
+            "width": 406,
+            "height": 434,
+            "selected": false
+          },
+          {
+            "id": "auto-group-12",
+            "type": "group",
+            "position": {
+              "x": 533.5800181528346,
+              "y": 111
+            },
+            "data": {
+              "label": "佐賀藩の保護で発展し欧州へ伝わった有田焼の経歴は、洋館が残る町並みと共に歴史を今に伝える。",
+              "kind": "group",
+              "w": 406,
+              "h": 587,
+              "collapsed": false,
+              "stackCount": 3,
+              "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+              "mode": "layout",
+              "isEditing": false,
+              "hasParent": true,
+              "layoutHullPoints": [
+                {
+                  "x": -6.157635467980295,
+                  "y": -5.543237250554324
+                },
+                {
+                  "x": 106.1576354679803,
+                  "y": -5.543237250554324
+                },
+                {
+                  "x": 106.1576354679803,
+                  "y": 102.66075388026607
+                },
+                {
+                  "x": -6.157635467980295,
+                  "y": 102.66075388026607
+                }
+              ],
+              "hasManualLayoutHull": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "isAddTarget": false
+            },
+            "parentId": "auto-group-13",
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "width": 406,
+              "height": 587,
+              "pointerEvents": "none",
+              "--group-border": "3px",
+              "--group-title-size": "22px",
+              "--group-label-outset": "136px",
+              "--group-title-line-clamp": "6",
+              "--edge-handle-size": "7.2px"
+            },
+            "className": "group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+            "hidden": false,
+            "width": 406,
+            "height": 587,
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-46f5-17",
+            "type": "card",
+            "position": {
+              "x": 30,
+              "y": 166
+            },
+            "data": {
+              "kind": "card",
+              "label": "大公孫樹は国の天然記念物に指定されている",
+              "w": 360,
+              "h": 91
+            },
+            "parentId": "auto-group-10",
+            "style": {},
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-ef4a-18",
+            "type": "card",
+            "position": {
+              "x": 30,
+              "y": 285
+            },
+            "data": {
+              "kind": "card",
+              "label": "大公孫樹の近くには、陶石や焼き物の持ち出しを取り締まった口屋番所跡がある",
+              "w": 360,
+              "h": 120
+            },
+            "parentId": "auto-group-10",
+            "style": {},
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-86d5-26",
+            "type": "card",
+            "position": {
+              "x": 30,
+              "y": 166
+            },
+            "data": {
+              "kind": "card",
+              "label": "アリタセラでは、多くの店で有田焼を見比べながら買い物できる",
+              "w": 360,
+              "h": 91
+            },
+            "parentId": "auto-group-6",
+            "style": {},
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-752d-27",
+            "type": "card",
+            "position": {
+              "x": 30,
+              "y": 285
+            },
+            "data": {
+              "kind": "card",
+              "label": "有田焼は飾るだけでなく、日常の器として使って楽しめるのが魅力",
+              "w": 360,
+              "h": 91
+            },
+            "parentId": "auto-group-6",
+            "style": {},
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-4189-29",
+            "type": "card",
+            "position": {
+              "x": 30,
+              "y": 166
+            },
+            "data": {
+              "kind": "card",
+              "label": "有田陶器市は毎年春の大型イベントとして多くの人でにぎわう",
+              "w": 360,
+              "h": 91
+            },
+            "parentId": "auto-group-4",
+            "style": {},
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-3afe-30",
+            "type": "card",
+            "position": {
+              "x": 30,
+              "y": 285
+            },
+            "data": {
+              "kind": "card",
+              "label": "秋には「秋の有田陶磁器まつり」もあり、春とは違った落ち着いた雰囲気を楽しめる",
+              "w": 360,
+              "h": 120
+            },
+            "parentId": "auto-group-4",
+            "style": {},
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-b9d1-31",
+            "type": "card",
+            "position": {
+              "x": 30,
+              "y": 404.0000000000002
+            },
+            "data": {
+              "kind": "card",
+              "label": "有田駅や上有田駅周辺から、焼き物の町歩きを始めやすい",
+              "w": 360,
+              "h": 91
+            },
+            "parentId": "auto-group-6",
+            "style": {},
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-bc56-32",
+            "type": "card",
+            "position": {
+              "x": 23,
+              "y": 104
+            },
+            "data": {
+              "kind": "card",
+              "label": "町歩きでは、表通りの店巡りと裏通りのトンバイ塀散策の両方が楽しめる",
+              "w": 360,
+              "h": 91,
+              "mode": "layout",
+              "isEditing": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "useCollapsedCardStyle": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false
+            },
+            "parentId": "auto-group-14",
+            "style": {
+              "--card-font-size": "22px",
+              "--edge-handle-size": "6px"
+            },
+            "className": "",
+            "hidden": false,
+            "selected": false
+          },
+          {
+            "id": "auto-group-3",
+            "type": "group",
+            "position": {
+              "x": 564.0806578025138,
+              "y": 77
+            },
+            "data": {
+              "label": "有田焼の原料である陶石が発見された泉山磁石場は、その一部が国指定の史跡となっている。",
+              "kind": "group",
+              "w": 406,
+              "h": 400,
+              "collapsed": false
+            },
+            "parentId": "auto-group-18",
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "width": 406,
+              "height": 400
+            },
+            "width": 406,
+            "height": 400,
+            "selected": false
+          },
+          {
+            "id": "auto-group-5",
+            "type": "group",
+            "position": {
+              "x": 244.78872977705873,
+              "y": 227.28425222930446
+            },
+            "data": {
+              "label": "有田の町には、登り窯の廃材を赤土で固めて作られた、焼き物の秘密を守るための「トンバイ塀」が今も残っている。",
+              "kind": "group",
+              "w": 775.6491622611234,
+              "h": 247,
+              "collapsed": false,
+              "mode": "layout",
+              "isEditing": false,
+              "hasParent": true,
+              "hasManualLayoutHull": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "isAddTarget": false
+            },
+            "parentId": "auto-group-14",
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "--collapsed-card-width": "384px",
+              "--collapsed-card-height": "149px",
+              "--collapsed-card-max-width": "384px",
+              "--group-border": "3px",
+              "--group-title-size": "22px",
+              "--group-label-outset": "164px",
+              "--group-title-line-clamp": "6",
+              "--edge-handle-size": "6px",
+              "--card-font-size": "22px",
+              "--group-wrapper-shadow": "0 2px 6px rgba(0,0,0,0.16)",
+              "width": 775.6491622611234,
+              "height": 247
+            },
+            "className": "group-wrapper group-wrapper-collapsed",
+            "hidden": false,
+            "width": 775.6491622611234,
+            "height": 247,
+            "selected": false
+          },
+          {
+            "id": "auto-group-7",
+            "type": "group",
+            "position": {
+              "x": 23,
+              "y": 121.06914410828904
+            },
+            "data": {
+              "label": "朝鮮半島から伝わった技術を背景に、李参平が有田焼の礎を築いた。",
+              "kind": "group",
+              "w": 406,
+              "h": 373,
+              "collapsed": false,
+              "stackCount": 2,
+              "stackShadow": "0 2px 6px rgba(0,0,0,0.16)",
+              "mode": "layout",
+              "isEditing": false,
+              "hasParent": true,
+              "layoutHullPoints": [
+                {
+                  "x": -6.157635467980295,
+                  "y": -9.469696969696969
+                },
+                {
+                  "x": 106.1576354679803,
+                  "y": -9.469696969696969
+                },
+                {
+                  "x": 106.1576354679803,
+                  "y": 106.43939393939394
+                },
+                {
+                  "x": -6.157635467980295,
+                  "y": 106.43939393939394
+                }
+              ],
+              "hasManualLayoutHull": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "isAddTarget": false
+            },
+            "parentId": "auto-group-18",
+            "style": {
+              "zIndex": 0,
+              "borderRadius": 24,
+              "border": "none",
+              "background": "transparent",
+              "overflow": "visible",
+              "outline": "none",
+              "boxSizing": "border-box",
+              "width": 406,
+              "height": 373,
+              "pointerEvents": "none",
+              "--group-border": "3px",
+              "--group-title-size": "22px",
+              "--group-label-outset": "109px",
+              "--group-title-line-clamp": "6",
+              "--edge-handle-size": "6px"
+            },
+            "className": "-layout-hit -hull-hit group-wrapper group-wrapper-layout-hit group-wrapper-hull-hit",
+            "hidden": false,
+            "width": 406,
+            "height": 373,
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f6f-e141-3",
+            "type": "card",
+            "position": {
+              "x": 23,
+              "y": 159
+            },
+            "data": {
+              "kind": "card",
+              "label": "日本で最初の磁器が生まれた町として知られている",
+              "w": 360,
+              "h": 91
+            },
+            "parentId": "auto-group-11",
+            "style": {},
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-7d17-24",
+            "type": "card",
+            "position": {
+              "x": 23,
+              "y": 278
+            },
+            "data": {
+              "kind": "card",
+              "label": "天狗谷窯跡は、日本初期の磁器づくりを知るうえで重要な窯跡",
+              "w": 360,
+              "h": 91
+            },
+            "parentId": "auto-group-11",
+            "style": {},
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f6f-8491-4",
+            "type": "card",
+            "position": {
+              "x": 23,
+              "y": 159
+            },
+            "data": {
+              "kind": "card",
+              "label": "有田焼の歴史は約400年続いている",
+              "w": 347,
+              "h": 61
+            },
+            "parentId": "auto-group-2",
+            "style": {},
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f6f-ef9b-9",
+            "type": "card",
+            "position": {
+              "x": 23,
+              "y": 159
+            },
+            "data": {
+              "kind": "card",
+              "label": "佐賀藩の保護と管理が、有田を磁器産地として育てた",
+              "w": 360,
+              "h": 91
+            },
+            "parentId": "auto-group-12",
+            "style": {},
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-c8b2-20",
+            "type": "card",
+            "position": {
+              "x": 23,
+              "y": 278
+            },
+            "data": {
+              "kind": "card",
+              "label": "佐賀県立九州陶磁文化館では、有田焼の約400年の歴史を体系的に学べる",
+              "w": 360,
+              "h": 120
+            },
+            "parentId": "auto-group-2",
+            "style": {},
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-4db3-21",
+            "type": "card",
+            "position": {
+              "x": 23,
+              "y": 278
+            },
+            "data": {
+              "kind": "card",
+              "label": "有田焼は、江戸時代に海外へも輸出され、ヨーロッパの陶磁器文化にも影響を与えた",
+              "w": 360,
+              "h": 120
+            },
+            "parentId": "auto-group-12",
+            "style": {},
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-501e-38",
+            "type": "card",
+            "position": {
+              "x": 23,
+              "y": 431
+            },
+            "data": {
+              "kind": "card",
+              "label": "旧田代家西洋館は、有田に残る洋風建築として町並みにアクセントを添えている",
+              "w": 360,
+              "h": 120
+            },
+            "parentId": "auto-group-12",
+            "style": {},
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f6f-f14a-5",
+            "type": "card",
+            "position": {
+              "x": 23,
+              "y": 159
+            },
+            "data": {
+              "kind": "card",
+              "label": "泉山磁石場は、有田焼の原料となる陶石が発見された場所",
+              "w": 360,
+              "h": 91
+            },
+            "parentId": "auto-group-3",
+            "style": {},
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f6f-9a65-6",
+            "type": "card",
+            "position": {
+              "x": 23,
+              "y": 278
+            },
+            "data": {
+              "kind": "card",
+              "label": "泉山磁石場の一部は国指定の史跡になっている",
+              "w": 360,
+              "h": 91
+            },
+            "parentId": "auto-group-3",
+            "style": {},
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f6f-8bb0-7",
+            "type": "card",
+            "position": {
+              "x": 23,
+              "y": 132
+            },
+            "data": {
+              "kind": "card",
+              "label": "陶工・李参平が有田焼のはじまりに深く関わったと伝えられている",
+              "w": 360,
+              "h": 91
+            },
+            "parentId": "auto-group-7",
+            "style": {},
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f6f-fd05-8",
+            "type": "card",
+            "position": {
+              "x": 23,
+              "y": 251
+            },
+            "data": {
+              "kind": "card",
+              "label": "有田焼は、朝鮮半島から伝わった技術を背景に発展した",
+              "w": 360,
+              "h": 91
+            },
+            "parentId": "auto-group-7",
+            "style": {},
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-72bd-10",
+            "type": "card",
+            "position": {
+              "x": 392.64916226112337,
+              "y": 104
+            },
+            "data": {
+              "kind": "card",
+              "label": "有田の町には、焼き物づくりの秘密を守るための「トンバイ塀」が残っている",
+              "w": 360,
+              "h": 91,
+              "mode": "layout",
+              "isEditing": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "useCollapsedCardStyle": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false
+            },
+            "parentId": "auto-group-5",
+            "style": {
+              "--card-font-size": "22px",
+              "--edge-handle-size": "6px"
+            },
+            "className": "",
+            "hidden": false,
+            "selected": false
+          },
+          {
+            "id": "c-19ea5e14f70-3ebd-11",
+            "type": "card",
+            "position": {
+              "x": 23,
+              "y": 123.06914410828904
+            },
+            "data": {
+              "kind": "card",
+              "label": "トンバイ塀は、登り窯の耐火レンガや陶片などを赤土で固めて作られている",
+              "w": 360,
+              "h": 91,
+              "mode": "layout",
+              "isEditing": false,
+              "canUngroup": false,
+              "isUngroupTarget": false,
+              "useCollapsedCardStyle": false,
+              "layoutTextBoxEnabled": false,
+              "layoutTextBoxNeedsInit": false
+            },
+            "parentId": "auto-group-5",
+            "style": {
+              "--card-font-size": "22px",
+              "--edge-handle-size": "6px"
+            },
+            "className": "",
+            "hidden": false,
+            "selected": false
+          }
+        ],
+        "edges": [
+          {
+            "id": "e-1780901446554-2720bf6d8c5ff",
+            "source": "c-19ea5e14f6f-caad-0",
+            "target": "auto-group-31",
+            "type": "board",
+            "data": {
+              "kind": "rel",
+              "relationType": "normal",
+              "label": "\"ケ\"の部分で関連",
+              "line": "dashed",
+              "arrow": "none",
+              "width": 24,
+              "labelT": 0.40809855320999927,
+              "labelOffsetX": -80.12414176009611,
+              "labelOffsetY": -7.444364443423865
+            },
+            "selected": false
+          },
+          {
+            "id": "e-1780901475880-d03c6a6d4b26d8",
+            "source": "auto-group-9",
+            "target": "auto-group-31",
+            "type": "board",
+            "data": {
+              "kind": "rel",
+              "relationType": "contradict",
+              "label": "一方で",
+              "line": "solid",
+              "arrow": "none",
+              "width": 24,
+              "labelT": 0.5169901029266588,
+              "labelOffsetX": -10.929925038927195,
+              "labelOffsetY": -45.261871677304555
+            },
+            "selected": false
+          },
+          {
+            "id": "e-1780901550028-96c0a764c9706",
+            "source": "auto-group-9",
+            "target": "c-19ea5e14f6f-caad-0",
+            "type": "board",
+            "data": {
+              "kind": "rel",
+              "relationType": "contradict",
+              "label": "一方で",
+              "line": "solid",
+              "arrow": "none",
+              "width": 24,
+              "labelT": 0.44802200348207516,
+              "labelOffsetX": -85.9836386551217,
+              "labelOffsetY": 74.36471770821532
+            },
+            "selected": false
+          },
+          {
+            "id": "e-1780901601145-3d1f3cf4c5b97",
+            "source": "auto-group-8",
+            "target": "auto-group-31",
+            "type": "board",
+            "data": {
+              "kind": "rel",
+              "relationType": "normal",
+              "label": "\"ハレ\"の関係",
+              "line": "dashed",
+              "arrow": "none",
+              "width": 24,
+              "labelT": 0.31358010684860466,
+              "labelOffsetX": -16.909300408575973,
+              "labelOffsetY": 41.34565109416519
+            },
+            "selected": false
+          },
+          {
+            "id": "e-1780901681050-bd75d9cd50d538",
+            "source": "auto-group-28",
+            "target": "auto-group-31",
+            "type": "board",
+            "data": {
+              "kind": "rel",
+              "relationType": "support",
+              "label": "実は支える",
+              "line": "solid",
+              "arrow": "forward",
+              "width": 24,
+              "labelT": 0.4868066243878241,
+              "labelOffsetX": -130.36775610646225,
+              "labelOffsetY": 7.526038967373097
+            },
+            "selected": false
+          }
+        ]
+      },
+      "groups": {
+        "rootGroups": [
+          {
+            "id": "auto-group-28",
+            "label": "岳の棚田や黒髪山など、焼き物だけでなく、四季の自然や散策を楽しめる魅力的なスポットが満載だ。",
+            "collapsed": false,
+            "children": [
+              {
+                "id": "auto-group-27",
+                "label": "岳の棚田や国見湖畔公園、桜ヶ丘公園では、四季折々の美しい自然や静かな風景をゆったりと楽しめる。",
+                "collapsed": false,
+                "children": [],
+                "cards": [
+                  {
+                    "id": "c-19ea5e14f70-188a-35",
+                    "label": "岳の棚田では、山あいの田園風景を楽しめる"
+                  },
+                  {
+                    "id": "c-19ea5e14f70-967f-36",
+                    "label": "国見湖畔公園は、静かな水辺の景色を味わえる穴場的スポット"
+                  },
+                  {
+                    "id": "c-19ea5e14f70-c8d4-37",
+                    "label": "桜ヶ丘公園は、春の花見スポットとしても楽しめる"
+                  }
+                ]
+              },
+              {
+                "id": "g-19ea5f1b0c0-0e00",
+                "label": "自然歩道や黒髪山など、焼き物だけでなく散策や登山が楽しめる魅力的なスポットもある。",
+                "collapsed": false,
+                "children": [],
+                "cards": [
+                  {
+                    "id": "c-19ea5e14f70-a79a-34",
+                    "label": "九州自然歩道のコースもあり、焼き物だけでなく山歩きの魅力もある"
+                  },
+                  {
+                    "id": "c-19ea5e14f70-c850-33",
+                    "label": "黒髪山は自然散策や登山で親しまれる有田の自然スポット"
+                  }
+                ]
+              }
+            ],
+            "cards": []
+          },
+          {
+            "id": "auto-group-31",
+            "label": "焼き物の町で、職人の息吹と文化の匂いを感じながら、お気に入りの器を探すお祭りに参加できる。",
+            "collapsed": false,
+            "children": [
+              {
+                "id": "auto-group-24",
+                "label": "伝統の内山の町並みで路地裏を歩き、職人の息吹と風情を感じながら、お祭りでお気に入りの器を探すことができる。",
+                "collapsed": false,
+                "children": [
+                  {
+                    "id": "auto-group-1",
+                    "label": "江戸後期から昭和初期のレトロな建物が並ぶ内山の町並みは、国の重伝建保存地区に選定されている。",
+                    "collapsed": false,
+                    "children": [],
+                    "cards": [
+                      {
+                        "id": "c-19ea5e14f70-746d-13",
+                        "label": "内山地区には、江戸後期から昭和初期までの建物が並ぶレトロな町並みがある"
+                      },
+                      {
+                        "id": "c-19ea5e14f70-d61f-14",
+                        "label": "内山地区の町並みは、国の重要伝統的建造物群保存地区に選定されている"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "auto-group-15",
+                    "label": "陶磁器のお祭りが魅力的で、駅周辺を散策しながらアリタセラでお気に入りの器を探すことができる。",
+                    "collapsed": false,
+                    "children": [
+                      {
+                        "id": "auto-group-4",
+                        "label": "春に賑わう有田陶器市だけでなく、秋には落ち着いた雰囲気の「陶磁器まつり」も楽しめる。",
+                        "collapsed": false,
+                        "children": [],
+                        "cards": [
+                          {
+                            "id": "c-19ea5e14f70-3afe-30",
+                            "label": "秋には「秋の有田陶磁器まつり」もあり、春とは違った落ち着いた雰囲気を楽しめる"
+                          },
+                          {
+                            "id": "c-19ea5e14f70-4189-29",
+                            "label": "有田陶器市は毎年春の大型イベントとして多くの人でにぎわう"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "auto-group-6",
+                        "label": "駅周辺から散策しはじめて、アリタセラで有田焼を見比べながら日常の器を探すことができる。",
+                        "collapsed": false,
+                        "children": [],
+                        "cards": [
+                          {
+                            "id": "c-19ea5e14f70-752d-27",
+                            "label": "有田焼は飾るだけでなく、日常の器として使って楽しめるのが魅力"
+                          },
+                          {
+                            "id": "c-19ea5e14f70-86d5-26",
+                            "label": "アリタセラでは、多くの店で有田焼を見比べながら買い物できる"
+                          },
+                          {
+                            "id": "c-19ea5e14f70-b9d1-31",
+                            "label": "有田駅や上有田駅周辺から、焼き物の町歩きを始めやすい"
+                          }
+                        ]
+                      }
+                    ],
+                    "cards": []
+                  },
+                  {
+                    "id": "auto-group-17",
+                    "label": "昔の職人が住んでいた裏通りの雰囲気を感じつつ、陶芸体験や名窯の美を堪能できる。",
+                    "collapsed": false,
+                    "children": [],
+                    "cards": [
+                      {
+                        "id": "c-19ea5e14f70-0aa3-28",
+                        "label": "絵付け体験やろくろ体験ができ、見るだけでなく作る楽しみもある"
+                      },
+                      {
+                        "id": "c-19ea5e14f70-2260-12",
+                        "label": "昔の窯元や絵付師は、表通りではなく裏通りに住むことが多かった"
+                      },
+                      {
+                        "id": "c-19ea5e14f70-6e42-25",
+                        "label": "町内には源右衛門、今右衛門、香蘭社、深川製磁など名窯・老舗の資料館や展示施設がある"
+                      }
+                    ]
+                  }
+                ],
+                "cards": []
+              },
+              {
+                "id": "auto-group-30",
+                "label": "陶製の鳥居などの特徴がある焼き物の町で、歴史をかけて培われた土地の文化と匠の技に触れることができる。",
+                "collapsed": false,
+                "children": [
+                  {
+                    "id": "auto-group-16",
+                    "label": "樹齢1000年の天然記念物・大イチョウの傍らには、かつて陶石の搬出を監視した口屋番所跡が今も残っている。",
+                    "collapsed": false,
+                    "children": [
+                      {
+                        "id": "auto-group-10",
+                        "label": "国の天然記念物である大公孫樹の近くには、かつて陶石の持ち出しを監視した口屋番所跡が残っている。",
+                        "collapsed": false,
+                        "children": [],
+                        "cards": [
+                          {
+                            "id": "c-19ea5e14f70-46f5-17",
+                            "label": "大公孫樹は国の天然記念物に指定されている"
+                          },
+                          {
+                            "id": "c-19ea5e14f70-ef4a-18",
+                            "label": "大公孫樹の近くには、陶石や焼き物の持ち出しを取り締まった口屋番所跡がある"
+                          }
+                        ]
+                      }
+                    ],
+                    "cards": [
+                      {
+                        "id": "c-19ea5e14f70-bde8-16",
+                        "label": "有田の大公孫樹は樹齢約1000年とされる大きなイチョウ"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "auto-group-25",
+                    "label": "約400年前の職人の息遣いを肌で感じ、土地で培われた文化と風情を楽しみながら、有田焼の歴史を体系的に学ぶことができる。",
+                    "collapsed": false,
+                    "children": [
+                      {
+                        "id": "auto-group-13",
+                        "label": "佐賀藩の元で欧州へ渡った有田焼の400年の歴史を、九州陶磁文化館では体系的に学べる。",
+                        "collapsed": false,
+                        "children": [
+                          {
+                            "id": "auto-group-12",
+                            "label": "佐賀藩の保護で発展し欧州へ伝わった有田焼の経歴は、洋館が残る町並みと共に歴史を今に伝える。",
+                            "collapsed": false,
+                            "children": [],
+                            "cards": [
+                              {
+                                "id": "c-19ea5e14f6f-ef9b-9",
+                                "label": "佐賀藩の保護と管理が、有田を磁器産地として育てた"
+                              },
+                              {
+                                "id": "c-19ea5e14f70-4db3-21",
+                                "label": "有田焼は、江戸時代に海外へも輸出され、ヨーロッパの陶磁器文化にも影響を与えた"
+                              },
+                              {
+                                "id": "c-19ea5e14f70-501e-38",
+                                "label": "旧田代家西洋館は、有田に残る洋風建築として町並みにアクセントを添えている"
+                              }
+                            ]
+                          },
+                          {
+                            "id": "auto-group-2",
+                            "label": "佐賀県立九州陶磁文化館では、約400年の歴史を持つ有田焼の歩みを体系的に学べる。",
+                            "collapsed": false,
+                            "children": [],
+                            "cards": [
+                              {
+                                "id": "c-19ea5e14f6f-8491-4",
+                                "label": "有田焼の歴史は約400年続いている"
+                              },
+                              {
+                                "id": "c-19ea5e14f70-c8b2-20",
+                                "label": "佐賀県立九州陶磁文化館では、有田焼の約400年の歴史を体系的に学べる"
+                              }
+                            ]
+                          }
+                        ],
+                        "cards": []
+                      },
+                      {
+                        "id": "auto-group-21",
+                        "label": "有田の町では、歴史あるトンバイ塀が並ぶ小路（しゅうじ）を巡りながら、焼き物の文化と風情を深く楽しむことができます。",
+                        "collapsed": false,
+                        "children": [
+                          {
+                            "id": "auto-group-14",
+                            "label": "有田の町では、表通りの店巡りと共に、焼き物の歴史を今に伝える独特なトンバイ塀の散策が楽しめる。",
+                            "collapsed": false,
+                            "children": [
+                              {
+                                "id": "auto-group-5",
+                                "label": "有田の町には、登り窯の廃材を赤土で固めて作られた、焼き物の秘密を守るための「トンバイ塀」が今も残っている。",
+                                "collapsed": false,
+                                "children": [],
+                                "cards": [
+                                  {
+                                    "id": "c-19ea5e14f70-3ebd-11",
+                                    "label": "トンバイ塀は、登り窯の耐火レンガや陶片などを赤土で固めて作られている"
+                                  },
+                                  {
+                                    "id": "c-19ea5e14f70-72bd-10",
+                                    "label": "有田の町には、焼き物づくりの秘密を守るための「トンバイ塀」が残っている"
+                                  }
+                                ]
+                              }
+                            ],
+                            "cards": [
+                              {
+                                "id": "c-19ea5e14f70-bc56-32",
+                                "label": "町歩きでは、表通りの店巡りと裏通りのトンバイ塀散策の両方が楽しめる"
+                              }
+                            ]
+                          }
+                        ],
+                        "cards": [
+                          {
+                            "id": "c-19ea5e14f70-e58a-15",
+                            "label": "有田では路地のことを「小路（しゅうじ）」と呼ぶ"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "auto-group-22",
+                        "label": "原料を採掘した泉山磁石場や、それを焼成した天狗谷窯跡は、有田焼の歴史が築かれた重要な地だ。",
+                        "collapsed": false,
+                        "children": [
+                          {
+                            "id": "auto-group-11",
+                            "label": "天狗谷窯跡は、日本で最初の磁器が誕生した歴史を知る上で極めて重要な場所です。",
+                            "collapsed": false,
+                            "children": [],
+                            "cards": [
+                              {
+                                "id": "c-19ea5e14f6f-e141-3",
+                                "label": "日本で最初の磁器が生まれた町として知られている"
+                              },
+                              {
+                                "id": "c-19ea5e14f70-7d17-24",
+                                "label": "天狗谷窯跡は、日本初期の磁器づくりを知るうえで重要な窯跡"
+                              }
+                            ]
+                          },
+                          {
+                            "id": "auto-group-18",
+                            "label": "李参平が礎を築いた有田焼の原料は、国指定の史跡である泉山磁石場で採れていた。",
+                            "collapsed": false,
+                            "children": [
+                              {
+                                "id": "auto-group-3",
+                                "label": "有田焼の原料である陶石が発見された泉山磁石場は、その一部が国指定の史跡となっている。",
+                                "collapsed": false,
+                                "children": [],
+                                "cards": [
+                                  {
+                                    "id": "c-19ea5e14f6f-9a65-6",
+                                    "label": "泉山磁石場の一部は国指定の史跡になっている"
+                                  },
+                                  {
+                                    "id": "c-19ea5e14f6f-f14a-5",
+                                    "label": "泉山磁石場は、有田焼の原料となる陶石が発見された場所"
+                                  }
+                                ]
+                              },
+                              {
+                                "id": "auto-group-7",
+                                "label": "朝鮮半島から伝わった技術を背景に、李参平が有田焼の礎を築いた。",
+                                "collapsed": false,
+                                "children": [],
+                                "cards": [
+                                  {
+                                    "id": "c-19ea5e14f6f-8bb0-7",
+                                    "label": "陶工・李参平が有田焼のはじまりに深く関わったと伝えられている"
+                                  },
+                                  {
+                                    "id": "c-19ea5e14f6f-fd05-8",
+                                    "label": "有田焼は、朝鮮半島から伝わった技術を背景に発展した"
+                                  }
+                                ]
+                              }
+                            ],
+                            "cards": []
+                          }
+                        ],
+                        "cards": []
+                      }
+                    ],
+                    "cards": []
+                  }
+                ],
+                "cards": [
+                  {
+                    "id": "c-19ea5e14f70-be1b-19",
+                    "label": "陶山神社には、焼き物の町らしい陶製の鳥居や狛犬があることで知られる"
+                  }
+                ]
+              }
+            ],
+            "cards": []
+          },
+          {
+            "id": "auto-group-8",
+            "label": "約380年の歴史を誇る柿右衛門窯は、ドイツのマイセン窯にも多大な影響を与えた名門として知られる。",
+            "collapsed": false,
+            "children": [],
+            "cards": [
+              {
+                "id": "c-19ea5e14f70-a18e-22",
+                "label": "柿右衛門様式は、ドイツのマイセン窯にも影響を及ぼしたと紹介されている"
+              },
+              {
+                "id": "c-19ea5e14f70-cdd0-23",
+                "label": "柿右衛門窯は380年の歴史を持つ窯元として知られる"
+              }
+            ]
+          },
+          {
+            "id": "auto-group-9",
+            "label": "有田中学校と西有田中学校は炎の博記念堂へ統合され、有田小学校も含めて、新築されたばかりの校舎を誇ることになる。",
+            "collapsed": false,
+            "children": [],
+            "cards": [
+              {
+                "id": "c-19ea5e14f6f-4e61-2",
+                "label": "有田小学校は数年前に建て替わったばかりでとてもきれいな校舎がある"
+              },
+              {
+                "id": "c-19ea5e14f6f-79ee-1",
+                "label": "有田中学校と西有田中学校が、炎の博記念堂の敷地に統合校舎を建てる予定だ"
+              }
+            ]
+          }
+        ],
+        "ungroupedCards": [
+          {
+            "id": "c-19ea5e14f6f-caad-0",
+            "label": "あり菜の大将は嬉野でやっていた焼き肉屋がつぶれて一時期肉体労働をやっていた"
+          }
+        ]
+      },
+      "ai": {
+        "keywordById": {
+          "c-19ea5e14f70-86d5-26": "アリタセラ",
+          "c-19ea5e14f70-752d-27": "有田焼",
+          "c-19ea5e14f70-b9d1-31": "有田",
+          "c-19ea5e14f70-2260-12": "昔の窯元",
+          "c-19ea5e14f70-6e42-25": "源右衛門",
+          "c-19ea5e14f70-0aa3-28": "体験",
+          "auto-group-21": "有田の町",
+          "auto-group-22": "有田焼の歴史",
+          "auto-group-13": "有田焼",
+          "auto-group-1": "内山の町並み",
+          "auto-group-17": "裏通りの雰囲気",
+          "auto-group-15": "陶磁器のお祭り",
+          "auto-group-25": "有田焼の歴史",
+          "c-19ea5e14f70-be1b-19": "陶製の鳥居",
+          "auto-group-16": "イチョウの傍ら",
+          "auto-group-24": "内山の町並み",
+          "auto-group-30": "焼き物の町"
+        },
+        "associationsById": {
+          "c-19ea5e14f70-86d5-26": [
+            "磁器",
+            "伝統",
+            "散策",
+            "洗練",
+            "白磁",
+            "絵付け",
+            "職人技",
+            "静寂",
+            "優雅",
+            "彩り",
+            "器選び",
+            "至福のひととき",
+            "多くの店で",
+            "有田焼を見比べながら",
+            "買い物できる",
+            "凛とした",
+            "温もり",
+            "歴史の息吹",
+            "光の反射",
+            "日常の贅沢"
+          ],
+          "c-19ea5e14f70-752d-27": [
+            "磁器",
+            "白磁",
+            "伝統工芸",
+            "染付",
+            "華やか",
+            "食卓",
+            "日常の器",
+            "手触り",
+            "艶やか",
+            "優雅",
+            "職人技",
+            "使い込む",
+            "彩り",
+            "凛とした",
+            "温もり",
+            "飾るだけでなく",
+            "日常の器として",
+            "時を重ねる",
+            "食の舞台",
+            "心躍る"
+          ],
+          "c-19ea5e14f70-b9d1-31": [
+            "磁器",
+            "伝統",
+            "絵付け",
+            "散策",
+            "窯元",
+            "白磁",
+            "静寂",
+            "風情",
+            "歴史",
+            "職人",
+            "焼き物の町歩き",
+            "情緒",
+            "繊細",
+            "青白",
+            "路地裏",
+            "駅周辺",
+            "古都の息吹",
+            "凛とした",
+            "温もり",
+            "時を刻む"
+          ],
+          "c-19ea5e14f70-2260-12": [
+            "職人",
+            "路地裏",
+            "土の匂い",
+            "静寂",
+            "絵付師",
+            "煤けた壁",
+            "ひっそりと",
+            "伝統",
+            "隠れ家",
+            "筆先",
+            "釉薬",
+            "寡黙",
+            "歴史の影",
+            "表通りではなく",
+            "裏通りに住む",
+            "土埃",
+            "侘び寂び",
+            "職人気質",
+            "時が止まる",
+            "名もなき芸術"
+          ],
+          "c-19ea5e14f70-6e42-25": [
+            "磁器",
+            "名窯",
+            "伝統",
+            "職人",
+            "絵付け",
+            "青白磁",
+            "優雅",
+            "静寂",
+            "歴史の息吹",
+            "老舗",
+            "資料館",
+            "展示施設",
+            "深川製磁",
+            "香蘭社",
+            "今右衛門",
+            "匠の技",
+            "凛とした",
+            "時を刻む",
+            "美の殿堂",
+            "右"
+          ],
+          "c-19ea5e14f70-0aa3-28": [
+            "陶芸",
+            "粘土",
+            "手仕事",
+            "没頭",
+            "創造",
+            "温もり",
+            "土の香り",
+            "指先",
+            "集中",
+            "伝統",
+            "思い出",
+            "形にする",
+            "芸術",
+            "無心",
+            "素朴",
+            "作る楽しみ",
+            "見るだけでなく",
+            "日常を忘れる",
+            "静寂",
+            "彩り"
+          ],
+          "auto-group-21": [
+            "陶磁器",
+            "伝統",
+            "静寂",
+            "トンバイ塀",
+            "小路を巡り",
+            "焼き物の文化",
+            "風情",
+            "職人",
+            "白磁",
+            "絵付け",
+            "歴史の息吹",
+            "古都の香り",
+            "静謐",
+            "温もり",
+            "時が止まる",
+            "情緒",
+            "散策",
+            "釉薬",
+            "匠の技",
+            "焼き物散歩"
+          ],
+          "auto-group-22": [
+            "磁器",
+            "伝統",
+            "泉山磁石場",
+            "天狗谷窯跡",
+            "白磁",
+            "職人",
+            "炎",
+            "静寂",
+            "繊細",
+            "青花",
+            "歴史が築かれた",
+            "悠久",
+            "土の記憶",
+            "華麗",
+            "釉薬",
+            "凛とした",
+            "時を刻む",
+            "匠の技",
+            "焼成",
+            "息吹"
+          ],
+          "auto-group-13": [
+            "磁器",
+            "白磁",
+            "染付",
+            "伝統",
+            "職人",
+            "佐賀",
+            "欧州",
+            "輸出",
+            "400年の歴史",
+            "九州陶磁文化館",
+            "体系的",
+            "繊細",
+            "優美",
+            "静寂",
+            "青と白",
+            "時を超える旅",
+            "光の反射",
+            "凛とした",
+            "悠久の息吹",
+            "匠の技"
+          ],
+          "auto-group-1": [
+            "レトロ",
+            "歴史",
+            "風情",
+            "重伝建",
+            "保存地区",
+            "江戸後期",
+            "静寂",
+            "木造",
+            "格子戸",
+            "瓦屋根",
+            "ノスタルジー",
+            "タイムスリップ",
+            "路地裏",
+            "琥珀色",
+            "面影",
+            "佇まい",
+            "古き良き",
+            "情緒的",
+            "時を刻む",
+            "トロ"
+          ],
+          "auto-group-17": [
+            "路地裏",
+            "職人の息吹",
+            "土の匂い",
+            "静寂",
+            "歴史の断片",
+            "古民家",
+            "手仕事",
+            "温もり",
+            "名窯の美",
+            "陶芸体験",
+            "風情",
+            "隠れ家",
+            "時の流れ",
+            "土と炎",
+            "静かな午後",
+            "情緒",
+            "職人が住んでいた",
+            "懐かしさ",
+            "侘び寂び",
+            "記憶の迷宮"
+          ],
+          "auto-group-15": [
+            "散策",
+            "駅周辺",
+            "器",
+            "アリタセラ",
+            "伝統",
+            "職人",
+            "釉薬",
+            "窯元",
+            "手触り",
+            "温もり",
+            "青白磁",
+            "日常の彩り",
+            "静寂な時間",
+            "宝探し",
+            "心躍る",
+            "洗練",
+            "風情",
+            "光の反射",
+            "土の記憶",
+            "お気に入り"
+          ],
+          "auto-group-25": [
+            "磁器",
+            "伝統",
+            "職人の息遣い",
+            "白磁",
+            "絵付け",
+            "佐賀県",
+            "窯元",
+            "歴史の重み",
+            "風情",
+            "静寂",
+            "青花",
+            "匠の技",
+            "土地で培われた文化",
+            "繊細",
+            "悠久",
+            "土の記憶",
+            "凛とした",
+            "焼き物",
+            "時を刻む",
+            "継承"
+          ],
+          "c-19ea5e14f70-be1b-19": [
+            "磁器",
+            "神社",
+            "焼き物の町",
+            "伝統工芸",
+            "白い肌",
+            "硬質な響き",
+            "神聖",
+            "静寂",
+            "職人技",
+            "釉薬",
+            "ひんやりとした感触",
+            "歴史の息吹",
+            "凛とした佇まい",
+            "焼き物の町らしい",
+            "陶製の鳥居や狛犬",
+            "永遠の輝き",
+            "祈りの形",
+            "土の記憶",
+            "青白い光",
+            "狛犬"
+          ],
+          "auto-group-16": [
+            "黄金色",
+            "樹齢1000年",
+            "天然記念物",
+            "大イチョウ",
+            "歴史の証人",
+            "静寂",
+            "口屋番所跡",
+            "陶石",
+            "監視",
+            "時の流れ",
+            "古色蒼然",
+            "黄葉の絨毯",
+            "悠久",
+            "風の囁き",
+            "名残",
+            "ひっそりと",
+            "秋の気配",
+            "記憶の断片",
+            "歳月を刻む",
+            "静謐"
+          ],
+          "auto-group-24": [
+            "陶磁器",
+            "路地裏",
+            "職人",
+            "風情",
+            "お祭り",
+            "器",
+            "伝統",
+            "静寂",
+            "温もり",
+            "土の香り",
+            "歴史の息吹",
+            "散策",
+            "手仕事",
+            "釉薬",
+            "ノスタルジー",
+            "時が止まる",
+            "匠の技",
+            "情緒",
+            "光と影",
+            "心躍る"
+          ],
+          "auto-group-30": [
+            "陶器",
+            "土の匂い",
+            "職人",
+            "窯元",
+            "歴史",
+            "伝統",
+            "赤茶色",
+            "静寂",
+            "手仕事",
+            "温もり",
+            "釉薬",
+            "風情",
+            "匠の技",
+            "土地の文化",
+            "焼き締める",
+            "悠久の時",
+            "土と炎の芸術",
+            "趣深い",
+            "ひっそりと",
+            "息づく"
+          ]
+        },
+        "pickedByGroupId": {
+          "auto-group-6": [
+            "伝統工芸",
+            "日常の器",
+            "アリタセラ",
+            "有田焼を見比べながら",
+            "散策",
+            "伝統",
+            "駅周辺"
+          ],
+          "auto-group-17": [
+            "陶芸",
+            "体験",
+            "路地裏",
+            "表通りではなく",
+            "昔の窯元",
+            "裏通りに住む",
+            "ひっそりと",
+            "名窯",
+            "美の殿堂"
+          ],
+          "auto-group-25": [
+            "トンバイ塀",
+            "有田の町",
+            "小路を巡り",
+            "磁器",
+            "染付",
+            "白磁",
+            "九州陶磁文化館",
+            "体系的",
+            "有田焼の歴史",
+            "華麗",
+            "時を刻む",
+            "天狗谷窯跡",
+            "欧州"
+          ],
+          "auto-group-24": [
+            "内山の町並み",
+            "重伝建",
+            "路地裏",
+            "土の匂い",
+            "風情",
+            "裏通りの雰囲気",
+            "職人の息吹",
+            "保存地区",
+            "駅周辺",
+            "タイムスリップ",
+            "釉薬"
+          ],
+          "auto-group-30": [
+            "陶製の鳥居",
+            "土地で培われた文化",
+            "焼き物の町",
+            "神社",
+            "ひんやりとした感触",
+            "樹齢1000年",
+            "職人の息遣い",
+            "匠の技",
+            "歴史の重み"
+          ],
+          "auto-group-31": [
+            "土の匂い",
+            "職人",
+            "焼き物の町",
+            "陶器",
+            "陶磁器",
+            "路地裏",
+            "お祭り",
+            "内山の町並み",
+            "土と炎の芸術"
+          ]
+        },
+        "pickedSentenceByGroupId": {
+          "auto-group-3": "有田焼の原料である陶石が発見された泉山磁石場は、その一部が国指定の史跡となっています。",
+          "auto-group-7": "朝鮮半島から伝わった技術を背景に、李参平が有田焼の礎を築きました。",
+          "auto-group-11": "天狗谷窯跡は、日本で最初の磁器が誕生した歴史を知る上で極めて重要な場所です。",
+          "auto-group-2": "佐賀県立九州陶磁文化館では、約四百年の歴史を持つ有田焼の歩みを体系的に学べます。",
+          "auto-group-4": "有田陶器市は春の賑わいだけでなく、秋には落ち着いた雰囲気の陶磁器まつりも楽しめます。",
+          "auto-group-8": "年の歴史を誇る柿右衛門窯は、ドイツのマイセン窯にも多大な影響を与えた名門として知られています。",
+          "auto-group-10": "国の天然記念物である大公孫樹の近くには、かつて陶石の持ち出しを監視した口屋番所跡が残っています。",
+          "auto-group-1": "江戸後期から昭和初期の建物が並ぶ内山地区の町並みは、国の重要伝統的建造物群保存地区に選定されています。",
+          "auto-group-5": "有田の町には、登り窯の廃材を赤土で固めて作られた、焼き物の秘密を守るための「トンバイ塀」が今も残っています。",
+          "auto-group-9": "有田中学校と西有田中学校は炎の博記念堂へ統合されますが、有田小学校は新築されたばかりの校舎を維持します。",
+          "auto-group-6": "駅周辺から散策し、アリタセラで有田焼を見比べながら日常の器を探す旅へ。",
+          "auto-group-12": "佐賀藩の保護で発展し欧州へも伝わった有田焼は、洋館が残る町並みと共に歴史を今に伝えています。",
+          "auto-group-19": "有田では路地を「小路」と呼び、黒髪山は自然散策や登山で親しまれています。",
+          "auto-group-18": "李参平が礎を築いた有田焼の原料となる陶石の産地、泉山磁石場は国指定史跡です。",
+          "auto-group-16": "樹齢約千年の国天然記念物・有田の大公孫樹の傍らには、かつて陶石の搬出を監視した口屋番所跡が今も残っています。",
+          "auto-group-17": "表通りではなく裏通りに住む昔の窯元で、陶芸体験や名窯の美の殿堂を巡る旅を楽しもう。",
+          "auto-group-13": "九州陶磁文化館では、欧州へ渡った有田焼の四百年の歴史を学べます。",
+          "auto-group-14": "有田の町では、表通りの店巡りと共に、焼き物の歴史を今に伝える独特なトンバイ塀の散策が楽しめます。",
+          "auto-group-15": "春の陶器市や秋の陶磁器まつりが魅力の有田で、駅周辺を散策しながらアリタセラでお気に入りの器を探してみませんか。",
+          "auto-group-21": "有田の町では、歴史あるトンバイ塀が並ぶ小路を巡りながら、焼き物の文化と風情を深く楽しむことができます。",
+          "auto-group-23": "陶山神社は陶製の鳥居や狛犬、大イチョウ、番所跡が残る名所です。",
+          "auto-group-22": "天狗谷窯跡は、泉山磁石場の原料で有田焼の歴史を築いた重要な地です。",
+          "auto-group-20": "有田では陶磁器の散策や体験に加え、自然歩道での山歩きも楽しめます。",
+          "g-19ea5f1b0c0-0e00": "黒髪山は自然散策や登山が楽しめる有田の魅力的なスポットです。",
+          "auto-group-27": "岳の棚田や国見湖畔公園、桜ヶ丘公園では、四季折々の美しい自然や静かな風景をゆったりと楽しめます。",
+          "auto-group-26": "陶山神社は陶製の鳥居や狛犬、大イチョウ、口屋番所跡で有名です。",
+          "auto-group-24": "重伝建に選定された内山の町並みで、路地裏を歩き職人の息吹と風情を感じる。",
+          "auto-group-28": "岳の棚田や黒髪山など、四季の自然や散策を楽しめる魅力的なスポットが満載です。",
+          "auto-group-30": "焼き物の町で陶製の鳥居がある神社を訪ね、土地で培われた文化と匠の技に触れる。",
+          "auto-group-31": "焼き物の町・内山の町並みで、職人の息吹と土の匂いを感じる。"
+        },
+        "constellationByGroupId": {
+          "auto-group-6": [
+            "c-19ea5e14f70-752d-27-2-伝統工芸",
+            "c-19ea5e14f70-752d-27-6-日常の器",
+            "kw:c-19ea5e14f70-86d5-26",
+            "c-19ea5e14f70-86d5-26-13-有田焼を見比べながら",
+            "c-19ea5e14f70-86d5-26-2-散策",
+            "c-19ea5e14f70-b9d1-31-1-伝統",
+            "c-19ea5e14f70-b9d1-31-15-駅周辺"
+          ],
+          "auto-group-17": [
+            "c-19ea5e14f70-0aa3-28-0-陶芸",
+            "kw:c-19ea5e14f70-0aa3-28",
+            "c-19ea5e14f70-2260-12-1-路地裏",
+            "c-19ea5e14f70-2260-12-13-表通りではなく",
+            "kw:c-19ea5e14f70-2260-12",
+            "c-19ea5e14f70-2260-12-14-裏通りに住む",
+            "c-19ea5e14f70-2260-12-6-ひっそりと",
+            "c-19ea5e14f70-6e42-25-1-名窯",
+            "c-19ea5e14f70-6e42-25-18-美の殿堂"
+          ],
+          "auto-group-25": [
+            "auto-group-21-3-トンバイ塀",
+            "kw:auto-group-21",
+            "auto-group-21-4-小路を巡り",
+            "auto-group-13-0-磁器",
+            "auto-group-13-2-染付",
+            "auto-group-13-1-白磁",
+            "auto-group-13-9-九州陶磁文化館",
+            "auto-group-13-10-体系的",
+            "kw:auto-group-22",
+            "auto-group-22-13-華麗",
+            "auto-group-22-16-時を刻む",
+            "auto-group-22-3-天狗谷窯跡",
+            "auto-group-13-6-欧州"
+          ],
+          "auto-group-24": [
+            "kw:auto-group-1",
+            "auto-group-1-3-重伝建",
+            "auto-group-17-0-路地裏",
+            "auto-group-17-2-土の匂い",
+            "auto-group-17-10-風情",
+            "kw:auto-group-17",
+            "auto-group-17-1-職人の息吹",
+            "auto-group-1-4-保存地区",
+            "auto-group-15-1-駅周辺",
+            "auto-group-1-11-タイムスリップ",
+            "auto-group-15-6-釉薬"
+          ],
+          "auto-group-30": [
+            "kw:c-19ea5e14f70-be1b-19",
+            "auto-group-25-12-土地で培われた文化",
+            "c-19ea5e14f70-be1b-19-2-焼き物の町",
+            "c-19ea5e14f70-be1b-19-1-神社",
+            "c-19ea5e14f70-be1b-19-10-ひんやりとした感触",
+            "auto-group-16-1-樹齢1000年",
+            "auto-group-25-2-職人の息遣い",
+            "auto-group-25-11-匠の技",
+            "auto-group-25-7-歴史の重み"
+          ],
+          "auto-group-31": [
+            "auto-group-30-1-土の匂い",
+            "auto-group-30-2-職人",
+            "kw:auto-group-30",
+            "auto-group-30-0-陶器",
+            "auto-group-24-0-陶磁器",
+            "auto-group-24-1-路地裏",
+            "auto-group-24-4-お祭り",
+            "kw:auto-group-24",
+            "auto-group-24-2-職人",
+            "auto-group-30-16-土と炎の芸術"
+          ]
+        },
+        "constellationSimilarityByGroupId": {
+          "auto-group-6": {
+            "kw:c-19ea5e14f70-86d5-26": 0.8211877535096668,
+            "c-19ea5e14f70-86d5-26-0-磁器": 0.6020739430168707,
+            "c-19ea5e14f70-86d5-26-1-伝統": 0.5466887587589303,
+            "c-19ea5e14f70-86d5-26-2-散策": 0.5674203672950824,
+            "c-19ea5e14f70-86d5-26-3-洗練": 0.5303874041741221,
+            "c-19ea5e14f70-86d5-26-4-白磁": 0.5646892172861656,
+            "c-19ea5e14f70-86d5-26-5-絵付け": 0.5965837704800082,
+            "c-19ea5e14f70-86d5-26-6-職人技": 0.566919707011535,
+            "c-19ea5e14f70-86d5-26-7-静寂": 0.4784897366893162,
+            "c-19ea5e14f70-86d5-26-8-優雅": 0.5270030217402691,
+            "c-19ea5e14f70-86d5-26-9-彩り": 0.5493396678452567,
+            "c-19ea5e14f70-86d5-26-10-器選び": 0.6469485510191048,
+            "c-19ea5e14f70-86d5-26-11-至福のひととき": 0.5195087008707764,
+            "c-19ea5e14f70-86d5-26-12-多くの店で": 0.6620538777115751,
+            "c-19ea5e14f70-86d5-26-13-有田焼を見比べながら": 0.8050828558942368,
+            "c-19ea5e14f70-86d5-26-14-買い物できる": 0.6499317865692977,
+            "c-19ea5e14f70-86d5-26-15-凛とした": 0.5067366663390706,
+            "c-19ea5e14f70-86d5-26-16-温もり": 0.5340667957439418,
+            "c-19ea5e14f70-86d5-26-17-歴史の息吹": 0.544629284011696,
+            "c-19ea5e14f70-86d5-26-18-光の反射": 0.4960825385870323,
+            "c-19ea5e14f70-86d5-26-19-日常の贅沢": 0.5335821655189955,
+            "kw:c-19ea5e14f70-752d-27": 0.8484199322950001,
+            "c-19ea5e14f70-752d-27-0-磁器": 0.6393293714136389,
+            "c-19ea5e14f70-752d-27-1-白磁": 0.6081900938692093,
+            "c-19ea5e14f70-752d-27-2-伝統工芸": 0.6057457381215655,
+            "c-19ea5e14f70-752d-27-3-染付": 0.6711939427289233,
+            "c-19ea5e14f70-752d-27-4-華やか": 0.5907948399430508,
+            "c-19ea5e14f70-752d-27-5-食卓": 0.599445485902363,
+            "c-19ea5e14f70-752d-27-6-日常の器": 0.7449884332677453,
+            "c-19ea5e14f70-752d-27-7-手触り": 0.5715045351958193,
+            "c-19ea5e14f70-752d-27-8-艶やか": 0.5957369610956674,
+            "c-19ea5e14f70-752d-27-9-優雅": 0.5643133630793582,
+            "c-19ea5e14f70-752d-27-10-職人技": 0.5798310555045704,
+            "c-19ea5e14f70-752d-27-11-使い込む": 0.6441685034905442,
+            "c-19ea5e14f70-752d-27-12-彩り": 0.5979573507082775,
+            "c-19ea5e14f70-752d-27-13-凛とした": 0.5482473490746178,
+            "c-19ea5e14f70-752d-27-14-温もり": 0.5974256295511982,
+            "c-19ea5e14f70-752d-27-15-飾るだけでなく": 0.7152534343019863,
+            "c-19ea5e14f70-752d-27-16-日常の器として": 0.7838681462454564,
+            "c-19ea5e14f70-752d-27-17-時を重ねる": 0.5580086248551617,
+            "c-19ea5e14f70-752d-27-18-食の舞台": 0.5952200340503953,
+            "c-19ea5e14f70-752d-27-19-心躍る": 0.5582269781677993,
+            "kw:c-19ea5e14f70-b9d1-31": 0.7888757373568072,
+            "c-19ea5e14f70-b9d1-31-0-磁器": 0.6002288066515319,
+            "c-19ea5e14f70-b9d1-31-1-伝統": 0.5389215506738232,
+            "c-19ea5e14f70-b9d1-31-2-絵付け": 0.6021206516811786,
+            "c-19ea5e14f70-b9d1-31-3-散策": 0.556652920060884,
+            "c-19ea5e14f70-b9d1-31-4-窯元": 0.6423951499231939,
+            "c-19ea5e14f70-b9d1-31-5-白磁": 0.5742877058159012,
+            "c-19ea5e14f70-b9d1-31-6-静寂": 0.4819842819793339,
+            "c-19ea5e14f70-b9d1-31-7-風情": 0.5410501437962506,
+            "c-19ea5e14f70-b9d1-31-8-歴史": 0.49489283909765625,
+            "c-19ea5e14f70-b9d1-31-9-職人": 0.5350337291344004,
+            "c-19ea5e14f70-b9d1-31-10-焼き物の町歩き": 0.7880542618418478,
+            "c-19ea5e14f70-b9d1-31-11-情緒": 0.4968822486179147,
+            "c-19ea5e14f70-b9d1-31-12-繊細": 0.5148012788098694,
+            "c-19ea5e14f70-b9d1-31-13-青白": 0.5213530604123531,
+            "c-19ea5e14f70-b9d1-31-14-路地裏": 0.5409350807263699,
+            "c-19ea5e14f70-b9d1-31-15-駅周辺": 0.6427333248658865,
+            "c-19ea5e14f70-b9d1-31-16-古都の息吹": 0.5332196732054717,
+            "c-19ea5e14f70-b9d1-31-17-凛とした": 0.4921643000286893,
+            "c-19ea5e14f70-b9d1-31-18-温もり": 0.5478055470430828,
+            "c-19ea5e14f70-b9d1-31-19-時を刻む": 0.5193014540995319
+          },
+          "auto-group-17": {
+            "kw:c-19ea5e14f70-2260-12": 0.7710849594512942,
+            "c-19ea5e14f70-2260-12-0-職人": 0.6189025009791215,
+            "c-19ea5e14f70-2260-12-1-路地裏": 0.6880698011103286,
+            "c-19ea5e14f70-2260-12-2-土の匂い": 0.5941688800735546,
+            "c-19ea5e14f70-2260-12-3-静寂": 0.5071512282050907,
+            "c-19ea5e14f70-2260-12-4-絵付師": 0.7272898788598178,
+            "c-19ea5e14f70-2260-12-5-煤けた壁": 0.6156433299203069,
+            "c-19ea5e14f70-2260-12-6-ひっそりと": 0.6029507121556196,
+            "c-19ea5e14f70-2260-12-7-伝統": 0.6097175741108115,
+            "c-19ea5e14f70-2260-12-8-隠れ家": 0.6651006203951412,
+            "c-19ea5e14f70-2260-12-9-筆先": 0.5524583455056957,
+            "c-19ea5e14f70-2260-12-10-釉薬": 0.6407098261012241,
+            "c-19ea5e14f70-2260-12-11-寡黙": 0.5393997107316055,
+            "c-19ea5e14f70-2260-12-12-歴史の影": 0.5988520960402641,
+            "c-19ea5e14f70-2260-12-13-表通りではなく": 0.7407535151539516,
+            "c-19ea5e14f70-2260-12-14-裏通りに住む": 0.7565763833389102,
+            "c-19ea5e14f70-2260-12-15-土埃": 0.5800536190383552,
+            "c-19ea5e14f70-2260-12-16-侘び寂び": 0.5739713168751154,
+            "c-19ea5e14f70-2260-12-17-職人気質": 0.6128781713689199,
+            "c-19ea5e14f70-2260-12-18-時が止まる": 0.5196778552750456,
+            "c-19ea5e14f70-2260-12-19-名もなき芸術": 0.554002465584677,
+            "kw:c-19ea5e14f70-0aa3-28": 0.6902325829113124,
+            "c-19ea5e14f70-0aa3-28-0-陶芸": 0.7262830576812866,
+            "c-19ea5e14f70-0aa3-28-1-粘土": 0.649434239310767,
+            "c-19ea5e14f70-0aa3-28-2-手仕事": 0.6337448137596482,
+            "c-19ea5e14f70-0aa3-28-3-没頭": 0.563575657649963,
+            "c-19ea5e14f70-0aa3-28-4-創造": 0.6244814145448957,
+            "c-19ea5e14f70-0aa3-28-5-温もり": 0.5935455520756673,
+            "c-19ea5e14f70-0aa3-28-6-土の香り": 0.5820179995211509,
+            "c-19ea5e14f70-0aa3-28-7-指先": 0.5523988523371849,
+            "c-19ea5e14f70-0aa3-28-8-集中": 0.5581178088094512,
+            "c-19ea5e14f70-0aa3-28-9-伝統": 0.5682462916148291,
+            "c-19ea5e14f70-0aa3-28-10-思い出": 0.5670070101651009,
+            "c-19ea5e14f70-0aa3-28-11-形にする": 0.6020090118423653,
+            "c-19ea5e14f70-0aa3-28-12-芸術": 0.6123745588384575,
+            "c-19ea5e14f70-0aa3-28-13-無心": 0.5055937280086061,
+            "c-19ea5e14f70-0aa3-28-14-素朴": 0.5579298912829833,
+            "c-19ea5e14f70-0aa3-28-15-作る楽しみ": 0.7164106398619946,
+            "c-19ea5e14f70-0aa3-28-16-見るだけでなく": 0.7033753668682813,
+            "c-19ea5e14f70-0aa3-28-17-日常を忘れる": 0.6172893325267615,
+            "c-19ea5e14f70-0aa3-28-18-静寂": 0.5159190258221086,
+            "c-19ea5e14f70-0aa3-28-19-彩り": 0.6080858152075522,
+            "kw:c-19ea5e14f70-6e42-25": 0.7260563607019703,
+            "c-19ea5e14f70-6e42-25-0-磁器": 0.6519716794283662,
+            "c-19ea5e14f70-6e42-25-1-名窯": 0.7200071631103652,
+            "c-19ea5e14f70-6e42-25-2-伝統": 0.5847976844242844,
+            "c-19ea5e14f70-6e42-25-3-職人": 0.5916646496956994,
+            "c-19ea5e14f70-6e42-25-4-絵付け": 0.6092085718817499,
+            "c-19ea5e14f70-6e42-25-5-青白磁": 0.6330528233163509,
+            "c-19ea5e14f70-6e42-25-6-優雅": 0.5420897626827583,
+            "c-19ea5e14f70-6e42-25-7-静寂": 0.5137308741285924,
+            "c-19ea5e14f70-6e42-25-8-歴史の息吹": 0.5983740678849696,
+            "c-19ea5e14f70-6e42-25-9-老舗": 0.6564711096830357,
+            "c-19ea5e14f70-6e42-25-10-資料館": 0.6141972069522039,
+            "c-19ea5e14f70-6e42-25-11-展示施設": 0.6648531274336204,
+            "c-19ea5e14f70-6e42-25-12-深川製磁": 0.714348682635528,
+            "c-19ea5e14f70-6e42-25-13-香蘭社": 0.6454262287951616,
+            "c-19ea5e14f70-6e42-25-14-今右衛門": 0.6626123372693574,
+            "c-19ea5e14f70-6e42-25-15-匠の技": 0.5916497703628633,
+            "c-19ea5e14f70-6e42-25-16-凛とした": 0.5263963823625883,
+            "c-19ea5e14f70-6e42-25-17-時を刻む": 0.548189741963285,
+            "c-19ea5e14f70-6e42-25-18-美の殿堂": 0.5883765411188335,
+            "c-19ea5e14f70-6e42-25-19-右": 0.5386085832216068
+          },
+          "auto-group-25": {
+            "kw:auto-group-13": 0.7406909977962806,
+            "auto-group-13-0-磁器": 0.5934054286728658,
+            "auto-group-13-1-白磁": 0.5763994371032687,
+            "auto-group-13-2-染付": 0.6298527882730742,
+            "auto-group-13-3-伝統": 0.5395296252019719,
+            "auto-group-13-4-職人": 0.5351402248489464,
+            "auto-group-13-5-佐賀": 0.6832745322419272,
+            "auto-group-13-6-欧州": 0.5864174957098092,
+            "auto-group-13-7-輸出": 0.4980794861357989,
+            "auto-group-13-8-400年の歴史": 0.6436720222307174,
+            "auto-group-13-9-九州陶磁文化館": 0.8144373634315859,
+            "auto-group-13-10-体系的": 0.5147055677667443,
+            "auto-group-13-11-繊細": 0.5032243289917009,
+            "auto-group-13-12-優美": 0.5085271910560748,
+            "auto-group-13-13-静寂": 0.4687775679021787,
+            "auto-group-13-14-青と白": 0.5046041524329679,
+            "auto-group-13-15-時を超える旅": 0.532535824737226,
+            "auto-group-13-16-光の反射": 0.4786625780536204,
+            "auto-group-13-17-凛とした": 0.47639046184104766,
+            "auto-group-13-18-悠久の息吹": 0.5439981747141573,
+            "auto-group-13-19-匠の技": 0.541752829715837,
+            "kw:auto-group-21": 0.7873247826085689,
+            "auto-group-21-0-陶磁器": 0.5796025335536761,
+            "auto-group-21-1-伝統": 0.5879898920516023,
+            "auto-group-21-2-静寂": 0.4831226132296127,
+            "auto-group-21-3-トンバイ塀": 0.7452049756740582,
+            "auto-group-21-4-小路を巡り": 0.6816112658477805,
+            "auto-group-21-5-焼き物の文化": 0.6637824635124506,
+            "auto-group-21-6-風情": 0.5886228273944646,
+            "auto-group-21-7-職人": 0.5546441313074729,
+            "auto-group-21-8-白磁": 0.5692761996781898,
+            "auto-group-21-9-絵付け": 0.5688228782280346,
+            "auto-group-21-10-歴史の息吹": 0.5859407389688526,
+            "auto-group-21-11-古都の香り": 0.5839285813720467,
+            "auto-group-21-12-静謐": 0.49054957946814376,
+            "auto-group-21-13-温もり": 0.5603198999134498,
+            "auto-group-21-14-時が止まる": 0.5263393964820031,
+            "auto-group-21-15-情緒": 0.5157936068679143,
+            "auto-group-21-16-散策": 0.5587922254586264,
+            "auto-group-21-17-釉薬": 0.5827191587744509,
+            "auto-group-21-18-匠の技": 0.5601228024803069,
+            "auto-group-21-19-焼き物散歩": 0.6934509594499735,
+            "kw:auto-group-22": 0.750094127343082,
+            "auto-group-22-0-磁器": 0.6225899243982342,
+            "auto-group-22-1-伝統": 0.544565539149946,
+            "auto-group-22-2-泉山磁石場": 0.76584712475454,
+            "auto-group-22-3-天狗谷窯跡": 0.7941098881450416,
+            "auto-group-22-4-白磁": 0.5969687096889424,
+            "auto-group-22-5-職人": 0.537764730331761,
+            "auto-group-22-6-炎": 0.48924748448138755,
+            "auto-group-22-7-静寂": 0.47579357591008936,
+            "auto-group-22-8-繊細": 0.5062882259037587,
+            "auto-group-22-9-青花": 0.5496976155201648,
+            "auto-group-22-10-歴史が築かれた": 0.599056324542478,
+            "auto-group-22-11-悠久": 0.517192548959714,
+            "auto-group-22-12-土の記憶": 0.596050417970683,
+            "auto-group-22-13-華麗": 0.5056207643173102,
+            "auto-group-22-14-釉薬": 0.6017813427516945,
+            "auto-group-22-15-凛とした": 0.48743923698717745,
+            "auto-group-22-16-時を刻む": 0.532069732419332,
+            "auto-group-22-17-匠の技": 0.5422364305310633,
+            "auto-group-22-18-焼成": 0.5965429904101833,
+            "auto-group-22-19-息吹": 0.5121048223196348
+          },
+          "auto-group-24": {
+            "kw:auto-group-17": 0.7879077025179043,
+            "auto-group-17-0-路地裏": 0.7053577464578425,
+            "auto-group-17-1-職人の息吹": 0.6793070295546361,
+            "auto-group-17-2-土の匂い": 0.6135759763347162,
+            "auto-group-17-3-静寂": 0.527732419058247,
+            "auto-group-17-4-歴史の断片": 0.5851719560834837,
+            "auto-group-17-5-古民家": 0.6552861663149758,
+            "auto-group-17-6-手仕事": 0.6589507211119556,
+            "auto-group-17-7-温もり": 0.6102577949009127,
+            "auto-group-17-8-名窯の美": 0.7229881913468494,
+            "auto-group-17-9-陶芸体験": 0.7811041446780378,
+            "auto-group-17-10-風情": 0.6521686803586132,
+            "auto-group-17-11-隠れ家": 0.6370769525373713,
+            "auto-group-17-12-時の流れ": 0.5666034781366344,
+            "auto-group-17-13-土と炎": 0.6109938562588126,
+            "auto-group-17-14-静かな午後": 0.5816414023977353,
+            "auto-group-17-15-情緒": 0.5331682342432329,
+            "auto-group-17-16-職人が住んでいた": 0.7416031733831365,
+            "auto-group-17-17-懐かしさ": 0.6100878838096676,
+            "auto-group-17-18-侘び寂び": 0.5938767767380072,
+            "auto-group-17-19-記憶の迷宮": 0.5803955259758076,
+            "kw:auto-group-1": 0.8531921428520124,
+            "auto-group-1-0-レトロ": 0.6314765973706963,
+            "auto-group-1-1-歴史": 0.5629149257158883,
+            "auto-group-1-2-風情": 0.6060014586054399,
+            "auto-group-1-3-重伝建": 0.6582176540155594,
+            "auto-group-1-4-保存地区": 0.642402994367219,
+            "auto-group-1-5-江戸後期": 0.6406324846540601,
+            "auto-group-1-6-静寂": 0.4960144268199849,
+            "auto-group-1-7-木造": 0.5961885285448851,
+            "auto-group-1-8-格子戸": 0.5593761328115205,
+            "auto-group-1-9-瓦屋根": 0.5694339672248555,
+            "auto-group-1-10-ノスタルジー": 0.580000916116434,
+            "auto-group-1-11-タイムスリップ": 0.5292053171750231,
+            "auto-group-1-12-路地裏": 0.5855590774708231,
+            "auto-group-1-13-琥珀色": 0.5120521293067604,
+            "auto-group-1-14-面影": 0.5495252721461829,
+            "auto-group-1-15-佇まい": 0.5483012330915302,
+            "auto-group-1-16-古き良き": 0.5987178251270139,
+            "auto-group-1-17-情緒的": 0.5187997195621147,
+            "auto-group-1-18-時を刻む": 0.5431934544976021,
+            "auto-group-1-19-トロ": 0.5337601878959277,
+            "kw:auto-group-15": 0.7954194429653134,
+            "auto-group-15-0-散策": 0.5881391081545781,
+            "auto-group-15-1-駅周辺": 0.659912408881589,
+            "auto-group-15-2-器": 0.5742774788718789,
+            "auto-group-15-3-アリタセラ": 0.7873025156559637,
+            "auto-group-15-4-伝統": 0.5617863587646652,
+            "auto-group-15-5-職人": 0.5544762090540492,
+            "auto-group-15-6-釉薬": 0.5900753610469328,
+            "auto-group-15-7-窯元": 0.6534294837015248,
+            "auto-group-15-8-手触り": 0.5434306290220353,
+            "auto-group-15-9-温もり": 0.5630891425587744,
+            "auto-group-15-10-青白磁": 0.6181817674847699,
+            "auto-group-15-11-日常の彩り": 0.5599502839741664,
+            "auto-group-15-12-静寂な時間": 0.5337994483907837,
+            "auto-group-15-13-宝探し": 0.5866174075039979,
+            "auto-group-15-14-心躍る": 0.5617259150712891,
+            "auto-group-15-15-洗練": 0.5458983374871533,
+            "auto-group-15-16-風情": 0.5798633829000834,
+            "auto-group-15-17-光の反射": 0.5260837242748039,
+            "auto-group-15-18-土の記憶": 0.5868448710550614,
+            "auto-group-15-19-お気に入り": 0.5594499345497815
+          },
+          "auto-group-30": {
+            "kw:c-19ea5e14f70-be1b-19": 0.8037679969992869,
+            "c-19ea5e14f70-be1b-19-0-磁器": 0.6090603621889522,
+            "c-19ea5e14f70-be1b-19-1-神社": 0.6533512297840012,
+            "c-19ea5e14f70-be1b-19-2-焼き物の町": 0.7333918035950355,
+            "c-19ea5e14f70-be1b-19-3-伝統工芸": 0.5963431829183492,
+            "c-19ea5e14f70-be1b-19-4-白い肌": 0.516874039213358,
+            "c-19ea5e14f70-be1b-19-5-硬質な響き": 0.5076922996875465,
+            "c-19ea5e14f70-be1b-19-6-神聖": 0.5356017326783764,
+            "c-19ea5e14f70-be1b-19-7-静寂": 0.4751373746159797,
+            "c-19ea5e14f70-be1b-19-8-職人技": 0.5657278224018696,
+            "c-19ea5e14f70-be1b-19-9-釉薬": 0.5887346000985096,
+            "c-19ea5e14f70-be1b-19-10-ひんやりとした感触": 0.5209097220316441,
+            "c-19ea5e14f70-be1b-19-11-歴史の息吹": 0.5375993090914158,
+            "c-19ea5e14f70-be1b-19-12-凛とした佇まい": 0.535958428314128,
+            "c-19ea5e14f70-be1b-19-13-焼き物の町らしい": 0.7458150531740614,
+            "c-19ea5e14f70-be1b-19-14-陶製の鳥居や狛犬": 0.8639955870979127,
+            "c-19ea5e14f70-be1b-19-15-永遠の輝き": 0.5074011450783836,
+            "c-19ea5e14f70-be1b-19-16-祈りの形": 0.5670154647435112,
+            "c-19ea5e14f70-be1b-19-17-土の記憶": 0.5957458989637561,
+            "c-19ea5e14f70-be1b-19-18-青白い光": 0.4989354984037485,
+            "c-19ea5e14f70-be1b-19-19-狛犬": 0.7364948671791622,
+            "kw:auto-group-25": 0.8100604333653878,
+            "auto-group-25-0-磁器": 0.5923416145658184,
+            "auto-group-25-1-伝統": 0.6016613696995945,
+            "auto-group-25-2-職人の息遣い": 0.6672584671538171,
+            "auto-group-25-3-白磁": 0.5878450884335037,
+            "auto-group-25-4-絵付け": 0.6122130432168946,
+            "auto-group-25-5-佐賀県": 0.634225661774899,
+            "auto-group-25-6-窯元": 0.6668942430186628,
+            "auto-group-25-7-歴史の重み": 0.6408451584967778,
+            "auto-group-25-8-風情": 0.6316534654110495,
+            "auto-group-25-9-静寂": 0.5057144040941338,
+            "auto-group-25-10-青花": 0.5754246207831372,
+            "auto-group-25-11-匠の技": 0.6179824935115754,
+            "auto-group-25-12-土地で培われた文化": 0.6801143568426228,
+            "auto-group-25-13-繊細": 0.5706769605780223,
+            "auto-group-25-14-悠久": 0.5716025916699015,
+            "auto-group-25-15-土の記憶": 0.6434195332023909,
+            "auto-group-25-16-凛とした": 0.5429820076569353,
+            "auto-group-25-17-焼き物": 0.6429540636812423,
+            "auto-group-25-18-時を刻む": 0.5841234677881343,
+            "auto-group-25-19-継承": 0.5637096846314509,
+            "kw:auto-group-16": 0.7084170541296955,
+            "auto-group-16-0-黄金色": 0.5112324680584431,
+            "auto-group-16-1-樹齢1000年": 0.7235527956096148,
+            "auto-group-16-2-天然記念物": 0.6430562243349417,
+            "auto-group-16-3-大イチョウ": 0.7266297063858436,
+            "auto-group-16-4-歴史の証人": 0.5840169884093007,
+            "auto-group-16-5-静寂": 0.5071231504656345,
+            "auto-group-16-6-口屋番所跡": 0.7851644652306373,
+            "auto-group-16-7-陶石": 0.6126926936858932,
+            "auto-group-16-8-監視": 0.5691902925852032,
+            "auto-group-16-9-時の流れ": 0.5318243984292268,
+            "auto-group-16-10-古色蒼然": 0.576044066372641,
+            "auto-group-16-11-黄葉の絨毯": 0.5833902040998992,
+            "auto-group-16-12-悠久": 0.5681979507074827,
+            "auto-group-16-13-風の囁き": 0.5269700183617803,
+            "auto-group-16-14-名残": 0.5736035173096001,
+            "auto-group-16-15-ひっそりと": 0.5161233437044276,
+            "auto-group-16-16-秋の気配": 0.5515254431056005,
+            "auto-group-16-17-記憶の断片": 0.5361616362164334,
+            "auto-group-16-18-歳月を刻む": 0.5805850045450236,
+            "auto-group-16-19-静謐": 0.5122566529876995
+          },
+          "auto-group-31": {
+            "kw:auto-group-24": 0.8244106274897467,
+            "auto-group-24-0-陶磁器": 0.6136137845613228,
+            "auto-group-24-1-路地裏": 0.6605331179972335,
+            "auto-group-24-2-職人": 0.6315917898959172,
+            "auto-group-24-3-風情": 0.6265488958382359,
+            "auto-group-24-4-お祭り": 0.7050870299009727,
+            "auto-group-24-5-器": 0.5982967302598641,
+            "auto-group-24-6-伝統": 0.6473316525833325,
+            "auto-group-24-7-静寂": 0.5237081538708147,
+            "auto-group-24-8-温もり": 0.6012459001841732,
+            "auto-group-24-9-土の香り": 0.6118261771112423,
+            "auto-group-24-10-歴史の息吹": 0.6171443287538063,
+            "auto-group-24-11-散策": 0.588944159623329,
+            "auto-group-24-12-手仕事": 0.6293808862773622,
+            "auto-group-24-13-釉薬": 0.5973019570172159,
+            "auto-group-24-14-ノスタルジー": 0.568166478627943,
+            "auto-group-24-15-時が止まる": 0.5368672370006973,
+            "auto-group-24-16-匠の技": 0.6315991154315804,
+            "auto-group-24-17-情緒": 0.5297140272240699,
+            "auto-group-24-18-光と影": 0.5641018927339243,
+            "auto-group-24-19-心躍る": 0.5554916484479602,
+            "kw:auto-group-30": 0.8178696612643247,
+            "auto-group-30-0-陶器": 0.7136539287100464,
+            "auto-group-30-1-土の匂い": 0.6123691318919922,
+            "auto-group-30-2-職人": 0.6253929497311377,
+            "auto-group-30-3-窯元": 0.6961914424799852,
+            "auto-group-30-4-歴史": 0.5714046734310453,
+            "auto-group-30-5-伝統": 0.641300527612804,
+            "auto-group-30-6-赤茶色": 0.5675941408202815,
+            "auto-group-30-7-静寂": 0.509052468120143,
+            "auto-group-30-8-手仕事": 0.6179059968801363,
+            "auto-group-30-9-温もり": 0.5901318082438203,
+            "auto-group-30-10-釉薬": 0.6378939786882803,
+            "auto-group-30-11-風情": 0.6275701480479853,
+            "auto-group-30-12-匠の技": 0.663050512107244,
+            "auto-group-30-13-土地の文化": 0.7115986067807711,
+            "auto-group-30-14-焼き締める": 0.6313378511999124,
+            "auto-group-30-15-悠久の時": 0.5624293552411762,
+            "auto-group-30-16-土と炎の芸術": 0.7221713554694565,
+            "auto-group-30-17-趣深い": 0.6365267498190248,
+            "auto-group-30-18-ひっそりと": 0.5310998176141444,
+            "auto-group-30-19-息づく": 0.558977667680366
+          }
+        },
+        "visibleAssocByGroupId": {
+          "auto-group-6": [
+            "kw:c-19ea5e14f70-86d5-26",
+            "kw:c-19ea5e14f70-752d-27",
+            "kw:c-19ea5e14f70-b9d1-31",
+            "c-19ea5e14f70-86d5-26-0-磁器",
+            "c-19ea5e14f70-86d5-26-1-伝統",
+            "c-19ea5e14f70-86d5-26-2-散策",
+            "c-19ea5e14f70-752d-27-0-磁器",
+            "c-19ea5e14f70-752d-27-1-白磁",
+            "c-19ea5e14f70-752d-27-2-伝統工芸",
+            "c-19ea5e14f70-b9d1-31-0-磁器",
+            "c-19ea5e14f70-b9d1-31-1-伝統",
+            "c-19ea5e14f70-752d-27-16-日常の器として",
+            "c-19ea5e14f70-752d-27-6-日常の器",
+            "c-19ea5e14f70-752d-27-3-染付",
+            "c-19ea5e14f70-752d-27-8-艶やか",
+            "c-19ea5e14f70-752d-27-17-時を重ねる",
+            "c-19ea5e14f70-b9d1-31-3-散策",
+            "c-19ea5e14f70-b9d1-31-13-青白",
+            "c-19ea5e14f70-752d-27-5-食卓",
+            "c-19ea5e14f70-752d-27-14-温もり",
+            "c-19ea5e14f70-86d5-26-13-有田焼を見比べながら",
+            "c-19ea5e14f70-86d5-26-10-器選び",
+            "c-19ea5e14f70-86d5-26-5-絵付け",
+            "c-19ea5e14f70-86d5-26-4-白磁",
+            "c-19ea5e14f70-86d5-26-17-歴史の息吹",
+            "c-19ea5e14f70-86d5-26-11-至福のひととき",
+            "c-19ea5e14f70-86d5-26-16-温もり",
+            "c-19ea5e14f70-86d5-26-15-凛とした",
+            "c-19ea5e14f70-86d5-26-14-買い物できる",
+            "c-19ea5e14f70-86d5-26-3-洗練",
+            "c-19ea5e14f70-86d5-26-8-優雅",
+            "c-19ea5e14f70-752d-27-18-食の舞台",
+            "c-19ea5e14f70-752d-27-19-心躍る",
+            "c-19ea5e14f70-752d-27-11-使い込む",
+            "c-19ea5e14f70-752d-27-12-彩り",
+            "c-19ea5e14f70-752d-27-13-凛とした",
+            "c-19ea5e14f70-b9d1-31-15-駅周辺",
+            "c-19ea5e14f70-b9d1-31-5-白磁",
+            "c-19ea5e14f70-b9d1-31-9-職人",
+            "c-19ea5e14f70-b9d1-31-11-情緒",
+            "c-19ea5e14f70-b9d1-31-18-温もり",
+            "c-19ea5e14f70-b9d1-31-7-風情",
+            "c-19ea5e14f70-b9d1-31-19-時を刻む"
+          ],
+          "auto-group-17": [
+            "kw:c-19ea5e14f70-2260-12",
+            "kw:c-19ea5e14f70-0aa3-28",
+            "kw:c-19ea5e14f70-6e42-25",
+            "c-19ea5e14f70-2260-12-0-職人",
+            "c-19ea5e14f70-2260-12-1-路地裏",
+            "c-19ea5e14f70-2260-12-2-土の匂い",
+            "c-19ea5e14f70-0aa3-28-0-陶芸",
+            "c-19ea5e14f70-0aa3-28-1-粘土",
+            "c-19ea5e14f70-0aa3-28-2-手仕事",
+            "c-19ea5e14f70-6e42-25-0-磁器",
+            "c-19ea5e14f70-6e42-25-1-名窯",
+            "c-19ea5e14f70-2260-12-5-煤けた壁",
+            "c-19ea5e14f70-0aa3-28-15-作る楽しみ",
+            "c-19ea5e14f70-0aa3-28-4-創造",
+            "c-19ea5e14f70-0aa3-28-11-形にする",
+            "c-19ea5e14f70-0aa3-28-9-伝統",
+            "c-19ea5e14f70-0aa3-28-10-思い出",
+            "c-19ea5e14f70-0aa3-28-13-無心",
+            "c-19ea5e14f70-2260-12-15-土埃",
+            "c-19ea5e14f70-0aa3-28-12-芸術",
+            "c-19ea5e14f70-0aa3-28-3-没頭",
+            "c-19ea5e14f70-2260-12-13-表通りではなく",
+            "c-19ea5e14f70-2260-12-9-筆先",
+            "c-19ea5e14f70-6e42-25-9-老舗",
+            "c-19ea5e14f70-2260-12-14-裏通りに住む",
+            "c-19ea5e14f70-2260-12-19-名もなき芸術",
+            "c-19ea5e14f70-2260-12-8-隠れ家",
+            "c-19ea5e14f70-2260-12-10-釉薬",
+            "c-19ea5e14f70-2260-12-7-伝統",
+            "c-19ea5e14f70-2260-12-6-ひっそりと",
+            "c-19ea5e14f70-2260-12-3-静寂",
+            "c-19ea5e14f70-2260-12-12-歴史の影",
+            "c-19ea5e14f70-2260-12-11-寡黙",
+            "c-19ea5e14f70-6e42-25-7-静寂",
+            "c-19ea5e14f70-0aa3-28-5-温もり",
+            "c-19ea5e14f70-0aa3-28-8-集中",
+            "c-19ea5e14f70-0aa3-28-18-静寂",
+            "c-19ea5e14f70-6e42-25-12-深川製磁",
+            "c-19ea5e14f70-6e42-25-13-香蘭社",
+            "c-19ea5e14f70-6e42-25-4-絵付け",
+            "c-19ea5e14f70-6e42-25-15-匠の技",
+            "c-19ea5e14f70-6e42-25-18-美の殿堂",
+            "c-19ea5e14f70-6e42-25-2-伝統",
+            "c-19ea5e14f70-6e42-25-17-時を刻む"
+          ],
+          "auto-group-25": [
+            "kw:auto-group-13",
+            "kw:auto-group-21",
+            "kw:auto-group-22",
+            "auto-group-13-0-磁器",
+            "auto-group-13-1-白磁",
+            "auto-group-13-2-染付",
+            "auto-group-21-3-トンバイ塀",
+            "auto-group-21-19-焼き物散歩",
+            "auto-group-21-4-小路を巡り",
+            "auto-group-22-0-磁器",
+            "auto-group-22-1-伝統",
+            "auto-group-21-5-焼き物の文化",
+            "auto-group-21-1-伝統",
+            "auto-group-21-17-釉薬",
+            "auto-group-21-8-白磁",
+            "auto-group-21-2-静寂",
+            "auto-group-21-6-風情",
+            "auto-group-21-0-陶磁器",
+            "auto-group-21-15-情緒",
+            "auto-group-21-11-古都の香り",
+            "auto-group-21-12-静謐",
+            "auto-group-13-8-400年の歴史",
+            "auto-group-13-19-匠の技",
+            "auto-group-13-4-職人",
+            "auto-group-13-11-繊細",
+            "auto-group-21-10-歴史の息吹",
+            "auto-group-22-18-焼成",
+            "auto-group-13-5-佐賀",
+            "auto-group-13-14-青と白",
+            "auto-group-13-6-欧州",
+            "auto-group-13-18-悠久の息吹",
+            "auto-group-13-3-伝統",
+            "auto-group-13-10-体系的",
+            "auto-group-13-7-輸出",
+            "auto-group-13-17-凛とした",
+            "auto-group-13-9-九州陶磁文化館",
+            "auto-group-13-15-時を超える旅",
+            "auto-group-13-12-優美",
+            "auto-group-13-13-静寂",
+            "auto-group-22-4-白磁",
+            "auto-group-22-11-悠久",
+            "auto-group-22-6-炎",
+            "auto-group-21-14-時が止まる",
+            "auto-group-22-9-青花",
+            "auto-group-22-16-時を刻む",
+            "auto-group-22-13-華麗",
+            "auto-group-21-13-温もり",
+            "auto-group-22-3-天狗谷窯跡",
+            "auto-group-22-5-職人",
+            "auto-group-22-15-凛とした",
+            "auto-group-22-2-泉山磁石場",
+            "auto-group-22-14-釉薬",
+            "auto-group-22-12-土の記憶"
+          ],
+          "auto-group-24": [
+            "kw:auto-group-17",
+            "kw:auto-group-1",
+            "kw:auto-group-15",
+            "auto-group-17-0-路地裏",
+            "auto-group-17-1-職人の息吹",
+            "auto-group-17-2-土の匂い",
+            "auto-group-1-3-重伝建",
+            "auto-group-1-4-保存地区",
+            "auto-group-1-5-江戸後期",
+            "auto-group-15-0-散策",
+            "auto-group-15-1-駅周辺",
+            "auto-group-17-12-時の流れ",
+            "auto-group-1-7-木造",
+            "auto-group-1-12-路地裏",
+            "auto-group-1-10-ノスタルジー",
+            "auto-group-1-14-面影",
+            "auto-group-17-10-風情",
+            "auto-group-17-3-静寂",
+            "auto-group-1-0-レトロ",
+            "auto-group-1-2-風情",
+            "auto-group-1-19-トロ",
+            "auto-group-17-16-職人が住んでいた",
+            "auto-group-15-2-器",
+            "auto-group-1-16-古き良き",
+            "auto-group-1-17-情緒的",
+            "auto-group-17-9-陶芸体験",
+            "auto-group-17-6-手仕事",
+            "auto-group-17-7-温もり",
+            "auto-group-17-4-歴史の断片",
+            "auto-group-17-15-情緒",
+            "auto-group-1-6-静寂",
+            "auto-group-17-8-名窯の美",
+            "auto-group-17-18-侘び寂び",
+            "auto-group-15-10-青白磁",
+            "auto-group-15-12-静寂な時間",
+            "auto-group-1-9-瓦屋根",
+            "auto-group-1-8-格子戸",
+            "auto-group-1-15-佇まい",
+            "auto-group-15-13-宝探し",
+            "auto-group-15-9-温もり",
+            "auto-group-1-11-タイムスリップ",
+            "auto-group-15-6-釉薬",
+            "auto-group-15-4-伝統",
+            "auto-group-15-5-職人",
+            "auto-group-15-15-洗練",
+            "auto-group-1-1-歴史",
+            "auto-group-1-18-時を刻む",
+            "auto-group-15-14-心躍る",
+            "auto-group-15-11-日常の彩り"
+          ],
+          "auto-group-30": [
+            "kw:c-19ea5e14f70-be1b-19",
+            "kw:auto-group-25",
+            "kw:auto-group-16",
+            "c-19ea5e14f70-be1b-19-0-磁器",
+            "c-19ea5e14f70-be1b-19-1-神社",
+            "c-19ea5e14f70-be1b-19-2-焼き物の町",
+            "auto-group-25-12-土地で培われた文化",
+            "auto-group-25-2-職人の息遣い",
+            "auto-group-25-6-窯元",
+            "auto-group-16-0-黄金色",
+            "auto-group-16-1-樹齢1000年",
+            "c-19ea5e14f70-be1b-19-19-狛犬",
+            "c-19ea5e14f70-be1b-19-3-伝統工芸",
+            "c-19ea5e14f70-be1b-19-17-土の記憶",
+            "c-19ea5e14f70-be1b-19-6-神聖",
+            "c-19ea5e14f70-be1b-19-5-硬質な響き",
+            "auto-group-25-0-磁器",
+            "c-19ea5e14f70-be1b-19-7-静寂",
+            "auto-group-25-15-土の記憶",
+            "auto-group-25-1-伝統",
+            "auto-group-25-3-白磁",
+            "auto-group-25-18-時を刻む",
+            "auto-group-25-16-凛とした",
+            "c-19ea5e14f70-be1b-19-9-釉薬",
+            "c-19ea5e14f70-be1b-19-10-ひんやりとした感触",
+            "auto-group-16-3-大イチョウ",
+            "c-19ea5e14f70-be1b-19-13-焼き物の町らしい",
+            "c-19ea5e14f70-be1b-19-11-歴史の息吹",
+            "auto-group-25-5-佐賀県",
+            "auto-group-25-13-繊細",
+            "auto-group-16-7-陶石",
+            "auto-group-16-19-静謐",
+            "auto-group-25-11-匠の技",
+            "auto-group-25-19-継承",
+            "auto-group-16-6-口屋番所跡",
+            "auto-group-16-11-黄葉の絨毯",
+            "auto-group-16-8-監視",
+            "auto-group-16-12-悠久",
+            "c-19ea5e14f70-be1b-19-15-永遠の輝き",
+            "auto-group-25-7-歴史の重み",
+            "auto-group-25-10-青花",
+            "auto-group-25-14-悠久",
+            "auto-group-25-9-静寂",
+            "auto-group-16-14-名残",
+            "auto-group-25-17-焼き物",
+            "auto-group-25-8-風情",
+            "auto-group-25-4-絵付け",
+            "auto-group-16-15-ひっそりと"
+          ],
+          "auto-group-31": [
+            "kw:auto-group-24",
+            "kw:auto-group-30",
+            "auto-group-24-0-陶磁器",
+            "auto-group-24-1-路地裏",
+            "auto-group-24-2-職人",
+            "auto-group-30-0-陶器",
+            "auto-group-30-1-土の匂い",
+            "auto-group-30-2-職人",
+            "auto-group-30-17-趣深い",
+            "auto-group-30-18-ひっそりと",
+            "auto-group-30-12-匠の技",
+            "auto-group-30-4-歴史",
+            "auto-group-30-19-息づく",
+            "auto-group-30-16-土と炎の芸術",
+            "auto-group-30-3-窯元",
+            "auto-group-24-6-伝統",
+            "auto-group-24-13-釉薬",
+            "auto-group-30-10-釉薬",
+            "auto-group-30-7-静寂",
+            "auto-group-24-9-土の香り",
+            "auto-group-30-14-焼き締める",
+            "auto-group-30-6-赤茶色",
+            "auto-group-24-4-お祭り",
+            "auto-group-24-3-風情",
+            "auto-group-24-10-歴史の息吹",
+            "auto-group-24-5-器",
+            "auto-group-24-15-時が止まる",
+            "auto-group-24-17-情緒",
+            "auto-group-24-12-手仕事",
+            "auto-group-24-18-光と影",
+            "auto-group-24-19-心躍る",
+            "auto-group-24-7-静寂",
+            "auto-group-24-16-匠の技",
+            "auto-group-24-8-温もり",
+            "auto-group-24-11-散策",
+            "auto-group-24-14-ノスタルジー",
+            "auto-group-30-13-土地の文化",
+            "auto-group-30-11-風情",
+            "auto-group-30-8-手仕事"
+          ]
+        }
+      },
+      "ui": {
+        "layoutMode": "layout",
+        "viewport": {
+          "x": 784.5482610362372,
+          "y": 199.30678424875305,
+          "zoom": 0.0812500000000002
+        },
+        "edgeKindMode": "rel",
+        "edgeEndpointMode": "anchored",
+        "newRelationType": "normal",
+        "newLine": "dashed",
+        "newArrow": "forward",
+        "constellationZoom": 1.049941022857421,
+        "constellationPan": {
+          "x": -197.12481798836643,
+          "y": -383.85125917702874
+        }
+      }
+    },
+    "brainstorm": {
+      "snapshot": {
+        "nodes": [],
+        "edges": []
+      },
+      "groups": {
+        "rootGroups": [],
+        "ungroupedCards": []
+      },
+      "ui": {
+        "viewport": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1
+        },
+        "setup": null,
+        "drafts": []
+      }
+    }
+  },
+  "appUi": {
+    "activeWorkspace": "board"
+  }
+}
