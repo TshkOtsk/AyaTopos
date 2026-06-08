@@ -36,7 +36,8 @@ export const placementRequestSchema = {
           shortLabel: { type: "string" },
           type: { type: "string", enum: ["group", "card"] },
           depth: { type: "number", minimum: 0 },
-          topAncestorId: { type: "string" }
+          topAncestorId: { type: "string" },
+          parentId: { type: "string" }
         }
       }
     }

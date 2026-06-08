@@ -128,6 +128,7 @@ export interface PlacementNodeInput {
   type: "group" | "card";
   depth: number;
   topAncestorId: string;
+  parentId?: string;
 }
 
 export interface ResolveAreaRequest {

@@ -80,35 +80,109 @@ export function interpolatePoint(
 export function createFallbackPlacements(nodes: PlacementNodeInput[], center: GeoCenter): GeoPlacement[] {
   const groups = groupBy(nodes, (node) => node.topAncestorId);
   const topKeys = Array.from(groups.keys()).sort();
-  const ringBase = 180;
-  const ringStep = 155;
+  const nodesById = new Map(nodes.map((node) => [node.id, node]));
+  const groupPlacementById = new Map<string, { lng: number; lat: number }>();
+  const cardsByAnchor = groupBy(
+    nodes.filter((node) => node.type === "card"),
+    (node) => nearestGroupAnchorId(node, nodesById) ?? node.topAncestorId
+  );
+
+  for (const node of nodes) {
+    if (node.type === "card") continue;
+    const point = fallbackRingPoint(node, center, groups, topKeys);
+    groupPlacementById.set(node.id, clampLngLatToLocalRadius(point.lng, point.lat, center));
+  }
 
   return nodes.map((node) => {
-    const topIndex = Math.max(0, topKeys.indexOf(node.topAncestorId));
-    const peers = groups.get(node.topAncestorId) ?? [];
-    const peerIndex = Math.max(0, peers.findIndex((peer) => peer.id === node.id));
-    const sector = (Math.PI * 2) / Math.max(1, topKeys.length);
-    const angle =
-      topIndex * sector +
-      (seededUnit(node.id) - 0.5) * sector * 0.78 +
-      ((peerIndex % 5) - 2) * 0.035;
-    const radiusMeters = ringBase + node.depth * ringStep + (peerIndex % 9) * 34;
-    const jitterMeters = (seededUnit(`${node.id}:jitter`) - 0.5) * 90;
-    const point = offsetCenterByMeters(
-      center,
-      Math.cos(angle) * (radiusMeters + jitterMeters),
-      Math.sin(angle) * (radiusMeters + jitterMeters)
-    );
+    const point =
+      node.type === "card"
+        ? fallbackCardPoint(node, center, nodesById, groupPlacementById, cardsByAnchor)
+        : (groupPlacementById.get(node.id) ?? fallbackRingPoint(node, center, groups, topKeys));
     const clamped = clampLngLatToLocalRadius(point.lng, point.lat, center);
 
     return {
       nodeId: node.id,
       lng: clamped.lng,
       lat: clamped.lat,
-      confidence: 0.32,
+      confidence: node.type === "card" ? 0.36 : 0.32,
       source: "fallback"
     };
   });
+}
+
+function fallbackRingPoint(
+  node: PlacementNodeInput,
+  center: GeoCenter,
+  groups: Map<string, PlacementNodeInput[]>,
+  topKeys: string[]
+): { lng: number; lat: number } {
+  const ringBase = 180;
+  const ringStep = 155;
+  const topIndex = Math.max(0, topKeys.indexOf(node.topAncestorId));
+  const peers = groups.get(node.topAncestorId) ?? [];
+  const peerIndex = Math.max(0, peers.findIndex((peer) => peer.id === node.id));
+  const sector = (Math.PI * 2) / Math.max(1, topKeys.length);
+  const angle =
+    topIndex * sector +
+    (seededUnit(node.id) - 0.5) * sector * 0.78 +
+    ((peerIndex % 5) - 2) * 0.035;
+  const radiusMeters = ringBase + node.depth * ringStep + (peerIndex % 9) * 34;
+  const jitterMeters = (seededUnit(`${node.id}:jitter`) - 0.5) * 90;
+
+  return offsetCenterByMeters(
+    center,
+    Math.cos(angle) * (radiusMeters + jitterMeters),
+    Math.sin(angle) * (radiusMeters + jitterMeters)
+  );
+}
+
+function fallbackCardPoint(
+  node: PlacementNodeInput,
+  center: GeoCenter,
+  nodesById: Map<string, PlacementNodeInput>,
+  groupPlacementById: Map<string, { lng: number; lat: number }>,
+  cardsByAnchor: Map<string, PlacementNodeInput[]>
+): { lng: number; lat: number } {
+  const anchorId = nearestGroupAnchorId(node, nodesById);
+  const anchorKey = anchorId ?? node.topAncestorId;
+  const anchor = (anchorId ? groupPlacementById.get(anchorId) : undefined) ?? { lng: center.lng, lat: center.lat };
+  const peers = cardsByAnchor.get(anchorKey) ?? [node];
+  const peerIndex = Math.max(0, peers.findIndex((peer) => peer.id === node.id));
+  const slots = Math.max(3, Math.min(10, peers.length));
+  const angle =
+    ((peerIndex % slots) / slots) * Math.PI * 2 +
+    (seededUnit(`${node.id}:card-angle`) - 0.5) * 0.46 +
+    Math.floor(peerIndex / slots) * 0.19;
+  const radiusMeters =
+    95 +
+    Math.max(0, Math.min(4, node.depth - 1)) * 24 +
+    Math.floor(peerIndex / slots) * 42 +
+    (seededUnit(`${node.id}:card-radius`) - 0.5) * 28;
+
+  return offsetCenterByMeters(
+    { ...center, lng: anchor.lng, lat: anchor.lat },
+    Math.cos(angle) * radiusMeters,
+    Math.sin(angle) * radiusMeters
+  );
+}
+
+function nearestGroupAnchorId(
+  node: PlacementNodeInput,
+  nodesById: Map<string, PlacementNodeInput>
+): string | undefined {
+  const seen = new Set<string>();
+  let parentId = node.parentId;
+
+  while (parentId && !seen.has(parentId)) {
+    seen.add(parentId);
+    const parent = nodesById.get(parentId);
+    if (!parent) return undefined;
+    if (parent.type === "group") return parent.id;
+    parentId = parent.parentId;
+  }
+
+  const topAncestor = nodesById.get(node.topAncestorId);
+  return topAncestor?.type === "group" ? topAncestor.id : undefined;
 }
 
 export function clampGeoPlacementToLocalRadius(

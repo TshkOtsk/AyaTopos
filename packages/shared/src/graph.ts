@@ -93,7 +93,8 @@ export function toPlacementInputs(graph: AyaGraph): PlacementNodeInput[] {
     shortLabel: node.shortLabel,
     type: node.type,
     depth: node.depth,
-    topAncestorId: node.topAncestorId
+    topAncestorId: node.topAncestorId,
+    parentId: node.parentId
   }));
 }
 
@@ -319,7 +320,8 @@ function fallbackPlacementForNode(
       shortLabel: shortLabelOf(item, {}),
       type: item.type === "card" ? "card" : "group",
       depth: depthOf(item, byId, depthCache),
-      topAncestorId: topAncestorOf(item, byId, topCache)
+      topAncestorId: topAncestorOf(item, byId, topCache),
+      parentId: item.parentId
     } satisfies PlacementNodeInput;
   });
   const placement = createFallbackPlacements(inputs, center).find((item) => item.nodeId === node.id);

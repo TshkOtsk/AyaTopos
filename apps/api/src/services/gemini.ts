@@ -64,7 +64,8 @@ export async function generateGeoPlacements(request: PlacementRequest): Promise<
     shortLabel: node.shortLabel.slice(0, 80),
     type: node.type,
     depth: node.depth,
-    topAncestorId: node.topAncestorId
+    topAncestorId: node.topAncestorId,
+    parentId: node.parentId
   }));
 
   try {

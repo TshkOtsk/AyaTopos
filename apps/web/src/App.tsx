@@ -519,9 +519,6 @@ function isGroupOutlineVisibleAtZoom(node: AyaNode, zoom: number): boolean {
 }
 
 function visualPointForNode(node: AyaNode, blend: number): AyaSpatialPoint {
-  if (node.type === "card") {
-    return node.geoPlacementSource === "fallback" ? node.semantic : node.geo;
-  }
   return interpolatePoint(node.semantic, node.geo, blend);
 }
 

@@ -61,6 +61,8 @@ describe("normalizeHypoWeave", () => {
     expect(card?.topAncestorId).toBe("root-a");
     expect(card?.geoPlacementSource).toBe("fallback");
     expect(card?.geoPlacementConfidence).toBeGreaterThan(0);
+    expect(card?.geo.lng).not.toBeCloseTo(card?.semantic.lng ?? 0, 6);
+    expect(card?.geo.lat).not.toBeCloseTo(card?.semantic.lat ?? 0, 6);
     expect(graph.edges).toHaveLength(1);
   });
 
@@ -100,7 +102,7 @@ describe("normalizeHypoWeave", () => {
     const graph = normalizeHypoWeave(fixture);
     expect(toPlacementInputs(graph)).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ id: "card-a", type: "card", depth: 2, topAncestorId: "root-a" })
+        expect.objectContaining({ id: "card-a", type: "card", depth: 2, topAncestorId: "root-a", parentId: "child-a" })
       ])
     );
   });
@@ -112,7 +114,7 @@ describe("createFallbackPlacements", () => {
     const placements = createFallbackPlacements(
       [
         { id: "a", label: "A", shortLabel: "A", type: "group", depth: 0, topAncestorId: "a" },
-        { id: "b", label: "B", shortLabel: "B", type: "card", depth: 7, topAncestorId: "a" }
+        { id: "b", label: "B", shortLabel: "B", type: "card", depth: 7, topAncestorId: "a", parentId: "a" }
       ],
       center
     );
@@ -122,6 +124,31 @@ describe("createFallbackPlacements", () => {
         DEFAULT_LOCAL_RADIUS_METERS + 1
       );
     }
+  });
+
+  it("places fallback cards near their parent group instead of leaving them on the semantic point", () => {
+    const center = { lng: 85, lat: 28, label: "Nepal" };
+    const placements = createFallbackPlacements(
+      [
+        { id: "root", label: "Root", shortLabel: "Root", type: "group", depth: 0, topAncestorId: "root" },
+        {
+          id: "card",
+          label: "Card",
+          shortLabel: "Card",
+          type: "card",
+          depth: 1,
+          topAncestorId: "root",
+          parentId: "root"
+        }
+      ],
+      center
+    );
+    const root = placements.find((placement) => placement.nodeId === "root");
+    const card = placements.find((placement) => placement.nodeId === "card");
+
+    expect(card?.source).toBe("fallback");
+    expect(card?.confidence).toBeGreaterThan(root?.confidence ?? 0);
+    expect(Math.hypot((card!.lng - root!.lng) * 98_000, (card!.lat - root!.lat) * 111_320)).toBeLessThan(260);
   });
 });
 
