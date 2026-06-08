@@ -24,6 +24,8 @@ interface IdeaObject {
   editRing: THREE.Points<THREE.BufferGeometry, THREE.PointsMaterial>;
 }
 
+const MAPPED_CARD_GROUND_CLEARANCE_METERS = 0.6;
+
 export class IdeaObjectLayer implements CustomLayerInterface {
   id = "ayatopos-idea-objects";
   type = "custom" as const;
@@ -279,13 +281,9 @@ export class IdeaObjectLayer implements CustomLayerInterface {
 }
 
 export function nodeElevationMeters(map: MapLibreMap, node: AyaNode, point: AyaSpatialPoint): number {
-  if (node.geoPlacementSource === "manual") {
-    return point.altitude;
-  }
-
   const terrainElevation = map.queryTerrainElevation([point.lng, point.lat]) ?? 0;
   return isMappedCard(node)
-    ? terrainElevation + 8
+    ? terrainElevation + MAPPED_CARD_GROUND_CLEARANCE_METERS
     : terrainElevation + point.altitude * 0.82 + (node.type === "group" ? 34 : 18);
 }
 
