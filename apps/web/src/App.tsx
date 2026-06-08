@@ -2325,7 +2325,7 @@ function overviewRelatedNodeIds(graph: AyaGraph, nodeId: string): { ids: string[
     }
 
     const parent = origin.parentId ? nodeById.get(origin.parentId) : undefined;
-    if (parent) {
+    if (parent?.parentId) {
       for (const sibling of siblingsOf(parent)) {
         add(sibling.id, true);
       }
