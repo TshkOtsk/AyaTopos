@@ -505,6 +505,7 @@ function MapScene({
   onUpdateCardGeo: (nodeId: string, lng: number, lat: number) => void;
 }) {
   const mapNodeRef = useRef<HTMLDivElement | null>(null);
+  const sceneRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const ideaLayerRef = useRef<IdeaObjectLayer | null>(null);
   const frameRef = useRef<number | null>(null);
@@ -560,6 +561,48 @@ function MapScene({
     );
     mapRef.current = map;
 
+    const forwardOverlayWheelToMap = (event: WheelEvent) => {
+      const target = event.target;
+      if (
+        isForwardedWheelEvent(event) ||
+        !mapNodeRef.current ||
+        !(target instanceof Element) ||
+        mapNodeRef.current.contains(target) ||
+        !target.closest(".geo-point-hit-target, .idea-tooltip")
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      const forwardedEvent = new WheelEvent(event.type, {
+        bubbles: true,
+        cancelable: true,
+        composed: true,
+        view: window,
+        detail: event.detail,
+        screenX: event.screenX,
+        screenY: event.screenY,
+        clientX: event.clientX,
+        clientY: event.clientY,
+        ctrlKey: event.ctrlKey,
+        altKey: event.altKey,
+        shiftKey: event.shiftKey,
+        metaKey: event.metaKey,
+        button: event.button,
+        buttons: event.buttons,
+        relatedTarget: event.relatedTarget,
+        deltaX: event.deltaX,
+        deltaY: event.deltaY,
+        deltaZ: event.deltaZ,
+        deltaMode: event.deltaMode
+      });
+      Object.defineProperty(forwardedEvent, "ayatoposForwardedToMap", { value: true });
+      map.getCanvas().dispatchEvent(forwardedEvent);
+    };
+    sceneRef.current?.addEventListener("wheel", forwardOverlayWheelToMap, { capture: true, passive: false });
+
     const rerender = () => {
       if (frameRef.current !== null) return;
       frameRef.current = window.requestAnimationFrame(() => {
@@ -595,6 +638,7 @@ function MapScene({
       if (frameRef.current !== null) {
         window.cancelAnimationFrame(frameRef.current);
       }
+      sceneRef.current?.removeEventListener("wheel", forwardOverlayWheelToMap, { capture: true });
       map.remove();
       mapRef.current = null;
       ideaLayerRef.current = null;
@@ -793,7 +837,7 @@ function MapScene({
   }, [onHover]);
 
   return (
-      <div className="scene">
+      <div className="scene" ref={sceneRef}>
       <div className="map-canvas" ref={mapNodeRef} />
       <div className="sky-wash" />
       <svg
@@ -953,6 +997,10 @@ function renderRank(node: AyaNode, maxDepth: number): number {
 
 interface CustomLayerProjectionTransform {
   getProjectionDataForCustomLayer?: () => { mainMatrix: ArrayLike<number> };
+}
+
+function isForwardedWheelEvent(event: WheelEvent): boolean {
+  return Boolean((event as WheelEvent & { ayatoposForwardedToMap?: boolean }).ayatoposForwardedToMap);
 }
 
 function projectNodeGlowToScreen(map: MapLibreMap, node: AyaNode, point: AyaSpatialPoint): { x: number; y: number } {

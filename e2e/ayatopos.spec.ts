@@ -56,6 +56,29 @@ test("renders node glows inside the MapLibre custom layer while keeping DOM hit 
   await expect(page.locator(".idea-tooltip")).toBeVisible();
 });
 
+test("keeps map wheel zoom available over custom-layer hover affordances", async ({ page }) => {
+  test.setTimeout(180_000);
+  await routePlacements(page, "gemini");
+
+  await page.goto("/");
+  await page.locator(".secondary-action").click();
+  await page.locator(".area-row input").fill("Nepal");
+  await page.locator(".primary-action").click();
+
+  await expect(page.locator(".map-canvas")).toHaveAttribute("data-terrain", "ready");
+  await expect(page.locator(".geo-point-hit-target.card.mapped")).toHaveCount(65);
+
+  const hitPoint = await visiblePointFor(page, ".geo-point-hit-target.card.mapped");
+  await page.mouse.move(hitPoint.x, hitPoint.y);
+  await expect(page.locator(".idea-tooltip").first()).toBeVisible();
+  await expectWheelZoomsInAt(page, hitPoint);
+
+  const tooltipPoint = await visiblePointFor(page, ".idea-tooltip");
+  await page.mouse.move(tooltipPoint.x, tooltipPoint.y);
+  await expect(page.locator(".idea-tooltip").first()).toBeVisible();
+  await expectWheelZoomsInAt(page, tooltipPoint);
+});
+
 test("allows card geographic coordinates to be edited and restored from local storage", async ({ page }) => {
   test.setTimeout(180_000);
   await routePlacements(page, "fallback");
@@ -132,4 +155,45 @@ async function setBlend(page: Page, value: string): Promise<void> {
     value
   );
   await expect(page.locator(".blend-control input")).toHaveValue(value);
+}
+
+async function visiblePointFor(page: Page, selector: string): Promise<{ x: number; y: number }> {
+  const point = await page.locator(selector).evaluateAll((elements) => {
+    for (const element of elements) {
+      const rect = element.getBoundingClientRect();
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + rect.height / 2;
+      if (
+        rect.width > 0 &&
+        rect.height > 0 &&
+        x > 430 &&
+        x < window.innerWidth - 120 &&
+        y > 120 &&
+        y < window.innerHeight - 150
+      ) {
+        return { x, y };
+      }
+    }
+    return null;
+  });
+
+  if (!point) {
+    throw new Error(`No visible point found for ${selector}`);
+  }
+  return point;
+}
+
+async function expectWheelZoomsInAt(page: Page, point: { x: number; y: number }): Promise<void> {
+  const before = await currentHashZoom(page);
+  await page.mouse.move(point.x, point.y);
+  await page.mouse.wheel(0, -700);
+  await expect.poll(() => currentHashZoom(page), { timeout: 5_000 }).toBeGreaterThan(before + 0.01);
+}
+
+async function currentHashZoom(page: Page): Promise<number> {
+  return page.evaluate(() => {
+    const zoom = Number(window.location.hash.slice(1).split("/")[0]);
+    if (!Number.isFinite(zoom)) throw new Error(`Map zoom hash is not available: ${window.location.hash}`);
+    return zoom;
+  });
 }
