@@ -508,9 +508,19 @@ function MapScene({
   const mapRef = useRef<MapLibreMap | null>(null);
   const ideaLayerRef = useRef<IdeaObjectLayer | null>(null);
   const frameRef = useRef<number | null>(null);
+  const hoverClearRef = useRef<number | null>(null);
   const draggingCardIdRef = useRef<string | null>(null);
   const editViewRef = useRef<{ pitch: number; bearing: number } | null>(null);
   const [tick, setTick] = useState(0);
+
+  useEffect(
+    () => () => {
+      if (hoverClearRef.current !== null) {
+        window.clearTimeout(hoverClearRef.current);
+      }
+    },
+    []
+  );
 
   useEffect(() => {
     if (!mapNodeRef.current || mapRef.current) return;
@@ -655,12 +665,13 @@ function MapScene({
     return graph.nodes.map((node) => {
       const point = visualPointForNode(node, blend);
       const projected = projectNodeGlowToScreen(mapRef.current!, node, point);
+      const isRelated = hoveredId ? relatedIds.has(node.id) : true;
       return {
         node,
         point,
         screen: projected,
-        related: hoveredId ? node.id === hoveredId : true,
-        dimmed: hoveredId ? node.id !== hoveredId : false
+        related: isRelated,
+        dimmed: hoveredId ? !isRelated : false
       } satisfies ScreenNode;
     });
   }, [blend, graph, hoveredId, relatedIds, tick]);
@@ -705,7 +716,26 @@ function MapScene({
   }, [graph, tick, visibleOutlineNodeIds]);
 
   const nodeById = useMemo(() => new Map(screenNodes.map((item) => [item.node.id, item])), [screenNodes]);
-  const hoveredNode = hoveredId ? nodeById.get(hoveredId) : undefined;
+  const hoveredCards = useMemo(() => {
+    if (!hoveredId) return [];
+    const container = mapRef.current?.getContainer();
+    if (!container) return [];
+
+    const orderedIds = [
+      hoveredId,
+      ...activeVisualThreads.map((edge) => (edge.source === hoveredId ? edge.target : edge.source))
+    ];
+    const seen = new Set<string>();
+    return orderedIds
+      .filter((id) => {
+        if (seen.has(id)) return false;
+        seen.add(id);
+        return true;
+      })
+      .map((id) => nodeById.get(id))
+      .filter((item): item is ScreenNode => Boolean(item))
+      .filter((item) => isGlowVisibleOnScreen(item, container.clientWidth, container.clientHeight));
+  }, [activeVisualThreads, hoveredId, nodeById]);
 
   useEffect(() => {
     ideaLayerRef.current?.setData(ideaNodes, hoveredId, {
@@ -740,6 +770,27 @@ function MapScene({
     draggingCardIdRef.current = null;
     mapRef.current?.dragPan.enable();
   }, []);
+
+  const acceptHover = useCallback(
+    (nodeId: string) => {
+      if (hoverClearRef.current !== null) {
+        window.clearTimeout(hoverClearRef.current);
+        hoverClearRef.current = null;
+      }
+      onHover(nodeId);
+    },
+    [onHover]
+  );
+
+  const releaseHover = useCallback(() => {
+    if (hoverClearRef.current !== null) {
+      window.clearTimeout(hoverClearRef.current);
+    }
+    hoverClearRef.current = window.setTimeout(() => {
+      hoverClearRef.current = null;
+      onHover(null);
+    }, 90);
+  }, [onHover]);
 
   return (
       <div className="scene">
@@ -799,8 +850,8 @@ function MapScene({
                 "--node-color": node.color
               } as React.CSSProperties
             }
-            onPointerEnter={() => onHover(node.id)}
-            onPointerLeave={() => onHover(null)}
+            onPointerEnter={() => acceptHover(node.id)}
+            onPointerLeave={releaseHover}
             onPointerDown={(event) => {
               if (!isGeoEditing || node.type !== "card") return;
               event.preventDefault();
@@ -809,7 +860,7 @@ function MapScene({
               event.currentTarget.setPointerCapture(event.pointerId);
               mapRef.current?.dragPan.disable();
               onSelectCard(node.id);
-              onHover(node.id);
+              acceptHover(node.id);
             }}
             onPointerMove={(event) => {
               if (draggingCardIdRef.current !== node.id) return;
@@ -830,26 +881,34 @@ function MapScene({
               event.preventDefault();
               onSelectCard(node.id);
             }}
-            onFocus={() => onHover(node.id)}
-            onBlur={() => onHover(null)}
+            onFocus={() => acceptHover(node.id)}
+            onBlur={releaseHover}
             type="button"
             aria-pressed={selectedCardId === node.id}
             aria-label={node.shortLabel}
           />
         ))}
       </div>
-      {hoveredNode ? (
+      {hoveredCards.map(({ node, screen }) => (
         <aside
-          className="idea-tooltip"
-          style={{
-            left: Math.min(window.innerWidth - 340, Math.max(20, hoveredNode.screen.x + 22)),
-            top: Math.min(window.innerHeight - 180, Math.max(90, hoveredNode.screen.y + 18))
+          key={`${node.id}:tooltip-card`}
+          className={`idea-tooltip ${node.id === hoveredId ? "origin" : "connected"}`}
+          onPointerEnter={() => {
+            if (hoveredId) acceptHover(hoveredId);
           }}
+          onPointerLeave={releaseHover}
+          style={
+            {
+              left: Math.max(20, Math.min(window.innerWidth - 340, screen.x + 22)),
+              top: Math.max(90, Math.min(window.innerHeight - 180, screen.y + 18)),
+              "--node-color": node.color
+            } as React.CSSProperties
+          }
         >
-          <strong>{hoveredNode.node.shortLabel}</strong>
-          <p>{hoveredNode.node.label}</p>
+          <strong>{node.shortLabel}</strong>
+          <p>{node.label}</p>
         </aside>
-      ) : null}
+      ))}
     </div>
   );
 }
@@ -867,6 +926,23 @@ function visualPointForNode(node: AyaNode, blend: number): AyaSpatialPoint {
 
 function placementClassForNode(node: AyaNode): "abstract" | "mapped" {
   return node.type === "card" && node.geoPlacementSource === "fallback" ? "abstract" : "mapped";
+}
+
+function isGlowVisibleOnScreen(item: ScreenNode, width: number, height: number): boolean {
+  const margin = glowVisibilityMarginPixels(item.node);
+  return (
+    item.screen.x >= -margin &&
+    item.screen.x <= width + margin &&
+    item.screen.y >= -margin &&
+    item.screen.y <= height + margin
+  );
+}
+
+function glowVisibilityMarginPixels(node: AyaNode): number {
+  if (node.type === "group" && node.depth === 0) return 80;
+  if (node.type === "group") return 70;
+  if (node.geoPlacementSource === "fallback" || node.geoPlacementSource === "manual") return 60;
+  return 52;
 }
 
 function renderRank(node: AyaNode, maxDepth: number): number {

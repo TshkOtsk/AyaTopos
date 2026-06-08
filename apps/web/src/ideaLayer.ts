@@ -37,7 +37,7 @@ export class IdeaObjectLayer implements CustomLayerInterface {
   private hoveredId: string | null = null;
   private editState: IdeaLayerEditState = { enabled: false, selectedId: null };
   private objects = new Map<string, IdeaObject>();
-  private glowTexture: THREE.CanvasTexture | null = null;
+  private glowTextures = new Map<string, THREE.CanvasTexture>();
   private editRingTexture: THREE.CanvasTexture | null = null;
 
   onAdd(map: MapLibreMap, gl: WebGLRenderingContext | WebGL2RenderingContext): void {
@@ -57,9 +57,9 @@ export class IdeaObjectLayer implements CustomLayerInterface {
     this.objects.forEach((object) => this.disposeObject(object));
     this.objects.clear();
     this.scene.clear();
-    this.glowTexture?.dispose();
+    this.glowTextures.forEach((texture) => texture.dispose());
     this.editRingTexture?.dispose();
-    this.glowTexture = null;
+    this.glowTextures.clear();
     this.editRingTexture = null;
     this.renderer?.dispose();
     this.renderer = null;
@@ -126,8 +126,8 @@ export class IdeaObjectLayer implements CustomLayerInterface {
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute("position", new THREE.Float32BufferAttribute([0, 0, 0], 3));
     const material = new THREE.PointsMaterial({
-      color: color.clone().lerp(new THREE.Color("#fff7cf"), 0.22),
-      map: this.getGlowTexture(),
+      color: "#ffffff",
+      map: this.getGlowTexture(color),
       transparent: true,
       opacity: nodeGlowOpacity(item, false),
       size: nodeGlowSizePixels(item, false),
@@ -175,7 +175,8 @@ export class IdeaObjectLayer implements CustomLayerInterface {
     const color = new THREE.Color(item.node.color);
 
     object.glow.visible = !this.editState.enabled;
-    object.glow.material.color.copy(color.clone().lerp(new THREE.Color("#fff7cf"), active ? 0.46 : 0.24));
+    object.glow.material.color.set("#ffffff");
+    object.glow.material.map = this.getGlowTexture(color);
     object.glow.material.opacity = nodeGlowOpacity(item, active);
     object.glow.material.size = nodeGlowSizePixels(item, active);
     object.glow.material.needsUpdate = true;
@@ -211,8 +212,10 @@ export class IdeaObjectLayer implements CustomLayerInterface {
     object.editRing.material.dispose();
   }
 
-  private getGlowTexture(): THREE.CanvasTexture {
-    if (this.glowTexture) return this.glowTexture;
+  private getGlowTexture(color: THREE.Color): THREE.CanvasTexture {
+    const key = `#${color.getHexString()}`;
+    const current = this.glowTextures.get(key);
+    if (current) return current;
 
     const size = 128;
     const canvas = document.createElement("canvas");
@@ -223,19 +226,20 @@ export class IdeaObjectLayer implements CustomLayerInterface {
 
     const center = size / 2;
     const gradient = context.createRadialGradient(center, center, 0, center, center, center);
-    gradient.addColorStop(0, "rgba(255, 255, 232, 1)");
-    gradient.addColorStop(0.13, "rgba(255, 249, 216, 0.95)");
-    gradient.addColorStop(0.34, "rgba(255, 221, 142, 0.42)");
-    gradient.addColorStop(0.68, "rgba(255, 197, 82, 0.18)");
-    gradient.addColorStop(1, "rgba(255, 197, 82, 0)");
+    gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
+    gradient.addColorStop(0.13, "rgba(255, 255, 255, 0.88)");
+    gradient.addColorStop(0.3, rgbaString(color, 0.72));
+    gradient.addColorStop(0.62, rgbaString(color, 0.3));
+    gradient.addColorStop(1, rgbaString(color, 0));
 
     context.fillStyle = gradient;
     context.fillRect(0, 0, size, size);
 
-    this.glowTexture = new THREE.CanvasTexture(canvas);
-    this.glowTexture.colorSpace = THREE.SRGBColorSpace;
-    this.glowTexture.needsUpdate = true;
-    return this.glowTexture;
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    texture.needsUpdate = true;
+    this.glowTextures.set(key, texture);
+    return texture;
   }
 
   private getEditRingTexture(): THREE.CanvasTexture {
@@ -290,23 +294,23 @@ function isMappedCard(node: AyaNode): boolean {
 }
 
 function nodeGlowSizePixels(item: IdeaLayerDatum, active: boolean): number {
-  const activeScale = active ? 1.18 : 1;
-  if (item.node.type === "group" && item.node.depth === 0) return 76 * activeScale;
-  if (item.node.type === "group") return 64 * activeScale;
-  if (item.node.geoPlacementSource === "fallback" || item.node.geoPlacementSource === "manual") return 52 * activeScale;
-  return 42 * activeScale;
+  const activeScale = active ? 1.16 : 1;
+  if (item.node.type === "group" && item.node.depth === 0) return 68 * activeScale;
+  if (item.node.type === "group") return 58 * activeScale;
+  if (item.node.geoPlacementSource === "fallback" || item.node.geoPlacementSource === "manual") return 48 * activeScale;
+  return 38 * activeScale;
 }
 
 function nodeGlowOpacity(item: IdeaLayerDatum, active: boolean): number {
   const dimOpacity = item.dimmed ? 0.18 : 1;
-  const relatedOpacity = item.related ? 1 : 0.66;
+  const relatedOpacity = item.related ? 1 : 0.72;
   const typeOpacity =
     item.node.type === "group"
-      ? 0.62
+      ? 0.64
       : item.node.geoPlacementSource === "fallback" || item.node.geoPlacementSource === "manual"
-        ? 0.7
-        : 0.66;
-  return Math.min(1, (active ? 0.98 : typeOpacity) * dimOpacity * relatedOpacity);
+        ? 0.72
+        : 0.68;
+  return Math.min(0.94, (active ? 0.9 : typeOpacity) * dimOpacity * relatedOpacity);
 }
 
 function editRingSizePixels(item: IdeaLayerDatum, active: boolean, selected: boolean): number {
@@ -320,6 +324,13 @@ function editRingOpacity(item: IdeaLayerDatum, active: boolean, selected: boolea
   const dimOpacity = item.dimmed ? 0.34 : 1;
   const stateOpacity = selected ? 0.96 : active ? 0.9 : 0.86;
   return stateOpacity * dimOpacity;
+}
+
+function rgbaString(color: THREE.Color, alpha: number): string {
+  const r = Math.round(color.r * 255);
+  const g = Math.round(color.g * 255);
+  const b = Math.round(color.b * 255);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
 export function addIdeaObjectLayer(map: MapLibreMap): IdeaObjectLayer {

@@ -640,12 +640,18 @@ input {
   z-index: 20;
   width: min(320px, calc(100vw - 40px));
   padding: 14px 15px;
-  border: 1px solid rgba(94, 70, 48, 0.16);
+  border: 1px solid color-mix(in srgb, var(--node-color, #d4a45c) 34%, rgba(94, 70, 48, 0.14));
   border-radius: 8px;
   color: #3a2e27;
-  background: rgba(255, 246, 232, 0.95);
-  box-shadow: 0 16px 40px rgba(45, 30, 16, 0.2);
+  background: color-mix(in srgb, var(--node-color, #d4a45c) 8%, rgba(255, 246, 232, 0.95));
+  box-shadow:
+    0 14px 34px rgba(45, 30, 16, 0.18),
+    inset 3px 0 0 color-mix(in srgb, var(--node-color, #d4a45c) 74%, transparent);
   backdrop-filter: blur(12px);
+}
+
+.idea-tooltip.connected {
+  opacity: 0.94;
 }
 
 .idea-tooltip strong {
