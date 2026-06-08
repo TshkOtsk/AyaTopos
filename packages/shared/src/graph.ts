@@ -9,6 +9,7 @@ import type {
   GeoPlacement,
   HypoWeaveExport,
   HypoWeaveNode,
+  HypoWeaveSnapshot,
   PlacementNodeInput
 } from "./types.js";
 
@@ -21,7 +22,8 @@ export interface NormalizeOptions {
 
 export function normalizeHypoWeave(input: HypoWeaveExport, options: NormalizeOptions = {}): AyaGraph {
   const center = options.center ?? DEFAULT_CENTER;
-  const rawNodes = input.snapshot?.nodes?.filter((node) => !node.hidden) ?? [];
+  const snapshot = getHypoWeaveSnapshot(input);
+  const rawNodes = snapshot.nodes.filter((node) => !node.hidden);
   const byId = new Map(rawNodes.map((node) => [node.id, node]));
   const absoluteCache = new Map<string, { x: number; y: number }>();
   const depthCache = new Map<string, number>();
@@ -96,6 +98,14 @@ export function toPlacementInputs(graph: AyaGraph): PlacementNodeInput[] {
     topAncestorId: node.topAncestorId,
     parentId: node.parentId
   }));
+}
+
+export function getHypoWeaveSnapshot(input: HypoWeaveExport): Required<HypoWeaveSnapshot> {
+  const snapshot = input.snapshot ?? input.workspaces?.board?.snapshot ?? firstWorkspaceSnapshot(input);
+  return {
+    nodes: snapshot?.nodes ?? [],
+    edges: snapshot?.edges ?? []
+  };
 }
 
 export function connectedIds(edges: AyaEdge[], nodeId: string): Set<string> {
@@ -274,12 +284,16 @@ function isDescendantOf(node: HypoWeaveNode, ancestorId: string, byId: Map<strin
 }
 
 function normalizeEdges(input: HypoWeaveExport): AyaEdge[] {
-  return (input.snapshot?.edges ?? []).map((edge, index) => ({
+  return getHypoWeaveSnapshot(input).edges.map((edge, index) => ({
     id: `${edge.source}->${edge.target}:${index}`,
     source: edge.source,
     target: edge.target,
     type: edge.type
   }));
+}
+
+function firstWorkspaceSnapshot(input: HypoWeaveExport): HypoWeaveSnapshot | undefined {
+  return Object.values(input.workspaces ?? {}).find((workspace) => workspace.snapshot?.nodes?.length)?.snapshot;
 }
 
 function labelOf(node: HypoWeaveNode, input: HypoWeaveExport): string {

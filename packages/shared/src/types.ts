@@ -37,13 +37,21 @@ export interface HypoWeaveEdge {
   [key: string]: unknown;
 }
 
+export interface HypoWeaveSnapshot {
+  nodes?: HypoWeaveNode[];
+  edges?: HypoWeaveEdge[];
+}
+
+export interface HypoWeaveWorkspace {
+  snapshot?: HypoWeaveSnapshot;
+  [key: string]: unknown;
+}
+
 export interface HypoWeaveExport {
   version?: number;
   app?: string;
-  snapshot?: {
-    nodes?: HypoWeaveNode[];
-    edges?: HypoWeaveEdge[];
-  };
+  snapshot?: HypoWeaveSnapshot;
+  workspaces?: Record<string, HypoWeaveWorkspace>;
   ai?: {
     pickedSentenceByGroupId?: Record<string, string>;
     [key: string]: unknown;

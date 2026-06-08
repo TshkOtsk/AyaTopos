@@ -66,6 +66,21 @@ describe("normalizeHypoWeave", () => {
     expect(graph.edges).toHaveLength(1);
   });
 
+  it("accepts exports with the snapshot nested under workspaces.board", () => {
+    const graph = normalizeHypoWeave({
+      version: 2,
+      app: "HypoWeave",
+      workspaces: {
+        board: {
+          snapshot: fixture.snapshot
+        }
+      }
+    });
+
+    expect(graph.nodes.map((node) => node.id)).toEqual(["root-a", "child-a", "card-a"]);
+    expect(graph.edges).toHaveLength(1);
+  });
+
   it("keeps semantic and geographic placements inside the local radius", () => {
     const center = { lng: 85, lat: 28, label: "Nepal" };
     const graph = normalizeHypoWeave(fixture, {

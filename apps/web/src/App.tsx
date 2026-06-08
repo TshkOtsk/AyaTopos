@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import {
   DEFAULT_CENTER,
+  getHypoWeaveSnapshot,
   interpolatePoint,
   normalizeHypoWeave,
   parseManualCenter,
@@ -181,7 +182,8 @@ export function App() {
     try {
       const text = await file.text();
       const parsed = JSON.parse(text) as HypoWeaveExport;
-      if (!parsed.snapshot?.nodes?.length) throw new Error("snapshot.nodes が見つかりません。");
+      const snapshot = getHypoWeaveSnapshot(parsed);
+      if (!snapshot.nodes.length) throw new Error("snapshot.nodes または workspaces.*.snapshot.nodes が見つかりません。");
       setRawExport(parsed);
       setFileName(file.name);
       setGraph(null);
@@ -192,7 +194,7 @@ export function App() {
       setSelectedCardId(null);
       setHoveredId(null);
       setStatus("ready");
-      setMessage(`${parsed.snapshot.nodes.length} ノードを読み込みました。`);
+      setMessage(`${snapshot.nodes.length} ノードを読み込みました。`);
     } catch (error) {
       setStatus("error");
       setMessage(error instanceof Error ? error.message : "JSONの読み込みに失敗しました。");
@@ -215,7 +217,7 @@ export function App() {
       setSelectedCardId(null);
       setHoveredId(null);
       setStatus("ready");
-      setMessage(`${parsed.snapshot?.nodes?.length ?? 0} ノードを読み込みました。`);
+      setMessage(`${getHypoWeaveSnapshot(parsed).nodes.length} ノードを読み込みました。`);
     } catch (error) {
       setStatus("error");
       setMessage(error instanceof Error ? error.message : "サンプルの読み込みに失敗しました。");
@@ -2280,7 +2282,7 @@ function mergeGeoPlacements(basePlacements: GeoPlacement[], manualPlacements: Ma
 
 function manualGeoStorageKey(center: GeoCenter, fileName: string, rawExport: HypoWeaveExport): string {
   const centerKey = `${center.lng.toFixed(6)},${center.lat.toFixed(6)}`;
-  const ids = (rawExport.snapshot?.nodes ?? []).map((node) => node.id).sort().join("|");
+  const ids = getHypoWeaveSnapshot(rawExport).nodes.map((node) => node.id).sort().join("|");
   return `ayatopos:manual-geo:${centerKey}:${fileName || "untitled"}:${hashString(ids)}`;
 }
 
