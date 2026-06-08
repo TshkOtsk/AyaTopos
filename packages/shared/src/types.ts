@@ -64,7 +64,7 @@ export interface AyaSpatialPoint {
   altitude: number;
 }
 
-export type GeoPlacementSource = "gemini" | "fallback" | "preset";
+export type GeoPlacementSource = "gemini" | "fallback" | "preset" | "manual";
 
 export interface AyaGroupOutline {
   id: string;

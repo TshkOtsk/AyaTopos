@@ -84,6 +84,23 @@ describe("normalizeHypoWeave", () => {
     expect(graph.nodes.find((node) => node.id === "card-a")?.geoPlacementSource).toBe("gemini");
   });
 
+  it("keeps manual geographic placements at the user supplied coordinates", () => {
+    const center = { lng: 85, lat: 28, label: "Nepal" };
+    const graph = normalizeHypoWeave(fixture, {
+      center,
+      placements: [{ nodeId: "card-a", lng: 88, lat: 31, confidence: 1, source: "manual" }]
+    });
+    const card = graph.nodes.find((node) => node.id === "card-a");
+
+    expect(card?.geoPlacementSource).toBe("manual");
+    expect(card?.geoPlacementConfidence).toBe(1);
+    expect(card?.geo.lng).toBe(88);
+    expect(card?.geo.lat).toBe(31);
+    expect(distanceFromCenterMeters(card!.geo.lng, card!.geo.lat, center)).toBeGreaterThan(
+      DEFAULT_LOCAL_RADIUS_METERS
+    );
+  });
+
   it("creates group outlines from hull data and descendant bounds", () => {
     const graph = normalizeHypoWeave(fixture);
     const rootOutline = graph.outlines.find((outline) => outline.groupId === "root-a");

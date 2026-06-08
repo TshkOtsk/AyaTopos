@@ -5,7 +5,7 @@ test("loads the sample graph and supports map blending plus hover focus", async 
   await routePlacements(page, "fallback");
   await page.goto("/");
 
-  await expect(page.locator(".brand")).toContainText("AyaTopos");
+  await expect(page.locator(".drop-zone")).toBeVisible();
   await page.locator(".secondary-action").click();
   await page.locator(".area-row input").fill("Nepal");
   await page.locator(".primary-action").click();
@@ -56,6 +56,49 @@ test("renders node glows inside the MapLibre custom layer while keeping DOM hit 
   await expect(page.locator(".idea-tooltip")).toBeVisible();
 });
 
+test("allows card geographic coordinates to be edited and restored from local storage", async ({ page }) => {
+  test.setTimeout(180_000);
+  await routePlacements(page, "fallback");
+
+  await page.goto("/");
+  await page.locator(".secondary-action").click();
+  await page.locator(".area-row input").fill("Nepal");
+  await page.locator(".primary-action").click();
+
+  await expect(page.locator(".geo-point-hit-target.card")).toHaveCount(65);
+  await setBlend(page, "1");
+  await page.getByTestId("geo-edit-toggle").click();
+  await expect(page.locator(".geo-point-hit-target.card.geo-edit-target")).toHaveCount(65);
+
+  const editableCard = page.locator(".geo-point-hit-target.card.geo-edit-target.depth-0").first();
+  await editableCard.click();
+  const lngInput = page.locator(".geo-edit-fields input").nth(0);
+  const latInput = page.locator(".geo-edit-fields input").nth(1);
+  const editedLng = (Number(await lngInput.inputValue()) + 0.000321).toFixed(6);
+  const editedLat = (Number(await latInput.inputValue()) + 0.000123).toFixed(6);
+
+  await lngInput.fill(editedLng);
+  await latInput.fill(editedLat);
+  await expect(page.locator(".geo-edit-panel")).toContainText("1 saved");
+
+  const saved = await page.evaluate(() =>
+    Object.entries(window.localStorage).find(([key]) => key.startsWith("ayatopos:manual-geo:"))
+  );
+  expect(saved?.[1]).toContain('"source":"manual"');
+
+  await page.reload();
+  await page.locator(".secondary-action").click();
+  await page.locator(".area-row input").fill("Nepal");
+  await page.locator(".primary-action").click();
+  await setBlend(page, "1");
+  await page.getByTestId("geo-edit-toggle").click();
+  await expect(page.locator(".geo-edit-panel")).toContainText("1 saved");
+
+  await editableCard.click();
+  await expect(page.locator(".geo-edit-fields input").nth(0)).toHaveValue(editedLng);
+  await expect(page.locator(".geo-edit-fields input").nth(1)).toHaveValue(editedLat);
+});
+
 async function routePlacements(page: Page, source: "fallback" | "gemini"): Promise<void> {
   await page.route("**/api/geo/placements", async (route) => {
     const body = route.request().postDataJSON() as {
@@ -75,4 +118,18 @@ async function routePlacements(page: Page, source: "fallback" | "gemini"): Promi
       body: JSON.stringify({ mode: source, placements })
     });
   });
+}
+
+async function setBlend(page: Page, value: string): Promise<void> {
+  await page.locator(".blend-control input").evaluate(
+    (element, nextValue) => {
+      const input = element as HTMLInputElement;
+      const valueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value")?.set;
+      valueSetter?.call(input, nextValue);
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+      input.dispatchEvent(new Event("change", { bubbles: true }));
+    },
+    value
+  );
+  await expect(page.locator(".blend-control input")).toHaveValue(value);
 }

@@ -33,7 +33,7 @@ export function normalizeHypoWeave(input: HypoWeaveExport, options: NormalizeOpt
   const placementMap = new Map(
     (options.placements ?? []).map((placement) => [
       placement.nodeId,
-      clampGeoPlacementToLocalRadius(placement, center)
+      placement.source === "manual" ? placement : clampGeoPlacementToLocalRadius(placement, center)
     ])
   );
 

@@ -6,9 +6,12 @@ import {
   Eye,
   FileJson,
   Map as MapIcon,
+  MapPin,
+  RotateCcw,
   Share2,
   Sparkles,
-  Upload
+  Upload,
+  X
 } from "lucide-react";
 import {
   DEFAULT_CENTER,
@@ -17,12 +20,22 @@ import {
   parseManualCenter,
   toPlacementInputs
 } from "@ayatopos/shared";
-import type { AyaGraph, AyaGroupOutline, AyaNode, AyaSpatialPoint, HypoWeaveExport } from "@ayatopos/shared";
+import type {
+  AyaGraph,
+  AyaGroupOutline,
+  AyaNode,
+  AyaSpatialPoint,
+  GeoCenter,
+  GeoPlacement,
+  HypoWeaveExport
+} from "@ayatopos/shared";
 import { requestPlacements, resolveArea } from "./api";
 import { addIdeaObjectLayer, nodeElevationMeters, type IdeaLayerDatum, type IdeaObjectLayer } from "./ideaLayer";
 import { ensureTerrain, mapStyle } from "./mapStyle";
 
 type LoadState = "idle" | "loading" | "ready" | "error";
+type ViewMode = "view" | "editGeo";
+type ManualPlacementRecord = Record<string, GeoPlacement>;
 
 interface ScreenNode {
   node: AyaNode;
@@ -47,7 +60,100 @@ export function App() {
   const [blend, setBlend] = useState(0.28);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [status, setStatus] = useState<LoadState>("idle");
+  const [currentCenter, setCurrentCenter] = useState<GeoCenter | null>(null);
+  const [basePlacements, setBasePlacements] = useState<GeoPlacement[]>([]);
+  const [manualPlacements, setManualPlacements] = useState<ManualPlacementRecord>({});
+  const [viewMode, setViewMode] = useState<ViewMode>("view");
+  const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
+  const loadedManualKeyRef = useRef<string | null>(null);
   const [message, setMessage] = useState("JSONと中心エリアを指定してください。");
+
+  const manualStorageKey = useMemo(
+    () => (rawExport && currentCenter ? manualGeoStorageKey(currentCenter, fileName, rawExport) : null),
+    [currentCenter, fileName, rawExport]
+  );
+  const isFullyGeographic = blend >= 0.999;
+  const isGeoEditing = viewMode === "editGeo";
+  const selectedCard = useMemo(
+    () => graph?.nodes.find((node) => node.id === selectedCardId && node.type === "card"),
+    [graph, selectedCardId]
+  );
+  const manualPlacementCount = useMemo(() => Object.keys(manualPlacements).length, [manualPlacements]);
+
+  useEffect(() => {
+    if (!manualStorageKey || loadedManualKeyRef.current !== manualStorageKey) return;
+    saveManualGeoPlacements(manualStorageKey, manualPlacements);
+  }, [manualPlacements, manualStorageKey]);
+
+  useEffect(() => {
+    if (!manualStorageKey) {
+      loadedManualKeyRef.current = null;
+      setManualPlacements({});
+      return;
+    }
+
+    loadedManualKeyRef.current = manualStorageKey;
+    setManualPlacements(loadManualGeoPlacements(manualStorageKey));
+  }, [manualStorageKey]);
+
+  useEffect(() => {
+    if (!rawExport || !currentCenter) return;
+    setGraph(
+      normalizeHypoWeave(rawExport, {
+        center: currentCenter,
+        placements: mergeGeoPlacements(basePlacements, manualPlacements)
+      })
+    );
+  }, [basePlacements, currentCenter, manualPlacements, rawExport]);
+
+  useEffect(() => {
+    if (!selectedCardId || graph?.nodes.some((node) => node.id === selectedCardId && node.type === "card")) return;
+    setSelectedCardId(null);
+  }, [graph, selectedCardId]);
+
+  const enterGeoEditMode = useCallback(() => {
+    if (!graph || !isFullyGeographic) return;
+    setViewMode("editGeo");
+    setMessage("カードの地理座標を編集中です。");
+  }, [graph, isFullyGeographic]);
+
+  const exitGeoEditMode = useCallback(() => {
+    setViewMode("view");
+    setSelectedCardId(null);
+    setMessage("カードの地理座標編集を終了しました。");
+  }, []);
+
+  useEffect(() => {
+    if (viewMode === "editGeo" && !isFullyGeographic) {
+      exitGeoEditMode();
+    }
+  }, [exitGeoEditMode, isFullyGeographic, viewMode]);
+
+  const updateManualGeoPlacement = useCallback(
+    (nodeId: string, lng: number, lat: number) => {
+      const node = graph?.nodes.find((item) => item.id === nodeId);
+      if (node?.type !== "card" || !isValidLngLat(lng, lat)) return;
+      setManualPlacements((current) => ({
+        ...current,
+        [nodeId]: {
+          nodeId,
+          lng,
+          lat,
+          confidence: 1,
+          source: "manual"
+        }
+      }));
+    },
+    [graph]
+  );
+
+  const resetManualGeoPlacement = useCallback((nodeId: string) => {
+    setManualPlacements((current) => {
+      const next = { ...current };
+      delete next[nodeId];
+      return next;
+    });
+  }, []);
 
   const handleFile = useCallback(async (file: File) => {
     try {
@@ -57,6 +163,11 @@ export function App() {
       setRawExport(parsed);
       setFileName(file.name);
       setGraph(null);
+      setCurrentCenter(null);
+      setBasePlacements([]);
+      setManualPlacements({});
+      setViewMode("view");
+      setSelectedCardId(null);
       setHoveredId(null);
       setStatus("ready");
       setMessage(`${parsed.snapshot.nodes.length} ノードを読み込みました。`);
@@ -75,6 +186,11 @@ export function App() {
       setRawExport(parsed);
       setFileName("民謡とネパール.json");
       setGraph(null);
+      setCurrentCenter(null);
+      setBasePlacements([]);
+      setManualPlacements({});
+      setViewMode("view");
+      setSelectedCardId(null);
       setHoveredId(null);
       setStatus("ready");
       setMessage(`${parsed.snapshot?.nodes?.length ?? 0} ノードを読み込みました。`);
@@ -110,6 +226,10 @@ export function App() {
       }
 
       const semanticGraph = normalizeHypoWeave(rawExport, { center });
+      setCurrentCenter(center);
+      setBasePlacements([]);
+      setViewMode("view");
+      setSelectedCardId(null);
       setGraph(semanticGraph);
       setBlend(0.18);
       setMessage("地理配置を推定しています。");
@@ -119,11 +239,7 @@ export function App() {
         center,
         nodes: toPlacementInputs(semanticGraph)
       });
-      const nextGraph = normalizeHypoWeave(rawExport, {
-        center,
-        placements: response.placements
-      });
-      setGraph(nextGraph);
+      setBasePlacements(response.placements);
       setBlend(response.mode === "gemini" ? 0.62 : 0.42);
       setStatus("ready");
       setMessage(
@@ -134,6 +250,10 @@ export function App() {
     } catch (error) {
       const center = parseManualCenter(areaText.trim()) ?? DEFAULT_CENTER;
       const fallbackGraph = normalizeHypoWeave(rawExport, { center });
+      setCurrentCenter(center);
+      setBasePlacements([]);
+      setViewMode("view");
+      setSelectedCardId(null);
       setGraph(fallbackGraph);
       setStatus("error");
       setMessage(error instanceof Error ? `${error.message} フォールバック表示に切り替えました。` : "フォールバック表示に切り替えました。");
@@ -141,8 +261,17 @@ export function App() {
   }, [areaText, rawExport]);
 
   return (
-    <main className="app-shell" style={{ "--blend": blend } as React.CSSProperties}>
-      <MapScene graph={graph} blend={blend} hoveredId={hoveredId} onHover={setHoveredId} />
+    <main className={`app-shell ${isGeoEditing ? "geo-editing" : ""}`} style={{ "--blend": blend } as React.CSSProperties}>
+      <MapScene
+        graph={graph}
+        blend={blend}
+        hoveredId={hoveredId}
+        onHover={setHoveredId}
+        isGeoEditing={isGeoEditing}
+        selectedCardId={selectedCardId}
+        onSelectCard={setSelectedCardId}
+        onUpdateCardGeo={updateManualGeoPlacement}
+      />
 
       <header className="topbar">
         <div className="icon-cluster">
@@ -155,31 +284,53 @@ export function App() {
           <button className="icon-button" aria-label="表示">
             <Eye size={23} />
           </button>
+          <button
+            className={`icon-button ${isGeoEditing ? "active" : ""}`}
+            type="button"
+            data-testid="geo-edit-toggle"
+            aria-label={isGeoEditing ? "地理座標編集を終了" : "カードの地理座標を編集"}
+            onClick={isGeoEditing ? exitGeoEditMode : enterGeoEditMode}
+            disabled={!graph || (!isGeoEditing && !isFullyGeographic)}
+          >
+            <MapPin size={22} />
+          </button>
         </div>
       </header>
 
-      <section className={`loader-panel ${graph ? "compact" : ""}`}>
-        <DropZone onFile={handleFile} fileName={fileName} />
-        <div className="area-row">
-          <MapIcon size={18} />
-          <input
-            value={areaText}
-            onChange={(event) => setAreaText(event.target.value)}
-            placeholder="中心エリアまたは 27.7172,85.3240"
+      <div className={`left-panel-stack ${graph ? "compact" : ""}`}>
+        <section className={`loader-panel ${graph ? "compact" : ""}`}>
+          <DropZone onFile={handleFile} fileName={fileName} />
+          <div className="area-row">
+            <MapIcon size={18} />
+            <input
+              value={areaText}
+              onChange={(event) => setAreaText(event.target.value)}
+              placeholder="中心エリアまたは 27.7172,85.3240"
+            />
+          </div>
+          <div className="action-row">
+            <button className="secondary-action" type="button" onClick={loadSample}>
+              <FileJson size={18} />
+              サンプル
+            </button>
+            <button className="primary-action" type="button" onClick={visualize} disabled={status === "loading"}>
+              <Blend size={19} />
+              可視化
+            </button>
+          </div>
+          <p className={`status-line ${status}`}>{message}</p>
+        </section>
+
+        {isGeoEditing ? (
+          <GeoEditPanel
+            selectedCard={selectedCard}
+            manualPlacementCount={manualPlacementCount}
+            onUpdate={updateManualGeoPlacement}
+            onReset={resetManualGeoPlacement}
+            onClose={exitGeoEditMode}
           />
-        </div>
-        <div className="action-row">
-          <button className="secondary-action" type="button" onClick={loadSample}>
-            <FileJson size={18} />
-            サンプル
-          </button>
-          <button className="primary-action" type="button" onClick={visualize} disabled={status === "loading"}>
-            <Blend size={19} />
-            可視化
-          </button>
-        </div>
-        <p className={`status-line ${status}`}>{message}</p>
-      </section>
+        ) : null}
+      </div>
 
       {graph ? (
         <section className="inspector-strip">
@@ -201,6 +352,7 @@ export function App() {
           step="0.01"
           value={blend}
           onChange={(event) => setBlend(Number(event.target.value))}
+          disabled={isGeoEditing}
         />
         <div className="blend-label">
           <MapIcon size={18} />
@@ -247,21 +399,117 @@ function DropZone({ onFile, fileName }: { onFile: (file: File) => void; fileName
   );
 }
 
+function GeoEditPanel({
+  selectedCard,
+  manualPlacementCount,
+  onUpdate,
+  onReset,
+  onClose
+}: {
+  selectedCard: AyaNode | undefined;
+  manualPlacementCount: number;
+  onUpdate: (nodeId: string, lng: number, lat: number) => void;
+  onReset: (nodeId: string) => void;
+  onClose: () => void;
+}) {
+  const [lngText, setLngText] = useState("");
+  const [latText, setLatText] = useState("");
+
+  useEffect(() => {
+    setLngText(selectedCard ? selectedCard.geo.lng.toFixed(6) : "");
+    setLatText(selectedCard ? selectedCard.geo.lat.toFixed(6) : "");
+  }, [selectedCard?.geo.lat, selectedCard?.geo.lng, selectedCard?.id]);
+
+  const updateLng = (value: string) => {
+    setLngText(value);
+    if (!selectedCard) return;
+    const lng = Number(value);
+    const lat = Number(latText);
+    if (isValidLngLat(lng, lat)) onUpdate(selectedCard.id, lng, lat);
+  };
+  const updateLat = (value: string) => {
+    setLatText(value);
+    if (!selectedCard) return;
+    const lng = Number(lngText);
+    const lat = Number(value);
+    if (isValidLngLat(lng, lat)) onUpdate(selectedCard.id, lng, lat);
+  };
+
+  return (
+    <section className="geo-edit-panel" aria-label="カード地理座標編集">
+      <div className="geo-edit-panel-header">
+        <div>
+          <strong>Geo edit</strong>
+          <span>{manualPlacementCount} saved</span>
+        </div>
+        <button className="geo-edit-close" type="button" onClick={onClose} aria-label="編集を終了">
+          <X size={16} />
+        </button>
+      </div>
+      {selectedCard ? (
+        <div className="geo-edit-fields">
+          <p>{selectedCard.shortLabel}</p>
+          <label>
+            <span>Lng</span>
+            <input
+              type="number"
+              inputMode="decimal"
+              step="0.000001"
+              min="-180"
+              max="180"
+              value={lngText}
+              onChange={(event) => updateLng(event.target.value)}
+            />
+          </label>
+          <label>
+            <span>Lat</span>
+            <input
+              type="number"
+              inputMode="decimal"
+              step="0.000001"
+              min="-90"
+              max="90"
+              value={latText}
+              onChange={(event) => updateLat(event.target.value)}
+            />
+          </label>
+          <button className="geo-edit-reset" type="button" onClick={() => onReset(selectedCard.id)}>
+            <RotateCcw size={16} />
+            Reset
+          </button>
+        </div>
+      ) : (
+        <p className="geo-edit-empty">Select a card on the map.</p>
+      )}
+    </section>
+  );
+}
+
 function MapScene({
   graph,
   blend,
   hoveredId,
-  onHover
+  onHover,
+  isGeoEditing,
+  selectedCardId,
+  onSelectCard,
+  onUpdateCardGeo
 }: {
   graph: AyaGraph | null;
   blend: number;
   hoveredId: string | null;
   onHover: (nodeId: string | null) => void;
+  isGeoEditing: boolean;
+  selectedCardId: string | null;
+  onSelectCard: (nodeId: string | null) => void;
+  onUpdateCardGeo: (nodeId: string, lng: number, lat: number) => void;
 }) {
   const mapNodeRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const ideaLayerRef = useRef<IdeaObjectLayer | null>(null);
   const frameRef = useRef<number | null>(null);
+  const draggingCardIdRef = useRef<string | null>(null);
+  const editViewRef = useRef<{ pitch: number; bearing: number } | null>(null);
   const [tick, setTick] = useState(0);
 
   useEffect(() => {
@@ -352,16 +600,49 @@ function MapScene({
       bearing: -22,
       duration: 900
     });
-  }, [graph?.center.lat, graph?.center.lng, graph]);
+  }, [graph?.center.lat, graph?.center.lng]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+
+    if (isGeoEditing) {
+      if (!editViewRef.current) {
+        editViewRef.current = {
+          pitch: map.getPitch(),
+          bearing: map.getBearing()
+        };
+      }
+      map.dragRotate.disable();
+      map.touchZoomRotate.disableRotation();
+      map.easeTo({
+        pitch: 0,
+        bearing: 0,
+        duration: 450
+      });
+      return;
+    }
+
+    if (!editViewRef.current) return;
+    const view = editViewRef.current;
+    editViewRef.current = null;
+    map.dragRotate.enable();
+    map.touchZoomRotate.enableRotation();
+    map.easeTo({
+      pitch: view.pitch,
+      bearing: view.bearing,
+      duration: 450
+    });
+  }, [isGeoEditing]);
 
   const zoom = mapRef.current?.getZoom() ?? 0;
   const visualThreads = useMemo(() => (graph ? createVisualThreads(graph) : []), [graph]);
   const activeVisualThreads = useMemo(
     () =>
-      hoveredId
+      hoveredId && !isGeoEditing
         ? visualThreads.filter((edge) => edge.source === hoveredId || edge.target === hoveredId)
         : [],
-    [hoveredId, visualThreads]
+    [hoveredId, isGeoEditing, visualThreads]
   );
   const relatedIds = useMemo(
     () => (graph && hoveredId ? connectedVisualIds(visualThreads, hoveredId) : new Set<string>()),
@@ -378,8 +659,8 @@ function MapScene({
         node,
         point,
         screen: projected,
-        related: hoveredId ? relatedIds.has(node.id) : true,
-        dimmed: hoveredId ? !relatedIds.has(node.id) : false
+        related: hoveredId ? node.id === hoveredId : true,
+        dimmed: hoveredId ? node.id !== hoveredId : false
       } satisfies ScreenNode;
     });
   }, [blend, graph, hoveredId, relatedIds, tick]);
@@ -427,8 +708,38 @@ function MapScene({
   const hoveredNode = hoveredId ? nodeById.get(hoveredId) : undefined;
 
   useEffect(() => {
-    ideaLayerRef.current?.setData(ideaNodes, hoveredId);
-  }, [hoveredId, ideaNodes]);
+    ideaLayerRef.current?.setData(ideaNodes, hoveredId, {
+      enabled: isGeoEditing,
+      selectedId: selectedCardId
+    });
+  }, [hoveredId, ideaNodes, isGeoEditing, selectedCardId]);
+
+  const updateCardGeoFromPointer = useCallback(
+    (nodeId: string, event: React.PointerEvent<HTMLElement>) => {
+      const map = mapRef.current;
+      if (!map) return;
+      const rect = map.getContainer().getBoundingClientRect();
+      const lngLat = map.unproject([event.clientX - rect.left, event.clientY - rect.top] as PointLike);
+      onUpdateCardGeo(nodeId, lngLat.lng, lngLat.lat);
+    },
+    [onUpdateCardGeo]
+  );
+
+  const panMapTowardPointer = useCallback((event: React.PointerEvent<HTMLElement>) => {
+    const map = mapRef.current;
+    if (!map) return;
+    const rect = map.getContainer().getBoundingClientRect();
+    const offset = autoPanOffsetForPointer(event.clientX - rect.left, event.clientY - rect.top, rect.width, rect.height);
+    if (offset.x === 0 && offset.y === 0) return;
+    const center = map.unproject([rect.width / 2 + offset.x, rect.height / 2 + offset.y] as PointLike);
+    map.setCenter(center);
+  }, []);
+
+  const finishCardDrag = useCallback(() => {
+    if (!draggingCardIdRef.current) return;
+    draggingCardIdRef.current = null;
+    mapRef.current?.dragPan.enable();
+  }, []);
 
   return (
       <div className="scene">
@@ -477,7 +788,9 @@ function MapScene({
             key={`${node.id}:geo-hit-target`}
             className={`geo-point-hit-target ${node.type} ${placementClassForNode(node)} depth-${Math.min(node.depth, 6)} ${
               dimmed ? "dimmed" : ""
-            } ${related ? "related" : ""} ${hoveredId === node.id ? "hovered" : ""}`}
+            } ${related ? "related" : ""} ${hoveredId === node.id ? "hovered" : ""} ${
+              isGeoEditing && node.type === "card" ? "geo-edit-target" : ""
+            } ${selectedCardId === node.id ? "selected" : ""}`}
             style={
               {
                 left: screen.x,
@@ -488,9 +801,39 @@ function MapScene({
             }
             onPointerEnter={() => onHover(node.id)}
             onPointerLeave={() => onHover(null)}
+            onPointerDown={(event) => {
+              if (!isGeoEditing || node.type !== "card") return;
+              event.preventDefault();
+              event.stopPropagation();
+              draggingCardIdRef.current = node.id;
+              event.currentTarget.setPointerCapture(event.pointerId);
+              mapRef.current?.dragPan.disable();
+              onSelectCard(node.id);
+              onHover(node.id);
+            }}
+            onPointerMove={(event) => {
+              if (draggingCardIdRef.current !== node.id) return;
+              event.preventDefault();
+              panMapTowardPointer(event);
+              updateCardGeoFromPointer(node.id, event);
+            }}
+            onPointerUp={(event) => {
+              if (draggingCardIdRef.current !== node.id) return;
+              if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+                event.currentTarget.releasePointerCapture(event.pointerId);
+              }
+              finishCardDrag();
+            }}
+            onPointerCancel={finishCardDrag}
+            onClick={(event) => {
+              if (!isGeoEditing || node.type !== "card") return;
+              event.preventDefault();
+              onSelectCard(node.id);
+            }}
             onFocus={() => onHover(node.id)}
             onBlur={() => onHover(null)}
             type="button"
+            aria-pressed={selectedCardId === node.id}
             aria-label={node.shortLabel}
           />
         ))}
@@ -613,4 +956,74 @@ function outlinePath(outline: AyaGroupOutline, map: MapLibreMap): string {
   const points = outline.points.map((point) => map.project([point.lng, point.lat]) as PointLike & { x: number; y: number });
   if (points.length < 3) return "";
   return points.map((point, index) => `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`).join(" ") + " Z";
+}
+
+function mergeGeoPlacements(basePlacements: GeoPlacement[], manualPlacements: ManualPlacementRecord): GeoPlacement[] {
+  const placements = new Map(basePlacements.map((placement) => [placement.nodeId, placement]));
+  for (const placement of Object.values(manualPlacements)) {
+    placements.set(placement.nodeId, placement);
+  }
+  return [...placements.values()];
+}
+
+function manualGeoStorageKey(center: GeoCenter, fileName: string, rawExport: HypoWeaveExport): string {
+  const centerKey = `${center.lng.toFixed(6)},${center.lat.toFixed(6)}`;
+  const ids = (rawExport.snapshot?.nodes ?? []).map((node) => node.id).sort().join("|");
+  return `ayatopos:manual-geo:${centerKey}:${fileName || "untitled"}:${hashString(ids)}`;
+}
+
+function loadManualGeoPlacements(key: string): ManualPlacementRecord {
+  try {
+    const parsed = JSON.parse(window.localStorage.getItem(key) ?? "[]") as GeoPlacement[];
+    return parsed.reduce<ManualPlacementRecord>((record, placement) => {
+      if (placement.source !== "manual" || !isValidLngLat(placement.lng, placement.lat)) return record;
+      record[placement.nodeId] = {
+        nodeId: placement.nodeId,
+        lng: placement.lng,
+        lat: placement.lat,
+        confidence: 1,
+        source: "manual"
+      };
+      return record;
+    }, {});
+  } catch {
+    return {};
+  }
+}
+
+function saveManualGeoPlacements(key: string, placements: ManualPlacementRecord): void {
+  const values = Object.values(placements);
+  if (values.length === 0) {
+    window.localStorage.removeItem(key);
+    return;
+  }
+  window.localStorage.setItem(key, JSON.stringify(values));
+}
+
+function isValidLngLat(lng: number, lat: number): boolean {
+  return Number.isFinite(lng) && Number.isFinite(lat) && Math.abs(lng) <= 180 && Math.abs(lat) <= 90;
+}
+
+function autoPanOffsetForPointer(x: number, y: number, width: number, height: number): { x: number; y: number } {
+  const edge = 96;
+  const maxStep = 34;
+  return {
+    x: autoPanAxisOffset(x, width, edge, maxStep),
+    y: autoPanAxisOffset(y, height, edge, maxStep)
+  };
+}
+
+function autoPanAxisOffset(value: number, size: number, edge: number, maxStep: number): number {
+  if (value < edge) return -Math.min(maxStep, Math.ceil(((edge - value) / edge) * maxStep));
+  if (value > size - edge) return Math.min(maxStep, Math.ceil(((value - (size - edge)) / edge) * maxStep));
+  return 0;
+}
+
+function hashString(input: string): string {
+  let hash = 2166136261;
+  for (let index = 0; index < input.length; index += 1) {
+    hash ^= input.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return (hash >>> 0).toString(36);
 }

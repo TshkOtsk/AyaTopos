@@ -112,12 +112,35 @@ input {
   cursor: pointer;
 }
 
-.loader-panel {
+.icon-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.icon-button.active {
+  color: #fffaf0;
+  background: #c65d6d;
+  box-shadow:
+    0 12px 28px rgba(65, 45, 28, 0.16),
+    0 0 0 4px rgba(255, 245, 224, 0.64);
+}
+
+.left-panel-stack {
   position: absolute;
   z-index: 13;
   top: 28px;
   left: 34px;
   width: min(390px, calc(100vw - 68px));
+  display: grid;
+  gap: 12px;
+}
+
+.left-panel-stack.compact {
+  width: min(350px, calc(100vw - 68px));
+}
+
+.loader-panel {
+  width: 100%;
   display: grid;
   gap: 12px;
   padding: 16px;
@@ -129,7 +152,6 @@ input {
 }
 
 .loader-panel.compact {
-  width: min(350px, calc(100vw - 68px));
   opacity: 0.94;
 }
 
@@ -245,6 +267,106 @@ input {
   box-shadow: 0 10px 24px rgba(55, 40, 24, 0.12);
 }
 
+.geo-edit-panel {
+  width: 100%;
+  display: grid;
+  gap: 14px;
+  padding: 15px;
+  border: 1px solid rgba(107, 78, 53, 0.14);
+  border-radius: 8px;
+  color: var(--ink);
+  background: rgba(255, 243, 226, 0.94);
+  box-shadow: 0 18px 48px rgba(53, 37, 22, 0.16);
+  backdrop-filter: blur(14px);
+}
+
+.geo-edit-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.geo-edit-panel-header div {
+  display: grid;
+  gap: 3px;
+}
+
+.geo-edit-panel-header strong {
+  font-size: 15px;
+}
+
+.geo-edit-panel-header span,
+.geo-edit-empty {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.geo-edit-close {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(110, 83, 62, 0.14);
+  border-radius: 50%;
+  color: #705845;
+  background: rgba(255, 250, 241, 0.84);
+  cursor: pointer;
+}
+
+.geo-edit-fields {
+  display: grid;
+  gap: 10px;
+}
+
+.geo-edit-fields p {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.geo-edit-fields label {
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.geo-edit-fields input {
+  width: 100%;
+  min-width: 0;
+  height: 38px;
+  padding: 0 10px;
+  border: 1px solid rgba(111, 82, 57, 0.18);
+  border-radius: 8px;
+  outline: 0;
+  color: var(--ink);
+  background: rgba(255, 250, 241, 0.92);
+}
+
+.geo-edit-fields input:focus {
+  border-color: rgba(198, 93, 109, 0.54);
+  box-shadow: 0 0 0 3px rgba(198, 93, 109, 0.12);
+}
+
+.geo-edit-reset {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid rgba(110, 83, 62, 0.14);
+  border-radius: 8px;
+  color: #5f513e;
+  background: rgba(246, 235, 218, 0.8);
+  cursor: pointer;
+}
+
 .blend-control {
   position: absolute;
   z-index: 14;
@@ -277,6 +399,11 @@ input {
 .blend-control input {
   width: 100%;
   accent-color: #e4746b;
+}
+
+.blend-control input:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .outline-layer,
@@ -382,6 +509,34 @@ input {
   background: transparent;
   opacity: 0;
   cursor: pointer;
+}
+
+.geo-editing .map-canvas {
+  cursor: crosshair;
+}
+
+.geo-point-hit-target.geo-edit-target {
+  width: 58px;
+  height: 58px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  opacity: 0;
+  cursor: grab;
+  touch-action: none;
+}
+
+.geo-point-hit-target.geo-edit-target:hover,
+.geo-point-hit-target.geo-edit-target.hovered {
+  opacity: 0;
+}
+
+.geo-point-hit-target.geo-edit-target.selected {
+  opacity: 0;
+}
+
+.geo-point-hit-target.geo-edit-target:active {
+  cursor: grabbing;
 }
 
 .geo-point-hit-target.group {
@@ -525,7 +680,7 @@ input {
     height: 42px;
   }
 
-  .loader-panel {
+  .left-panel-stack {
     top: 76px;
     left: 20px;
     width: calc(100vw - 40px);
@@ -534,6 +689,17 @@ input {
   .loader-panel.compact {
     transform: scale(0.86);
     transform-origin: top left;
+  }
+
+  .left-panel-stack.compact {
+    width: calc(100vw - 40px);
+  }
+
+  .left-panel-stack.compact .geo-edit-panel {
+    transform: scale(0.86);
+    transform-origin: top left;
+    width: calc(100% / 0.86);
+    margin-top: -18px;
   }
 
   .blend-control {
