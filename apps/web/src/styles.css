@@ -409,6 +409,7 @@ input {
 .outline-layer,
 .thread-layer,
 .geo-point-layer,
+.overview-card-hit-layer,
 .idea-hit-layer {
   pointer-events: none;
   position: absolute;
@@ -453,7 +454,7 @@ input {
 .thread {
   fill: none;
   stroke: rgba(221, 242, 255, 0.76);
-  stroke-width: 6;
+  stroke-width: var(--thread-width, 6px);
   stroke-linecap: round;
   stroke-dasharray: 9 11;
   filter:
@@ -464,7 +465,7 @@ input {
 
 .thread.active {
   stroke: rgba(255, 241, 189, 0.96);
-  stroke-width: 10;
+  stroke-width: var(--thread-width, 10px);
   stroke-dasharray: 1 0;
   filter:
     drop-shadow(0 0 14px rgba(255, 226, 151, 1))
@@ -473,19 +474,19 @@ input {
 
 .thread.parent {
   stroke: rgba(186, 242, 255, 0.74);
-  stroke-width: 7;
+  stroke-width: var(--thread-width, 7px);
   stroke-dasharray: 8 11;
 }
 
 .thread.sibling {
   stroke: rgba(255, 218, 158, 0.66);
-  stroke-width: 5;
+  stroke-width: var(--thread-width, 5px);
   stroke-dasharray: 4 12;
 }
 
 .thread.json {
   stroke: rgba(255, 246, 205, 0.86);
-  stroke-width: 8;
+  stroke-width: var(--thread-width, 8px);
 }
 
 .thread.muted {
@@ -494,6 +495,26 @@ input {
 
 .geo-point-layer {
   z-index: 5;
+}
+
+.overview-card-hit-layer {
+  z-index: 7;
+}
+
+.overview-card-hit-target {
+  pointer-events: auto;
+  appearance: none;
+  position: absolute;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.overview-card-hit-target:focus-visible {
+  outline: 2px solid rgba(198, 93, 109, 0.5);
+  outline-offset: 3px;
 }
 
 .geo-point-hit-target {
@@ -513,6 +534,16 @@ input {
 
 .geo-editing .map-canvas {
   cursor: crosshair;
+}
+
+.related-overview .map-canvas {
+  cursor: zoom-out;
+}
+
+.related-overview .maplibregl-ctrl-zoom-in,
+.related-overview .maplibregl-ctrl-zoom-out {
+  pointer-events: none;
+  opacity: 0.35;
 }
 
 .geo-point-hit-target.geo-edit-target {
@@ -583,6 +614,18 @@ input {
   cursor: pointer;
   backdrop-filter: blur(8px);
   transition: transform 150ms ease, opacity 150ms ease, filter 150ms ease;
+}
+
+.related-overview .thread {
+  opacity: 0.88;
+}
+
+.related-overview .thread.parent {
+  stroke-dasharray: 1 0;
+}
+
+.related-overview .thread.sibling {
+  opacity: 0.62;
 }
 
 .idea-hit-target::after {

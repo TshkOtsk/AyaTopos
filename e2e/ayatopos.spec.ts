@@ -33,7 +33,7 @@ test("loads the sample graph and supports map blending plus hover focus", async 
 
   await page.locator(".geo-point-hit-target.card").first().focus();
   await expect(page.locator(".idea-tooltip").first()).toBeVisible();
-  expect(await page.locator(".thread").count()).toBeGreaterThan(0);
+  await expect(page.locator(".thread")).toHaveCount(0);
 });
 
 test("renders node glows inside the MapLibre custom layer while keeping DOM hit targets", async ({ page }) => {

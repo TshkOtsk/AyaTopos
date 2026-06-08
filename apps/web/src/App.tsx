@@ -30,7 +30,14 @@ import type {
   HypoWeaveExport
 } from "@ayatopos/shared";
 import { requestPlacements, resolveArea } from "./api";
-import { addIdeaObjectLayer, nodeElevationMeters, type IdeaLayerDatum, type IdeaObjectLayer } from "./ideaLayer";
+import {
+  addIdeaObjectLayer,
+  nodeElevationMeters,
+  type IdeaLayerCardLayout,
+  type IdeaLayerDatum,
+  type IdeaLayerThreadDatum,
+  type IdeaObjectLayer
+} from "./ideaLayer";
 import { ensureTerrain, mapStyle } from "./mapStyle";
 
 type LoadState = "idle" | "loading" | "ready" | "error";
@@ -50,6 +57,13 @@ interface VisualThread {
   source: string;
   target: string;
   kind: "json" | "parent" | "sibling";
+}
+
+interface StoredMapView {
+  center: [number, number];
+  zoom: number;
+  pitch: number;
+  bearing: number;
 }
 
 interface TooltipLayout {
@@ -518,7 +532,12 @@ function MapScene({
   const hoverClearRef = useRef<number | null>(null);
   const draggingCardIdRef = useRef<string | null>(null);
   const editViewRef = useRef<{ pitch: number; bearing: number } | null>(null);
+  const overviewReturnViewRef = useRef<StoredMapView | null>(null);
+  const [overviewNodeId, setOverviewNodeId] = useState<string | null>(null);
+  const [lockedOverviewCardLayouts, setLockedOverviewCardLayouts] = useState<Map<string, IdeaLayerCardLayout>>(new Map());
+  const [shouldLockOverviewLayout, setShouldLockOverviewLayout] = useState(false);
   const [tick, setTick] = useState(0);
+  const isRelatedOverview = Boolean(overviewNodeId) && !isGeoEditing;
 
   useEffect(
     () => () => {
@@ -655,6 +674,10 @@ function MapScene({
 
   useEffect(() => {
     if (!graph || !mapRef.current) return;
+    setOverviewNodeId(null);
+    overviewReturnViewRef.current = null;
+    setLockedOverviewCardLayouts(new Map());
+    setShouldLockOverviewLayout(false);
     mapRef.current.easeTo({
       center: [graph.center.lng, graph.center.lat],
       zoom: 12,
@@ -669,6 +692,10 @@ function MapScene({
     if (!map) return;
 
     if (isGeoEditing) {
+      setOverviewNodeId(null);
+      overviewReturnViewRef.current = null;
+      setLockedOverviewCardLayouts(new Map());
+      setShouldLockOverviewLayout(false);
       if (!editViewRef.current) {
         editViewRef.current = {
           pitch: map.getPitch(),
@@ -697,18 +724,34 @@ function MapScene({
     });
   }, [isGeoEditing]);
 
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !isRelatedOverview) return;
+    disableOverviewMapZoom(map);
+    return () => {
+      enableOverviewMapZoom(map);
+    };
+  }, [isRelatedOverview]);
+
   const zoom = mapRef.current?.getZoom() ?? 0;
   const visualThreads = useMemo(() => (graph ? createVisualThreads(graph) : []), [graph]);
+  const focusNodeId = isRelatedOverview ? overviewNodeId : hoveredId;
+  const layerActiveNodeId = isRelatedOverview ? hoveredId ?? overviewNodeId : hoveredId;
+  const relatedIds = useMemo(
+    () =>
+      graph && focusNodeId
+        ? connectedVisualIds(visualThreads, focusNodeId)
+        : new Set<string>(),
+    [focusNodeId, graph, visualThreads]
+  );
   const activeVisualThreads = useMemo(
     () =>
-      hoveredId && !isGeoEditing
-        ? visualThreads.filter((edge) => edge.source === hoveredId || edge.target === hoveredId)
-        : [],
-    [hoveredId, isGeoEditing, visualThreads]
-  );
-  const relatedIds = useMemo(
-    () => (graph && hoveredId ? connectedVisualIds(visualThreads, hoveredId) : new Set<string>()),
-    [graph, hoveredId, visualThreads]
+      isRelatedOverview
+        ? visualThreads.filter((edge) => edge.source === overviewNodeId || edge.target === overviewNodeId)
+        : hoveredId && !isGeoEditing
+          ? visualThreads.filter((edge) => edge.source === hoveredId || edge.target === hoveredId)
+          : [],
+    [hoveredId, isGeoEditing, isRelatedOverview, overviewNodeId, visualThreads]
   );
 
   const screenNodes = useMemo(() => {
@@ -717,16 +760,16 @@ function MapScene({
     return graph.nodes.map((node) => {
       const point = visualPointForNode(node, blend);
       const projected = projectNodeGlowToScreen(mapRef.current!, node, point);
-      const isRelated = hoveredId ? relatedIds.has(node.id) : true;
+      const isRelated = focusNodeId ? relatedIds.has(node.id) : true;
       return {
         node,
         point,
         screen: projected,
         related: isRelated,
-        dimmed: hoveredId ? !isRelated : false
+        dimmed: focusNodeId ? !isRelated : false
       } satisfies ScreenNode;
     });
-  }, [blend, graph, hoveredId, relatedIds, tick]);
+  }, [blend, focusNodeId, graph, relatedIds, tick]);
 
   const visibleOutlineNodeIds = useMemo(
     () =>
@@ -738,22 +781,12 @@ function MapScene({
     [graph?.maxDepth, screenNodes, zoom]
   );
 
-  const ideaNodes = useMemo<IdeaLayerDatum[]>(
-    () =>
-      screenNodes.map(({ node, point, related, dimmed }) => ({
-        node,
-        point,
-        related,
-        dimmed
-      })),
-    [screenNodes]
-  );
-
   const nodeHitTargets = useMemo(
     () =>
       [...screenNodes]
+        .filter((item) => !isRelatedOverview || item.related)
         .sort((a, b) => renderRank(a.node, graph?.maxDepth ?? 0) - renderRank(b.node, graph?.maxDepth ?? 0)),
-    [graph?.maxDepth, screenNodes]
+    [graph?.maxDepth, isRelatedOverview, screenNodes]
   );
 
   const screenOutlines = useMemo(() => {
@@ -768,8 +801,91 @@ function MapScene({
   }, [graph, tick, visibleOutlineNodeIds]);
 
   const nodeById = useMemo(() => new Map(screenNodes.map((item) => [item.node.id, item])), [screenNodes]);
+  const computedOverviewCardLayouts = useMemo(() => {
+    const container = mapRef.current?.getContainer();
+    if (!container || !isRelatedOverview || !overviewNodeId) return new Map<string, IdeaLayerCardLayout>();
+
+    const orderedIds = [
+      overviewNodeId,
+      ...activeVisualThreads.map((edge) => (edge.source === overviewNodeId ? edge.target : edge.source))
+    ];
+    const seen = new Set<string>();
+    const cards = orderedIds
+      .filter((id) => {
+        if (seen.has(id)) return false;
+        seen.add(id);
+        return true;
+      })
+      .map((id) => nodeById.get(id))
+      .filter((item): item is ScreenNode => Boolean(item))
+      .filter((item) => isGlowVisibleOnScreen(item, container.clientWidth, container.clientHeight));
+    const glowObstacles = screenNodes
+      .filter((item) => item.related)
+      .filter((item) => isGlowVisibleOnScreen(item, container.clientWidth, container.clientHeight))
+      .map(glowAvoidanceRect);
+
+    return new Map(
+      placeOverviewLayerCards(cards, container.clientWidth, container.clientHeight, glowObstacles, graph?.maxDepth ?? 0).map(
+        ({ item, layout }) => [item.node.id, layout]
+      )
+    );
+  }, [activeVisualThreads, graph?.maxDepth, isRelatedOverview, nodeById, overviewNodeId, screenNodes]);
+  useEffect(() => {
+    if (!isRelatedOverview || !shouldLockOverviewLayout || lockedOverviewCardLayouts.size > 0 || computedOverviewCardLayouts.size === 0) {
+      return;
+    }
+    setLockedOverviewCardLayouts(new Map(computedOverviewCardLayouts));
+    setShouldLockOverviewLayout(false);
+  }, [computedOverviewCardLayouts, isRelatedOverview, lockedOverviewCardLayouts.size, shouldLockOverviewLayout]);
+  const overviewCardLayouts =
+    isRelatedOverview && lockedOverviewCardLayouts.size > 0 ? lockedOverviewCardLayouts : computedOverviewCardLayouts;
+  const ideaNodes = useMemo<IdeaLayerDatum[]>(
+    () =>
+      screenNodes.map(({ node, point, related, dimmed }) => ({
+        node,
+        point,
+        related,
+        dimmed,
+        overviewCard: overviewCardLayouts.get(node.id)
+      })),
+    [overviewCardLayouts, screenNodes]
+  );
+  const customLayerThreads = useMemo<IdeaLayerThreadDatum[]>(
+    () => {
+      const graphThreads: IdeaLayerThreadDatum[] = [];
+      for (const edge of activeVisualThreads) {
+        const source = nodeById.get(edge.source);
+        const target = nodeById.get(edge.target);
+        if (!source || !target) continue;
+        graphThreads.push({
+          id: edge.id,
+          kind: edge.kind,
+          source: source.screen,
+          target: target.screen,
+          width: threadWidthPixels(source.node, target.node, graph?.maxDepth ?? 0, isRelatedOverview)
+        });
+      }
+      if (!isRelatedOverview) return graphThreads;
+
+      const cardLinks: IdeaLayerThreadDatum[] = [];
+      for (const [nodeId, layout] of overviewCardLayouts.entries()) {
+        const item = nodeById.get(nodeId);
+        if (!item) continue;
+        cardLinks.push({
+          id: `card-link:${nodeId}`,
+          kind: "card-link",
+          source: item.screen,
+          target: nearestPointOnRect(item.screen, layout),
+          width: 2.4
+        });
+      }
+
+      return [...graphThreads, ...cardLinks];
+    },
+    [activeVisualThreads, graph?.maxDepth, isRelatedOverview, nodeById, overviewCardLayouts]
+  );
   const hoveredCards = useMemo(() => {
-    if (!hoveredId) return [];
+    if (!hoveredId || isRelatedOverview) return [];
     const container = mapRef.current?.getContainer();
     if (!container) return [];
 
@@ -787,15 +903,15 @@ function MapScene({
       .map((id) => nodeById.get(id))
       .filter((item): item is ScreenNode => Boolean(item))
       .filter((item) => isGlowVisibleOnScreen(item, container.clientWidth, container.clientHeight));
-  }, [activeVisualThreads, hoveredId, nodeById]);
+  }, [activeVisualThreads, hoveredId, isRelatedOverview, nodeById]);
   const relatedGlowObstacles = useMemo<TooltipRect[]>(() => {
     const container = mapRef.current?.getContainer();
-    if (!hoveredId || !container) return [];
+    if (!hoveredId || isRelatedOverview || !container) return [];
     return screenNodes
       .filter((item) => item.related)
       .filter((item) => isGlowVisibleOnScreen(item, container.clientWidth, container.clientHeight))
       .map(glowAvoidanceRect);
-  }, [hoveredId, screenNodes]);
+  }, [hoveredId, isRelatedOverview, screenNodes]);
   const tooltipLayouts = useMemo<TooltipLayout[]>(() => {
     const container = mapRef.current?.getContainer();
     if (!container) return [];
@@ -803,11 +919,12 @@ function MapScene({
   }, [hoveredCards, relatedGlowObstacles]);
 
   useEffect(() => {
-    ideaLayerRef.current?.setData(ideaNodes, hoveredId, {
+    ideaLayerRef.current?.setData(ideaNodes, layerActiveNodeId, {
       enabled: isGeoEditing,
-      selectedId: selectedCardId
-    });
-  }, [hoveredId, ideaNodes, isGeoEditing, selectedCardId]);
+      selectedId: selectedCardId,
+      overview: isRelatedOverview
+    }, customLayerThreads);
+  }, [customLayerThreads, ideaNodes, isGeoEditing, isRelatedOverview, layerActiveNodeId, selectedCardId]);
 
   const updateCardGeoFromPointer = useCallback(
     (nodeId: string, event: React.PointerEvent<HTMLElement>) => {
@@ -857,8 +974,105 @@ function MapScene({
     }, 90);
   }, [onHover]);
 
+  const enterRelatedOverview = useCallback(
+    (nodeId: string) => {
+      const map = mapRef.current;
+      if (!graph || !map || isGeoEditing) return;
+      if (!overviewReturnViewRef.current) {
+        overviewReturnViewRef.current = snapshotMapView(map);
+      }
+      setLockedOverviewCardLayouts(new Map());
+      setShouldLockOverviewLayout(false);
+      setOverviewNodeId(nodeId);
+      onHover(nodeId);
+    },
+    [graph, isGeoEditing, onHover]
+  );
+
+  const exitRelatedOverview = useCallback(() => {
+    const map = mapRef.current;
+    const returnView = overviewReturnViewRef.current;
+    setOverviewNodeId(null);
+    onHover(null);
+    overviewReturnViewRef.current = null;
+    setLockedOverviewCardLayouts(new Map());
+    setShouldLockOverviewLayout(false);
+
+    if (!map || !returnView) return;
+    map.dragRotate.enable();
+    map.touchZoomRotate.enableRotation();
+    enableOverviewMapZoom(map);
+    map.easeTo({
+      center: returnView.center,
+      zoom: returnView.zoom,
+      pitch: returnView.pitch,
+      bearing: returnView.bearing,
+      duration: 560
+    });
+  }, [onHover]);
+
+  const returnToNode3d = useCallback(
+    (node: AyaNode) => {
+      const map = mapRef.current;
+      if (!map) return;
+      const returnView = overviewReturnViewRef.current;
+      const point = visualPointForNode(node, blend);
+      setOverviewNodeId(null);
+      onHover(node.id);
+      overviewReturnViewRef.current = null;
+      setLockedOverviewCardLayouts(new Map());
+      setShouldLockOverviewLayout(false);
+      map.dragRotate.enable();
+      map.touchZoomRotate.enableRotation();
+      enableOverviewMapZoom(map);
+      map.easeTo({
+        center: [point.lng, point.lat],
+        zoom: Math.max(returnView?.zoom ?? 12, 15),
+        pitch: Math.max(returnView?.pitch ?? 70, 62),
+        bearing: returnView?.bearing ?? -22,
+        duration: 700
+      });
+    },
+    [blend, onHover]
+  );
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !graph || !overviewNodeId || !isRelatedOverview) return;
+
+    const ids = connectedVisualIds(visualThreads, overviewNodeId);
+    const points = graph.nodes
+      .filter((node) => ids.has(node.id))
+      .map((node) => visualPointForNode(node, blend))
+      .filter(isFiniteSpatialPoint);
+
+    map.dragRotate.disable();
+    map.touchZoomRotate.disableRotation();
+    disableOverviewMapZoom(map);
+    setShouldLockOverviewLayout(false);
+    map.once("moveend", () => setShouldLockOverviewLayout(true));
+    focusMapOnPoints2d(map, points);
+  }, [blend, graph, isRelatedOverview, overviewNodeId, visualThreads]);
+
+  const handleSceneClick = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      if (!isRelatedOverview) return;
+      const target = event.target;
+      if (
+        target instanceof Element &&
+        target.closest(
+          ".geo-point-hit-target, .overview-card-hit-target, .idea-hit-target, .idea-tooltip, .maplibregl-control-container"
+        )
+      ) {
+        return;
+      }
+      exitRelatedOverview();
+    },
+    [exitRelatedOverview, isRelatedOverview]
+  );
+
   return (
-      <div className="scene" ref={sceneRef}>
+      <div className={`scene ${isRelatedOverview ? "related-overview" : ""}`} ref={sceneRef} onClick={handleSceneClick}>
       <div className="map-canvas" ref={mapNodeRef} />
       <div className="sky-wash" />
       <svg
@@ -870,8 +1084,8 @@ function MapScene({
           <path
             key={outline.id}
             className={`group-outline depth-${Math.min(outline.depth, 6)} ${
-              hoveredId && !relatedIds.has(outline.groupId) ? "muted" : ""
-            } ${hoveredId === outline.groupId ? "active" : ""}`}
+              focusNodeId && !relatedIds.has(outline.groupId) ? "muted" : ""
+            } ${focusNodeId === outline.groupId ? "active" : ""}`}
             d={path}
             style={
               {
@@ -881,22 +1095,6 @@ function MapScene({
             }
           />
         ))}
-      </svg>
-      <svg className="thread-layer" aria-hidden="true">
-        {activeVisualThreads.map((edge) => {
-          const source = nodeById.get(edge.source);
-          const target = nodeById.get(edge.target);
-          if (!source || !target) return null;
-          const mx = (source.screen.x + target.screen.x) / 2;
-          const my = (source.screen.y + target.screen.y) / 2 - Math.min(120, Math.abs(source.screen.x - target.screen.x) * 0.18);
-          return (
-            <path
-              key={edge.id}
-              className={`thread ${edge.kind} active`}
-              d={`M ${source.screen.x} ${source.screen.y} Q ${mx} ${my} ${target.screen.x} ${target.screen.y}`}
-            />
-          );
-        })}
       </svg>
       <div className="geo-point-layer">
         {nodeHitTargets.map(({ node, screen, dimmed, related }) => (
@@ -942,9 +1140,17 @@ function MapScene({
             }}
             onPointerCancel={finishCardDrag}
             onClick={(event) => {
-              if (!isGeoEditing || node.type !== "card") return;
               event.preventDefault();
-              onSelectCard(node.id);
+              event.stopPropagation();
+              if (isGeoEditing && node.type === "card") {
+                onSelectCard(node.id);
+                return;
+              }
+              if (isRelatedOverview) {
+                returnToNode3d(node);
+                return;
+              }
+              enterRelatedOverview(node.id);
             }}
             onFocus={() => acceptHover(node.id)}
             onBlur={releaseHover}
@@ -954,6 +1160,39 @@ function MapScene({
           />
         ))}
       </div>
+      {isRelatedOverview ? (
+        <div className="overview-card-hit-layer">
+          {[...overviewCardLayouts.entries()].map(([nodeId, layout]) => {
+            const item = nodeById.get(nodeId);
+            if (!item) return null;
+            return (
+              <button
+                key={`${nodeId}:overview-card-hit`}
+                className="overview-card-hit-target"
+                style={
+                  {
+                    left: layout.left,
+                    top: layout.top,
+                    width: layout.width,
+                    height: layout.height
+                  } as React.CSSProperties
+                }
+                onPointerEnter={() => acceptHover(nodeId)}
+                onPointerLeave={() => {
+                  if (overviewNodeId) acceptHover(overviewNodeId);
+                }}
+                onClick={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  returnToNode3d(item.node);
+                }}
+                type="button"
+                aria-label={item.node.shortLabel}
+              />
+            );
+          })}
+        </div>
+      ) : null}
       {tooltipLayouts.map(({ item: { node }, left, top }) => (
         <aside
           key={`${node.id}:tooltip-card`}
@@ -1011,6 +1250,216 @@ function placeTooltipCards(
       top: best.rect.top
     };
   });
+}
+
+function placeOverviewLayerCards(
+  cards: ScreenNode[],
+  viewportWidth: number,
+  viewportHeight: number,
+  glowObstacles: TooltipRect[],
+  maxDepth: number
+): Array<{ item: ScreenNode; layout: IdeaLayerCardLayout }> {
+  if (cards.length === 0) return [];
+  const bounds = overviewLayerPlacementBounds(viewportWidth, viewportHeight);
+  const packing = overviewLayerPacking(cards, bounds, maxDepth);
+  const placed: TooltipRect[] = [];
+  const layouts = cards.map((item, index) => {
+    const size = overviewLayerCardSize(item.node, maxDepth, packing.scale);
+    const candidates = overviewCardPositionCandidates(item.screen, size.width, size.height, bounds, index);
+    const best = candidates.reduce((current, candidate, candidateIndex) => {
+      const cardOverlap = placed.reduce((total, rect) => total + rectOverlapArea(candidate, rect), 0);
+      const glowOverlap = glowObstacles.reduce((total, rect) => total + rectOverlapArea(candidate, rect), 0);
+      const leaderLength = leaderLineLength(item.screen, candidate);
+      const originBias = item.node.id === cards[0]?.node.id ? candidateIndex * 0.2 : candidateIndex * 0.04;
+      const collisionPenalty = cardOverlap + glowOverlap > 0 ? 1_000_000 + (cardOverlap + glowOverlap) * 120 : 0;
+      const score = collisionPenalty + leaderLength + originBias;
+      return score < current.score ? { rect: candidate, score } : current;
+    }, { rect: candidates[0]!, score: Number.POSITIVE_INFINITY });
+
+    placed.push(best.rect);
+    return {
+      item,
+      layout: best.rect
+    };
+  });
+
+  return hasOverviewLayoutCollision(layouts.map(({ layout }) => layout), glowObstacles)
+    ? placeOverviewLayerCardsOnGrid(cards, bounds, glowObstacles, maxDepth, packing)
+    : layouts;
+}
+
+function overviewLayerCardSize(node: AyaNode, maxDepth: number, scale = 1): { width: number; height: number } {
+  const proximity = rootProximity(node, maxDepth);
+  const width = Math.round(((node.type === "group" ? 226 : 202) + (node.type === "group" ? 48 : 42) * proximity) * scale);
+  return {
+    width,
+    height: Math.round(width * 0.66)
+  };
+}
+
+function overviewLayerPlacementBounds(viewportWidth: number, viewportHeight: number): TooltipRect {
+  const narrow = viewportWidth <= 760;
+  const left = narrow ? 20 : 414;
+  const top = narrow ? 208 : 92;
+  const right = narrow ? 20 : 34;
+  const bottom = narrow ? 146 : 124;
+  return {
+    left,
+    top,
+    width: Math.max(120, viewportWidth - left - right),
+    height: Math.max(120, viewportHeight - top - bottom)
+  };
+}
+
+function overviewLayerPacking(
+  cards: ScreenNode[],
+  bounds: TooltipRect,
+  maxDepth: number
+): { columns: number; rows: number; scale: number } {
+  const maxSize = cards.reduce(
+    (size, item) => {
+      const next = overviewLayerCardSize(item.node, maxDepth);
+      return {
+        width: Math.max(size.width, next.width),
+        height: Math.max(size.height, next.height)
+      };
+    },
+    { width: 1, height: 1 }
+  );
+  const gap = 14;
+  let best = { columns: 1, rows: cards.length, scale: 0 };
+
+  for (let columns = 1; columns <= cards.length; columns += 1) {
+    const rows = Math.ceil(cards.length / columns);
+    const cellWidth = bounds.width / columns;
+    const cellHeight = bounds.height / rows;
+    const scale = Math.min(0.86, (cellWidth - gap) / maxSize.width, (cellHeight - gap) / maxSize.height);
+    if (scale > best.scale) best = { columns, rows, scale };
+  }
+
+  return {
+    ...best,
+    scale: Math.max(0.04, best.scale)
+  };
+}
+
+function overviewCardPositionCandidates(
+  screen: { x: number; y: number },
+  width: number,
+  height: number,
+  bounds: TooltipRect,
+  index: number
+): TooltipRect[] {
+  const gap = 18;
+  const maxLeft = bounds.left + Math.max(0, bounds.width - width);
+  const maxTop = bounds.top + Math.max(0, bounds.height - height);
+  const clampRect = (left: number, top: number): TooltipRect => ({
+    left: clamp(left, bounds.left, maxLeft),
+    top: clamp(top, bounds.top, maxTop),
+    width,
+    height
+  });
+  const candidates = [
+    clampRect(screen.x + gap, screen.y - height / 2),
+    clampRect(screen.x - width - gap, screen.y - height / 2),
+    clampRect(screen.x - width / 2, screen.y - height - gap),
+    clampRect(screen.x - width / 2, screen.y + gap),
+    clampRect(screen.x + gap, screen.y + gap),
+    clampRect(screen.x - width - gap, screen.y + gap)
+  ];
+  for (const offset of [12, 24, 42, 68, 96]) {
+    candidates.push(
+      clampRect(screen.x + offset, screen.y - height / 2),
+      clampRect(screen.x - width - offset, screen.y - height / 2),
+      clampRect(screen.x - width / 2, screen.y - height - offset),
+      clampRect(screen.x - width / 2, screen.y + offset),
+      clampRect(screen.x + offset, screen.y + offset),
+      clampRect(screen.x - width - offset, screen.y + offset),
+      clampRect(screen.x + offset, screen.y - height - offset),
+      clampRect(screen.x - width - offset, screen.y - height - offset)
+    );
+  }
+  const rowStep = height + 10;
+  const anchorRow = Math.round((screen.y - bounds.top) / rowStep);
+  const horizontalOptions = [screen.x + gap, screen.x - width - gap, screen.x - width / 2];
+
+  for (let radius = 0; radius <= 5 + index; radius += 1) {
+    const rows = radius === 0 ? [anchorRow] : [anchorRow + radius, anchorRow - radius];
+    for (const row of rows) {
+      const top = bounds.top + row * rowStep;
+      for (const left of horizontalOptions) {
+        candidates.push(clampRect(left, top));
+      }
+    }
+  }
+
+  return uniqueRects(candidates);
+}
+
+function placeOverviewLayerCardsOnGrid(
+  cards: ScreenNode[],
+  bounds: TooltipRect,
+  glowObstacles: TooltipRect[],
+  maxDepth: number,
+  packing: { columns: number; rows: number; scale: number }
+): Array<{ item: ScreenNode; layout: IdeaLayerCardLayout }> {
+  const cells = overviewGridCells(bounds, packing.columns, packing.rows);
+  const used = new Set<number>();
+  return cards.map((item) => {
+    const size = overviewLayerCardSize(item.node, maxDepth, packing.scale);
+    const best = cells.reduce(
+      (current, cell, index) => {
+        if (used.has(index)) return current;
+        const rect = centerRectInCell(size, cell);
+        const glowOverlap = glowObstacles.reduce((total, obstacle) => total + rectOverlapArea(rect, obstacle), 0);
+        const collisionPenalty = glowOverlap > 0 ? 1_000_000 + glowOverlap * 120 : 0;
+        const score = collisionPenalty + leaderLineLength(item.screen, rect);
+        return score < current.score ? { index, rect, score } : current;
+      },
+      { index: -1, rect: centerRectInCell(size, cells[0] ?? bounds), score: Number.POSITIVE_INFINITY }
+    );
+    if (best.index >= 0) used.add(best.index);
+    return {
+      item,
+      layout: best.rect
+    };
+  });
+}
+
+function overviewGridCells(bounds: TooltipRect, columns: number, rows: number): TooltipRect[] {
+  const cells: TooltipRect[] = [];
+  const width = bounds.width / columns;
+  const height = bounds.height / rows;
+  for (let row = 0; row < rows; row += 1) {
+    for (let column = 0; column < columns; column += 1) {
+      cells.push({
+        left: bounds.left + column * width,
+        top: bounds.top + row * height,
+        width,
+        height
+      });
+    }
+  }
+  return cells;
+}
+
+function centerRectInCell(size: { width: number; height: number }, cell: TooltipRect): TooltipRect {
+  return {
+    left: cell.left + (cell.width - size.width) / 2,
+    top: cell.top + (cell.height - size.height) / 2,
+    width: size.width,
+    height: size.height
+  };
+}
+
+function hasOverviewLayoutCollision(layouts: IdeaLayerCardLayout[], glowObstacles: TooltipRect[]): boolean {
+  for (let index = 0; index < layouts.length; index += 1) {
+    for (let next = index + 1; next < layouts.length; next += 1) {
+      if (rectOverlapArea(layouts[index]!, layouts[next]!) > 1) return true;
+    }
+    if (glowObstacles.some((obstacle) => rectOverlapArea(layouts[index]!, obstacle) > 1)) return true;
+  }
+  return false;
 }
 
 function glowAvoidanceRect(item: ScreenNode): TooltipRect {
@@ -1101,8 +1550,111 @@ function rectOverlapArea(a: TooltipRect, b: TooltipRect): number {
   return width * height;
 }
 
+function nearestPointOnRect(point: { x: number; y: number }, rect: TooltipRect): { x: number; y: number } {
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+  const dx = point.x - centerX;
+  const dy = point.y - centerY;
+  if (Math.abs(dx) / rect.width > Math.abs(dy) / rect.height) {
+    return {
+      x: dx > 0 ? rect.left + rect.width : rect.left,
+      y: clamp(point.y, rect.top, rect.top + rect.height)
+    };
+  }
+  return {
+    x: clamp(point.x, rect.left, rect.left + rect.width),
+    y: dy > 0 ? rect.top + rect.height : rect.top
+  };
+}
+
+function leaderLineLength(point: { x: number; y: number }, rect: TooltipRect): number {
+  const target = nearestPointOnRect(point, rect);
+  return Math.hypot(target.x - point.x, target.y - point.y);
+}
+
 function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
+}
+
+function snapshotMapView(map: MapLibreMap): StoredMapView {
+  const center = map.getCenter();
+  return {
+    center: [center.lng, center.lat],
+    zoom: map.getZoom(),
+    pitch: map.getPitch(),
+    bearing: map.getBearing()
+  };
+}
+
+function focusMapOnPoints2d(map: MapLibreMap, points: AyaSpatialPoint[]): void {
+  const finitePoints = points.filter(isFiniteSpatialPoint);
+  if (finitePoints.length === 0) return;
+
+  if (finitePoints.length === 1) {
+    const point = finitePoints[0]!;
+    map.easeTo({
+      center: [point.lng, point.lat],
+      zoom: 15,
+      pitch: 0,
+      bearing: 0,
+      duration: 620
+    });
+    return;
+  }
+
+  const first = finitePoints[0]!;
+  const bounds = new maplibregl.LngLatBounds([first.lng, first.lat], [first.lng, first.lat]);
+  for (const point of finitePoints.slice(1)) {
+    bounds.extend([point.lng, point.lat]);
+  }
+
+  map.fitBounds(bounds, {
+    padding: overviewPaddingForContainer(map.getContainer()),
+    maxZoom: 15.4,
+    duration: 680,
+    pitch: 0,
+    bearing: 0
+  });
+}
+
+function disableOverviewMapZoom(map: MapLibreMap): void {
+  map.scrollZoom.disable();
+  map.boxZoom.disable();
+  map.doubleClickZoom.disable();
+  map.keyboard.disable();
+  map.touchZoomRotate.disable();
+}
+
+function enableOverviewMapZoom(map: MapLibreMap): void {
+  map.scrollZoom.enable();
+  map.boxZoom.enable();
+  map.doubleClickZoom.enable();
+  map.keyboard.enable();
+  map.touchZoomRotate.enable();
+  map.touchZoomRotate.enableRotation();
+}
+
+function overviewPaddingForContainer(container: HTMLElement): { top: number; right: number; bottom: number; left: number } {
+  const narrow = container.clientWidth <= 760;
+  return narrow
+    ? { top: 230, right: 34, bottom: 150, left: 34 }
+    : { top: 130, right: 128, bottom: 130, left: 430 };
+}
+
+function isFiniteSpatialPoint(point: AyaSpatialPoint): boolean {
+  return Number.isFinite(point.lng) && Number.isFinite(point.lat);
+}
+
+function rootProximity(node: AyaNode, maxDepth: number): number {
+  if (maxDepth <= 0) return 1;
+  return 1 - Math.min(node.depth, maxDepth) / (maxDepth + 1);
+}
+
+function threadWidthPixels(source: AyaNode, target: AyaNode, maxDepth: number, isOverview: boolean): number {
+  const proximity = Math.max(rootProximity(source, maxDepth), rootProximity(target, maxDepth));
+  const base = isOverview ? 3.5 : 4.5;
+  const span = isOverview ? 9 : 7;
+  return Math.round((base + span * proximity) * 10) / 10;
 }
 
 function isGroupOutlineVisibleAtZoom(node: AyaNode, zoom: number): boolean {
