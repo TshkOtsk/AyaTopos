@@ -38,6 +38,7 @@ export interface IdeaLayerThreadDatum {
 
 interface IdeaObject {
   glow: THREE.Points<THREE.BufferGeometry, THREE.PointsMaterial>;
+  ideaForm: THREE.Group;
   editRing: THREE.Points<THREE.BufferGeometry, THREE.PointsMaterial>;
   overviewCard: THREE.Sprite;
 }
@@ -64,6 +65,7 @@ export class IdeaObjectLayer implements CustomLayerInterface {
   private objects = new Map<string, IdeaObject>();
   private glowTextures = new Map<string, THREE.CanvasTexture>();
   private overviewCardTextures = new Map<string, THREE.CanvasTexture>();
+  private cloudGlowTexture: THREE.CanvasTexture | null = null;
   private editRingTexture: THREE.CanvasTexture | null = null;
   private threadCanvas = document.createElement("canvas");
   private threadTexture = new THREE.CanvasTexture(this.threadCanvas);
@@ -106,11 +108,13 @@ export class IdeaObjectLayer implements CustomLayerInterface {
     this.overlayScene.clear();
     this.glowTextures.forEach((texture) => texture.dispose());
     this.overviewCardTextures.forEach((texture) => texture.dispose());
+    this.cloudGlowTexture?.dispose();
     this.editRingTexture?.dispose();
     this.threadTexture.dispose();
     this.threadSprite.material.dispose();
     this.glowTextures.clear();
     this.overviewCardTextures.clear();
+    this.cloudGlowTexture = null;
     this.editRingTexture = null;
     this.renderer?.dispose();
     this.renderer = null;
@@ -155,6 +159,7 @@ export class IdeaObjectLayer implements CustomLayerInterface {
     this.objects.forEach((object, id) => {
       if (!expectedIds.has(id)) {
         this.scene.remove(object.glow);
+        this.scene.remove(object.ideaForm);
         this.scene.remove(object.editRing);
         this.overlayScene.remove(object.overviewCard);
         this.disposeObject(object);
@@ -172,6 +177,7 @@ export class IdeaObjectLayer implements CustomLayerInterface {
       const object = this.createObject(item);
       this.objects.set(item.node.id, object);
       this.scene.add(object.glow);
+      this.scene.add(object.ideaForm);
       this.scene.add(object.editRing);
       this.overlayScene.add(object.overviewCard);
     }
@@ -179,9 +185,10 @@ export class IdeaObjectLayer implements CustomLayerInterface {
 
   private createObject(item: IdeaLayerDatum): IdeaObject {
     const glow = this.createNodeGlow(item);
+    const ideaForm = this.createIdeaForm(item);
     const editRing = this.createEditRing(item);
     const overviewCard = this.createOverviewCard(item);
-    const object = { glow, editRing, overviewCard };
+    const object = { glow, ideaForm, editRing, overviewCard };
     this.updateMaterial(object, item);
     return object;
   }
@@ -207,6 +214,92 @@ export class IdeaObjectLayer implements CustomLayerInterface {
     glow.frustumCulled = false;
     glow.renderOrder = 50;
     return glow;
+  }
+
+  private createIdeaForm(item: IdeaLayerDatum): THREE.Group {
+    const color = new THREE.Color(item.node.color);
+    const group = new THREE.Group();
+    group.matrixAutoUpdate = false;
+    group.frustumCulled = false;
+    group.renderOrder = 52;
+
+    const halo = new THREE.Sprite(
+      new THREE.SpriteMaterial({
+        color,
+        map: this.getCloudGlowTexture(),
+        transparent: true,
+        opacity: ideaCloudGlowOpacity(item, false),
+        blending: THREE.AdditiveBlending,
+        depthTest: false,
+        depthWrite: false
+      })
+    );
+    halo.name = "idea-cloud-glow";
+    halo.scale.set(item.node.type === "group" ? 1.55 : 1.24, item.node.type === "group" ? 1.02 : 0.84, 1);
+    halo.frustumCulled = false;
+    halo.renderOrder = 51;
+    group.add(halo);
+
+    for (const puff of ideaCloudPuffs(item.node)) {
+      const surface = new THREE.Mesh(
+        ideaCloudLobeGeometry(),
+        new THREE.MeshBasicMaterial({
+          color,
+          transparent: true,
+          opacity: ideaCloudSurfaceOpacity(item, false) * puff.opacity,
+          blending: THREE.NormalBlending,
+          depthTest: false,
+          depthWrite: false,
+          side: THREE.DoubleSide
+        })
+      );
+      surface.name = "idea-cloud";
+      surface.position.set(puff.x, puff.y, puff.z);
+      surface.rotation.set(puff.pitch, puff.yaw, puff.roll);
+      surface.scale.set(puff.width, puff.height, puff.depth);
+      surface.userData.opacityBase = puff.opacity;
+      surface.frustumCulled = false;
+      surface.renderOrder = 52;
+
+      const edge = new THREE.LineSegments(
+        new THREE.EdgesGeometry(surface.geometry),
+        new THREE.LineBasicMaterial({
+          color: "#fff8df",
+          transparent: true,
+          opacity: ideaCloudEdgeOpacity(item, false) * puff.opacity,
+          blending: THREE.AdditiveBlending,
+          depthTest: false,
+          depthWrite: false
+        })
+      );
+      edge.name = "idea-cloud-edge";
+      edge.position.copy(surface.position);
+      edge.rotation.copy(surface.rotation);
+      edge.scale.copy(surface.scale);
+      edge.userData.opacityBase = puff.opacity;
+      edge.frustumCulled = false;
+      edge.renderOrder = 54;
+
+      group.add(surface, edge);
+    }
+
+    const thread = new THREE.Line(
+      ideaCloudThreadGeometry(item.node),
+      new THREE.LineBasicMaterial({
+        color,
+        transparent: true,
+        opacity: ideaFormThreadOpacity(item, false),
+        blending: THREE.AdditiveBlending,
+        depthTest: false,
+        depthWrite: false
+      })
+    );
+    thread.name = "idea-thread";
+    thread.renderOrder = 56;
+    thread.frustumCulled = false;
+
+    group.add(thread);
+    return group;
   }
 
   private createEditRing(item: IdeaLayerDatum): THREE.Points<THREE.BufferGeometry, THREE.PointsMaterial> {
@@ -258,13 +351,17 @@ export class IdeaObjectLayer implements CustomLayerInterface {
     const overviewing = Boolean(this.editState.overview);
     const selected = this.editState.selectedId === item.node.id;
     const color = new THREE.Color(item.node.color);
+    const mappedCard = isMappedCard(item.node);
 
-    object.glow.visible = !this.editState.enabled;
+    object.glow.visible = !this.editState.enabled && mappedCard;
     object.glow.material.color.set("#ffffff");
     object.glow.material.map = this.getGlowTexture(color);
     object.glow.material.opacity = nodeGlowOpacity(item, active);
     object.glow.material.size = nodeGlowSizePixels(item, active);
     object.glow.material.needsUpdate = true;
+
+    object.ideaForm.visible = !this.editState.enabled && !mappedCard;
+    updateIdeaFormMaterial(object.ideaForm, item, active, color);
 
     object.editRing.visible = editing;
     object.editRing.material.color.copy(color);
@@ -293,6 +390,18 @@ export class IdeaObjectLayer implements CustomLayerInterface {
       const scale = new THREE.Vector3(1, 1, 1);
       object.glow.matrix.compose(position, rotation, scale);
       object.editRing.matrix.compose(position, rotation, scale);
+      const ideaScale = nodeIdeaFormScale(item, this.hoveredId === item.node.id);
+      const ideaRotation = ideaFormRotation(item.node);
+      const meterScale = coordinate.meterInMercatorCoordinateUnits();
+      object.ideaForm.matrix.compose(
+        position,
+        ideaRotation,
+        new THREE.Vector3(
+          ideaScale.width * 1.28 * meterScale,
+          ideaScale.width * 0.86 * meterScale,
+          ideaScale.height * 0.28 * meterScale
+        )
+      );
       if (item.overviewCard) {
         this.updateOverviewCardTransform(
           object.overviewCard,
@@ -367,9 +476,47 @@ export class IdeaObjectLayer implements CustomLayerInterface {
   private disposeObject(object: IdeaObject): void {
     object.glow.geometry.dispose();
     object.glow.material.dispose();
+    disposeObject3d(object.ideaForm);
     object.editRing.geometry.dispose();
     object.editRing.material.dispose();
     object.overviewCard.material.dispose();
+  }
+
+  private getCloudGlowTexture(): THREE.CanvasTexture {
+    if (this.cloudGlowTexture) return this.cloudGlowTexture;
+
+    const size = 192;
+    const canvas = document.createElement("canvas");
+    canvas.width = size;
+    canvas.height = size;
+    const context = canvas.getContext("2d");
+    if (!context) throw new Error("Unable to create low-poly cloud glow texture.");
+
+    context.clearRect(0, 0, size, size);
+    const puffs = [
+      { x: 0.42, y: 0.48, r: 0.36, a: 0.56 },
+      { x: 0.58, y: 0.42, r: 0.33, a: 0.46 },
+      { x: 0.54, y: 0.62, r: 0.31, a: 0.38 },
+      { x: 0.34, y: 0.6, r: 0.28, a: 0.32 },
+      { x: 0.68, y: 0.58, r: 0.24, a: 0.28 }
+    ];
+
+    for (const puff of puffs) {
+      const x = puff.x * size;
+      const y = puff.y * size;
+      const radius = puff.r * size;
+      const gradient = context.createRadialGradient(x, y, 0, x, y, radius);
+      gradient.addColorStop(0, `rgba(255, 255, 255, ${puff.a})`);
+      gradient.addColorStop(0.42, `rgba(255, 255, 255, ${puff.a * 0.38})`);
+      gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+      context.fillStyle = gradient;
+      context.fillRect(0, 0, size, size);
+    }
+
+    this.cloudGlowTexture = new THREE.CanvasTexture(canvas);
+    this.cloudGlowTexture.colorSpace = THREE.SRGBColorSpace;
+    this.cloudGlowTexture.needsUpdate = true;
+    return this.cloudGlowTexture;
   }
 
   private getGlowTexture(color: THREE.Color): THREE.CanvasTexture {
@@ -470,6 +617,201 @@ export function nodeElevationMeters(map: MapLibreMap, node: AyaNode, point: AyaS
 
 function isMappedCard(node: AyaNode): boolean {
   return node.type === "card" && node.geoPlacementSource !== "fallback";
+}
+
+function updateIdeaFormMaterial(form: THREE.Group, item: IdeaLayerDatum, active: boolean, color: THREE.Color): void {
+  form.traverse((child) => {
+    const material = (child as THREE.Object3D & { material?: THREE.Material | THREE.Material[] }).material;
+    if (!material || Array.isArray(material)) return;
+
+    if (child.name === "idea-cloud-glow" && material instanceof THREE.SpriteMaterial) {
+      material.color.copy(color);
+      material.opacity = ideaCloudGlowOpacity(item, active);
+      material.needsUpdate = true;
+      return;
+    }
+
+    if (child.name === "idea-cloud" && material instanceof THREE.MeshBasicMaterial) {
+      const opacityBase = typeof child.userData.opacityBase === "number" ? child.userData.opacityBase : 1;
+      material.color.copy(color);
+      material.opacity = ideaCloudSurfaceOpacity(item, active) * opacityBase;
+      material.needsUpdate = true;
+      return;
+    }
+
+    if (child.name === "idea-cloud-edge" && material instanceof THREE.LineBasicMaterial) {
+      const opacityBase = typeof child.userData.opacityBase === "number" ? child.userData.opacityBase : 1;
+      material.color.set("#fff8df");
+      material.opacity = ideaCloudEdgeOpacity(item, active) * opacityBase;
+      material.needsUpdate = true;
+      return;
+    }
+
+    if (child.name === "idea-thread" && material instanceof THREE.LineBasicMaterial) {
+      material.color.copy(color);
+      material.opacity = ideaFormThreadOpacity(item, active);
+      material.needsUpdate = true;
+    }
+  });
+}
+
+function ideaCloudPuffs(node: AyaNode): Array<{
+  x: number;
+  y: number;
+  z: number;
+  width: number;
+  height: number;
+  depth: number;
+  pitch: number;
+  yaw: number;
+  roll: number;
+  opacity: number;
+}> {
+  const seed = seededUnit(`${node.id}:cloud`);
+  const breathe = node.type === "group" ? 1 : 0.86;
+  const turn = seed * Math.PI * 2;
+  return [
+    {
+      x: -0.25,
+      y: 0.0,
+      z: 0.04,
+      width: 0.64 * breathe,
+      height: 0.38 * breathe,
+      depth: 0.3 * breathe,
+      pitch: 0.2,
+      yaw: turn,
+      roll: 0.34,
+      opacity: 0.72
+    },
+    {
+      x: 0.18,
+      y: -0.02,
+      z: -0.02,
+      width: 0.58 * breathe,
+      height: 0.42 * breathe,
+      depth: 0.34 * breathe,
+      pitch: -0.18,
+      yaw: turn + 1.34,
+      roll: -0.22,
+      opacity: 0.62
+    },
+    {
+      x: 0.02,
+      y: 0.18,
+      z: 0.13,
+      width: 0.42 * breathe,
+      height: 0.3 * breathe,
+      depth: 0.26 * breathe,
+      pitch: 0.52,
+      yaw: turn + 2.1,
+      roll: 0.18,
+      opacity: 0.5
+    },
+    {
+      x: -0.04 + seed * 0.1,
+      y: -0.2 + seed * 0.07,
+      z: -0.1,
+      width: 0.48 * breathe,
+      height: 0.26 * breathe,
+      depth: 0.24 * breathe,
+      pitch: -0.42,
+      yaw: turn + 3.4,
+      roll: 0.58,
+      opacity: 0.42
+    }
+  ];
+}
+
+function ideaCloudLobeGeometry(): THREE.BufferGeometry {
+  return new THREE.SphereGeometry(1, 5, 3);
+}
+
+function ideaCloudThreadGeometry(node: AyaNode): THREE.BufferGeometry {
+  const seed = seededUnit(`${node.id}:thread`);
+  const radiusX = node.type === "card" ? 0.62 : 0.76;
+  const radiusY = node.type === "card" ? 0.38 : 0.48;
+  const points: number[] = [];
+  const steps = 34;
+  for (let index = 0; index <= steps; index += 1) {
+    const t = (index / steps) * Math.PI * 2;
+    const wobble = Math.sin(t * 3 + seed * Math.PI * 2) * 0.08;
+    points.push(
+      Math.cos(t) * (radiusX + wobble),
+      Math.sin(t * 1.04 + seed * 0.4) * radiusY,
+      Math.sin(t * 2.2 + seed) * 0.12
+    );
+  }
+  for (let index = 0; index <= 12; index += 1) {
+    const t = (index / 12) * Math.PI;
+    points.push(
+      Math.cos(t + seed) * radiusX * 0.68,
+      Math.sin(t * 1.7) * radiusY * 0.74,
+      Math.cos(t * 1.35 + seed) * 0.16
+    );
+  }
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute("position", new THREE.Float32BufferAttribute(points, 3));
+  return geometry;
+}
+
+function nodeIdeaFormScale(item: IdeaLayerDatum, active: boolean): { width: number; height: number } {
+  const activeScale = active ? 1.14 : 1;
+  if (item.node.type === "group" && item.node.depth === 0) {
+    return { width: 118 * activeScale, height: 146 * activeScale };
+  }
+  if (item.node.type === "group") {
+    return { width: 86 * activeScale, height: 104 * activeScale };
+  }
+  return { width: 64 * activeScale, height: 78 * activeScale };
+}
+
+function ideaFormRotation(node: AyaNode): THREE.Quaternion {
+  const yaw = seededUnit(`${node.id}:yaw`) * Math.PI * 2;
+  const pitch = 0.62 + seededUnit(`${node.id}:pitch`) * 0.48;
+  const roll = 0.28 + Math.min(node.depth, 7) * 0.16 + seededUnit(`${node.id}:roll`) * 0.34;
+  return new THREE.Quaternion().setFromEuler(new THREE.Euler(pitch, yaw, roll, "YXZ"));
+}
+
+function ideaCloudSurfaceOpacity(item: IdeaLayerDatum, active: boolean): number {
+  const dimOpacity = item.dimmed ? 0.2 : 1;
+  const relatedOpacity = item.related ? 1 : 0.58;
+  const typeOpacity = item.node.type === "group" ? 0.34 : 0.3;
+  return Math.min(0.52, typeOpacity * (active ? 1.22 : 1) * dimOpacity * relatedOpacity);
+}
+
+function ideaCloudEdgeOpacity(item: IdeaLayerDatum, active: boolean): number {
+  const dimOpacity = item.dimmed ? 0.18 : 1;
+  const relatedOpacity = item.related ? 1 : 0.64;
+  return Math.min(0.56, (active ? 0.42 : 0.24) * dimOpacity * relatedOpacity);
+}
+
+function ideaCloudGlowOpacity(item: IdeaLayerDatum, active: boolean): number {
+  const dimOpacity = item.dimmed ? 0.16 : 1;
+  const relatedOpacity = item.related ? 1 : 0.58;
+  const typeOpacity = item.node.type === "group" ? 0.44 : 0.38;
+  return Math.min(0.7, typeOpacity * (active ? 1.28 : 1) * dimOpacity * relatedOpacity);
+}
+
+function ideaFormThreadOpacity(item: IdeaLayerDatum, active: boolean): number {
+  const dimOpacity = item.dimmed ? 0.18 : 1;
+  const relatedOpacity = item.related ? 1 : 0.64;
+  return Math.min(0.66, (active ? 0.56 : 0.34) * dimOpacity * relatedOpacity);
+}
+
+function disposeObject3d(object: THREE.Object3D): void {
+  object.traverse((child) => {
+    const disposable = child as THREE.Object3D & {
+      geometry?: THREE.BufferGeometry;
+      material?: THREE.Material | THREE.Material[];
+    };
+    disposable.geometry?.dispose();
+    const material = disposable.material;
+    if (Array.isArray(material)) {
+      material.forEach((item) => item.dispose());
+      return;
+    }
+    material?.dispose();
+  });
 }
 
 function nodeGlowSizePixels(item: IdeaLayerDatum, active: boolean): number {
@@ -682,6 +1024,15 @@ function tintedCardFill(color: THREE.Color): string {
   return `rgba(${Math.round(r * 0.08 + 255 * 0.92)}, ${Math.round(g * 0.08 + 246 * 0.92)}, ${Math.round(
     b * 0.08 + 232 * 0.92
   )}, 0.96)`;
+}
+
+function seededUnit(input: string): number {
+  let hash = 2166136261;
+  for (let index = 0; index < input.length; index += 1) {
+    hash ^= input.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return (hash >>> 0) / 4294967295;
 }
 
 function rgbaString(color: THREE.Color, alpha: number): string {

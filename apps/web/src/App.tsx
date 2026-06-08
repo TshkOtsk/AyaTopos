@@ -738,6 +738,7 @@ function MapScene({
   }, [isRelatedOverview]);
 
   const zoom = mapRef.current?.getZoom() ?? 0;
+  const shouldShowGroupOutlines = false;
   const visualThreads = useMemo(() => (graph ? createVisualThreads(graph) : []), [graph]);
   const focusNodeId = isRelatedOverview ? overviewNodeId : hoveredId;
   const layerActiveNodeId = isRelatedOverview ? hoveredId ?? overviewNodeId : hoveredId;
@@ -786,11 +787,13 @@ function MapScene({
   const visibleOutlineNodeIds = useMemo(
     () =>
       new Set(
-        screenNodes
-          .filter(({ node }) => node.type === "group" && isGroupOutlineVisibleAtZoom(node, zoom))
-          .map(({ node }) => node.id)
+        shouldShowGroupOutlines
+          ? screenNodes
+              .filter(({ node }) => node.type === "group" && isGroupOutlineVisibleAtZoom(node, zoom))
+              .map(({ node }) => node.id)
+          : []
       ),
-    [graph?.maxDepth, screenNodes, zoom]
+    [screenNodes, shouldShowGroupOutlines, zoom]
   );
 
   const nodeHitTargets = useMemo(
@@ -802,7 +805,7 @@ function MapScene({
   );
 
   const screenOutlines = useMemo(() => {
-    if (!graph || !mapRef.current) return [];
+    if (!graph || !mapRef.current || !shouldShowGroupOutlines) return [];
     return graph.outlines
       .filter((outline) => visibleOutlineNodeIds.has(outline.groupId))
       .map((outline) => ({
@@ -810,7 +813,7 @@ function MapScene({
         path: outlinePath(outline, mapRef.current!)
       }))
       .filter((item) => item.path.length > 0);
-  }, [graph, tick, visibleOutlineNodeIds]);
+  }, [graph, shouldShowGroupOutlines, tick, visibleOutlineNodeIds]);
 
   const nodeById = useMemo(() => new Map(screenNodes.map((item) => [item.node.id, item])), [screenNodes]);
   const overviewCards = useMemo(() => {
