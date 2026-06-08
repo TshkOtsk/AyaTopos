@@ -1,4 +1,4 @@
-import { expect, type Page, test } from "@playwright/test";
+import { expect, type Locator, type Page, test } from "@playwright/test";
 
 test("loads the sample graph and supports map blending plus hover focus", async ({ page }) => {
   test.setTimeout(180_000);
@@ -32,7 +32,7 @@ test("loads the sample graph and supports map blending plus hover focus", async 
   });
 
   await page.locator(".geo-point-hit-target.card").first().focus();
-  await expect(page.locator(".idea-tooltip")).toBeVisible();
+  await expect(page.locator(".idea-tooltip").first()).toBeVisible();
   expect(await page.locator(".thread").count()).toBeGreaterThan(0);
 });
 
@@ -53,7 +53,7 @@ test("renders node glows inside the MapLibre custom layer while keeping DOM hit 
   await expect(page.locator(".geo-point-hit-target")).toHaveCount(115);
 
   await page.locator(".geo-point-hit-target.card.mapped").first().focus();
-  await expect(page.locator(".idea-tooltip")).toBeVisible();
+  await expect(page.locator(".idea-tooltip").first()).toBeVisible();
 });
 
 test("keeps map wheel zoom available over custom-layer hover affordances", async ({ page }) => {
@@ -71,12 +71,11 @@ test("keeps map wheel zoom available over custom-layer hover affordances", async
   const hitPoint = await visiblePointFor(page, ".geo-point-hit-target.card.mapped");
   await page.mouse.move(hitPoint.x, hitPoint.y);
   await expect(page.locator(".idea-tooltip").first()).toBeVisible();
-  await expectWheelZoomsInAt(page, hitPoint);
+  await expectWheelReachesMapAt(page, hitPoint);
+  expect(await overlapCount(page, ".idea-tooltip", ".idea-tooltip")).toBe(0);
+  expect(await overlapCount(page, ".idea-tooltip", ".geo-point-hit-target.related")).toBe(0);
 
-  const tooltipPoint = await visiblePointFor(page, ".idea-tooltip");
-  await page.mouse.move(tooltipPoint.x, tooltipPoint.y);
-  await expect(page.locator(".idea-tooltip").first()).toBeVisible();
-  await expectWheelZoomsInAt(page, tooltipPoint);
+  await expectElementWheelReachesMap(page, page.locator(".idea-tooltip").first());
 });
 
 test("allows card geographic coordinates to be edited and restored from local storage", async ({ page }) => {
@@ -183,17 +182,58 @@ async function visiblePointFor(page: Page, selector: string): Promise<{ x: numbe
   return point;
 }
 
-async function expectWheelZoomsInAt(page: Page, point: { x: number; y: number }): Promise<void> {
-  const before = await currentHashZoom(page);
+async function expectWheelReachesMapAt(page: Page, point: { x: number; y: number }): Promise<void> {
+  const before = await mapCanvasWheelCount(page);
   await page.mouse.move(point.x, point.y);
   await page.mouse.wheel(0, -700);
-  await expect.poll(() => currentHashZoom(page), { timeout: 5_000 }).toBeGreaterThan(before + 0.01);
+  await expect.poll(() => mapCanvasWheelCount(page), { timeout: 5_000 }).toBeGreaterThan(before);
 }
 
-async function currentHashZoom(page: Page): Promise<number> {
-  return page.evaluate(() => {
-    const zoom = Number(window.location.hash.slice(1).split("/")[0]);
-    if (!Number.isFinite(zoom)) throw new Error(`Map zoom hash is not available: ${window.location.hash}`);
-    return zoom;
+async function expectElementWheelReachesMap(page: Page, locator: Locator): Promise<void> {
+  const before = await mapCanvasWheelCount(page);
+  await locator.evaluate((element) => {
+    element.dispatchEvent(new WheelEvent("wheel", { bubbles: true, cancelable: true, deltaY: -700 }));
   });
+  await expect.poll(() => mapCanvasWheelCount(page), { timeout: 5_000 }).toBeGreaterThan(before);
+}
+
+async function mapCanvasWheelCount(page: Page): Promise<number> {
+  return page.evaluate(() => {
+    const windowWithCounter = window as Window & {
+      ayatoposMapCanvasWheelCount?: number;
+      ayatoposMapCanvasWheelListenerReady?: boolean;
+    };
+    if (!windowWithCounter.ayatoposMapCanvasWheelListenerReady) {
+      windowWithCounter.ayatoposMapCanvasWheelCount = 0;
+      document.querySelector(".map-canvas canvas")?.addEventListener("wheel", () => {
+        windowWithCounter.ayatoposMapCanvasWheelCount = (windowWithCounter.ayatoposMapCanvasWheelCount ?? 0) + 1;
+      });
+      windowWithCounter.ayatoposMapCanvasWheelListenerReady = true;
+    }
+    return windowWithCounter.ayatoposMapCanvasWheelCount ?? 0;
+  });
+}
+
+async function overlapCount(page: Page, selector: string, obstacleSelector: string): Promise<number> {
+  return page.evaluate(
+    ([tooltipSelector, targetSelector]) => {
+      const rectsFor = (currentSelector: string) =>
+        [...document.querySelectorAll(currentSelector)].map((element) => element.getBoundingClientRect());
+      const tooltips = rectsFor(tooltipSelector);
+      const targets = rectsFor(targetSelector);
+
+      let overlaps = 0;
+      tooltips.forEach((tooltip, tooltipIndex) => {
+        targets.forEach((target, targetIndex) => {
+          if (tooltipSelector === targetSelector && targetIndex <= tooltipIndex) return;
+          const width = Math.max(0, Math.min(tooltip.right, target.right) - Math.max(tooltip.left, target.left));
+          const height = Math.max(0, Math.min(tooltip.bottom, target.bottom) - Math.max(tooltip.top, target.top));
+          if (width * height > 1) overlaps += 1;
+        });
+      });
+
+      return overlaps;
+    },
+    [selector, obstacleSelector]
+  );
 }

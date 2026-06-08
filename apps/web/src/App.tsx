@@ -52,6 +52,12 @@ interface VisualThread {
   kind: "json" | "parent" | "sibling";
 }
 
+interface TooltipLayout {
+  item: ScreenNode;
+  left: number;
+  top: number;
+}
+
 export function App() {
   const [rawExport, setRawExport] = useState<HypoWeaveExport | null>(null);
   const [fileName, setFileName] = useState("");
@@ -563,12 +569,14 @@ function MapScene({
 
     const forwardOverlayWheelToMap = (event: WheelEvent) => {
       const target = event.target;
+      const scene = sceneRef.current;
       if (
         isForwardedWheelEvent(event) ||
         !mapNodeRef.current ||
+        !scene ||
         !(target instanceof Element) ||
         mapNodeRef.current.contains(target) ||
-        !target.closest(".geo-point-hit-target, .idea-tooltip")
+        !scene.contains(target)
       ) {
         return;
       }
@@ -780,6 +788,19 @@ function MapScene({
       .filter((item): item is ScreenNode => Boolean(item))
       .filter((item) => isGlowVisibleOnScreen(item, container.clientWidth, container.clientHeight));
   }, [activeVisualThreads, hoveredId, nodeById]);
+  const relatedGlowObstacles = useMemo<TooltipRect[]>(() => {
+    const container = mapRef.current?.getContainer();
+    if (!hoveredId || !container) return [];
+    return screenNodes
+      .filter((item) => item.related)
+      .filter((item) => isGlowVisibleOnScreen(item, container.clientWidth, container.clientHeight))
+      .map(glowAvoidanceRect);
+  }, [hoveredId, screenNodes]);
+  const tooltipLayouts = useMemo<TooltipLayout[]>(() => {
+    const container = mapRef.current?.getContainer();
+    if (!container) return [];
+    return placeTooltipCards(hoveredCards, container.clientWidth, container.clientHeight, relatedGlowObstacles);
+  }, [hoveredCards, relatedGlowObstacles]);
 
   useEffect(() => {
     ideaLayerRef.current?.setData(ideaNodes, hoveredId, {
@@ -933,7 +954,7 @@ function MapScene({
           />
         ))}
       </div>
-      {hoveredCards.map(({ node, screen }) => (
+      {tooltipLayouts.map(({ item: { node }, left, top }) => (
         <aside
           key={`${node.id}:tooltip-card`}
           className={`idea-tooltip ${node.id === hoveredId ? "origin" : "connected"}`}
@@ -943,8 +964,8 @@ function MapScene({
           onPointerLeave={releaseHover}
           style={
             {
-              left: Math.max(20, Math.min(window.innerWidth - 340, screen.x + 22)),
-              top: Math.max(90, Math.min(window.innerHeight - 180, screen.y + 18)),
+              left,
+              top,
               "--node-color": node.color
             } as React.CSSProperties
           }
@@ -955,6 +976,133 @@ function MapScene({
       ))}
     </div>
   );
+}
+
+interface TooltipRect {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+}
+
+function placeTooltipCards(
+  cards: ScreenNode[],
+  viewportWidth: number,
+  viewportHeight: number,
+  glowObstacles: TooltipRect[]
+): TooltipLayout[] {
+  const placed: TooltipRect[] = [];
+  return cards.map((item, index) => {
+    const width = tooltipWidthForViewport(viewportWidth);
+    const height = estimateTooltipHeight(item.node);
+    const candidates = tooltipPositionCandidates(item.screen, width, height, viewportWidth, viewportHeight, index);
+    const best = candidates.reduce((current, candidate, candidateIndex) => {
+      const tooltipOverlap = placed.reduce((total, rect) => total + rectOverlapArea(candidate, rect), 0);
+      const glowOverlap = glowObstacles.reduce((total, rect) => total + rectOverlapArea(candidate, rect), 0);
+      const distance = Math.hypot(candidate.left + width / 2 - item.screen.x, candidate.top + height / 2 - item.screen.y);
+      const score = tooltipOverlap * 1000 + glowOverlap * 1600 + distance + candidateIndex * 0.01;
+      return score < current.score ? { rect: candidate, score } : current;
+    }, { rect: candidates[0]!, score: Number.POSITIVE_INFINITY });
+
+    placed.push(best.rect);
+    return {
+      item,
+      left: best.rect.left,
+      top: best.rect.top
+    };
+  });
+}
+
+function glowAvoidanceRect(item: ScreenNode): TooltipRect {
+  const size = glowAvoidanceSizePixels(item.node);
+  return {
+    left: item.screen.x - size / 2,
+    top: item.screen.y - size / 2,
+    width: size,
+    height: size
+  };
+}
+
+function glowAvoidanceSizePixels(node: AyaNode): number {
+  if (node.type === "group" && node.depth === 0) return 96;
+  if (node.type === "group") return 84;
+  if (node.geoPlacementSource === "fallback" || node.geoPlacementSource === "manual") return 76;
+  return 64;
+}
+
+function tooltipPositionCandidates(
+  screen: { x: number; y: number },
+  width: number,
+  height: number,
+  viewportWidth: number,
+  viewportHeight: number,
+  index: number
+): TooltipRect[] {
+  const gap = 22;
+  const gutter = 20;
+  const topGutter = 90;
+  const bottomGutter = 110;
+  const maxLeft = Math.max(gutter, viewportWidth - width - gutter);
+  const maxTop = Math.max(topGutter, viewportHeight - height - bottomGutter);
+  const clampRect = (left: number, top: number): TooltipRect => ({
+    left: clamp(left, gutter, maxLeft),
+    top: clamp(top, topGutter, maxTop),
+    width,
+    height
+  });
+  const candidates: TooltipRect[] = [
+    clampRect(screen.x + gap, screen.y + 18),
+    clampRect(screen.x + gap, screen.y - height - gap),
+    clampRect(screen.x - width - gap, screen.y + 18),
+    clampRect(screen.x - width - gap, screen.y - height - gap),
+    clampRect(screen.x - width / 2, screen.y - height - gap),
+    clampRect(screen.x - width / 2, screen.y + gap)
+  ];
+  const rowStep = height + 12;
+  const anchorRow = Math.round((screen.y - topGutter) / rowStep);
+  const horizontalOptions = [screen.x + gap, screen.x - width - gap, screen.x - width / 2];
+
+  for (let radius = 0; radius <= 4 + index; radius += 1) {
+    const rows = radius === 0 ? [anchorRow] : [anchorRow + radius, anchorRow - radius];
+    for (const row of rows) {
+      const top = topGutter + row * rowStep;
+      for (const left of horizontalOptions) {
+        candidates.push(clampRect(left, top));
+      }
+    }
+  }
+
+  return uniqueRects(candidates);
+}
+
+function tooltipWidthForViewport(viewportWidth: number): number {
+  return Math.min(320, Math.max(180, viewportWidth - 40));
+}
+
+function estimateTooltipHeight(node: AyaNode): number {
+  const titleLines = Math.min(3, Math.max(1, Math.ceil(node.shortLabel.length / 22)));
+  const bodyLines = Math.min(7, Math.max(1, Math.ceil(node.label.length / 34)));
+  return 36 + titleLines * 20 + bodyLines * 21;
+}
+
+function uniqueRects(rects: TooltipRect[]): TooltipRect[] {
+  const seen = new Set<string>();
+  return rects.filter((rect) => {
+    const key = `${Math.round(rect.left)}:${Math.round(rect.top)}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function rectOverlapArea(a: TooltipRect, b: TooltipRect): number {
+  const width = Math.max(0, Math.min(a.left + a.width, b.left + b.width) - Math.max(a.left, b.left));
+  const height = Math.max(0, Math.min(a.top + a.height, b.top + b.height) - Math.max(a.top, b.top));
+  return width * height;
+}
+
+function clamp(value: number, min: number, max: number): number {
+  return Math.min(Math.max(value, min), max);
 }
 
 function isGroupOutlineVisibleAtZoom(node: AyaNode, zoom: number): boolean {
