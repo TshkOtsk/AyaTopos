@@ -72,6 +72,8 @@ interface TooltipLayout {
   top: number;
 }
 
+type OverviewRelationKind = "selected" | "parent" | "sibling" | "other";
+
 export function App() {
   const [rawExport, setRawExport] = useState<HypoWeaveExport | null>(null);
   const [fileName, setFileName] = useState("");
@@ -737,26 +739,29 @@ function MapScene({
   const visualThreads = useMemo(() => (graph ? createVisualThreads(graph) : []), [graph]);
   const focusNodeId = isRelatedOverview ? overviewNodeId : hoveredId;
   const layerActiveNodeId = isRelatedOverview ? hoveredId ?? overviewNodeId : hoveredId;
-  const overviewLineageNodeIds = useMemo(
-    () => (graph && overviewNodeId ? lineageNodeIds(graph, overviewNodeId) : []),
+  const layerHoverNodeId = isRelatedOverview ? hoveredId : layerActiveNodeId;
+  const overviewRelations = useMemo(
+    () => (graph && overviewNodeId ? overviewRelatedNodeIds(graph, overviewNodeId) : { ids: [], collateralIds: new Set<string>() }),
     [graph, overviewNodeId]
   );
-  const overviewLineageIdSet = useMemo(() => new Set(overviewLineageNodeIds), [overviewLineageNodeIds]);
+  const overviewNodeIds = overviewRelations.ids;
+  const overviewIdSet = useMemo(() => new Set(overviewNodeIds), [overviewNodeIds]);
+  const overviewCollateralIdSet = overviewRelations.collateralIds;
   const relatedIds = useMemo(
     () => {
       if (!graph || !focusNodeId) return new Set<string>();
-      return isRelatedOverview ? overviewLineageIdSet : connectedVisualIds(visualThreads, focusNodeId);
+      return isRelatedOverview ? overviewIdSet : connectedVisualIds(visualThreads, focusNodeId);
     },
-    [focusNodeId, graph, isRelatedOverview, overviewLineageIdSet, visualThreads]
+    [focusNodeId, graph, isRelatedOverview, overviewIdSet, visualThreads]
   );
   const activeVisualThreads = useMemo(
     () =>
       isRelatedOverview
-        ? visualThreads.filter((edge) => overviewLineageIdSet.has(edge.source) && overviewLineageIdSet.has(edge.target))
+        ? visualThreads.filter((edge) => overviewIdSet.has(edge.source) && overviewIdSet.has(edge.target))
         : hoveredId && !isGeoEditing
           ? visualThreads.filter((edge) => edge.source === hoveredId || edge.target === hoveredId)
           : [],
-    [hoveredId, isGeoEditing, isRelatedOverview, overviewLineageIdSet, visualThreads]
+    [hoveredId, isGeoEditing, isRelatedOverview, overviewIdSet, visualThreads]
   );
 
   const screenNodes = useMemo(() => {
@@ -806,41 +811,73 @@ function MapScene({
   }, [graph, tick, visibleOutlineNodeIds]);
 
   const nodeById = useMemo(() => new Map(screenNodes.map((item) => [item.node.id, item])), [screenNodes]);
-  const computedOverviewCardLayouts = useMemo(() => {
+  const overviewCards = useMemo(() => {
     const container = mapRef.current?.getContainer();
-    if (!container || !isRelatedOverview || !overviewNodeId) return new Map<string, IdeaLayerCardLayout>();
+    if (!container || !isRelatedOverview || !overviewNodeId) return [];
 
-    const orderedIds = overviewLineageNodeIds;
+    const orderedIds = overviewNodeIds;
     const seen = new Set<string>();
-    const cards = orderedIds
+    return orderedIds
       .filter((id) => {
         if (seen.has(id)) return false;
         seen.add(id);
         return true;
       })
       .map((id) => nodeById.get(id))
-      .filter((item): item is ScreenNode => Boolean(item))
-      .filter((item) => isGlowVisibleOnScreen(item, container.clientWidth, container.clientHeight));
+      .filter((item): item is ScreenNode => Boolean(item));
+  }, [isRelatedOverview, nodeById, overviewNodeIds, overviewNodeId]);
+
+  const computedTerrainOverviewCardLayouts = useMemo(() => {
+    const container = mapRef.current?.getContainer();
+    if (!container || !isRelatedOverview || !overviewNodeId) return new Map<string, IdeaLayerCardLayout>();
+
     const glowObstacles = screenNodes
       .filter((item) => item.related)
       .filter((item) => isGlowVisibleOnScreen(item, container.clientWidth, container.clientHeight))
       .map(glowAvoidanceRect);
 
     return new Map(
-      placeOverviewLayerCards(cards, container.clientWidth, container.clientHeight, glowObstacles, graph?.maxDepth ?? 0).map(
-        ({ item, layout }) => [item.node.id, layout]
-      )
+      placeOverviewLayerCards(
+        overviewCards,
+        container.clientWidth,
+        container.clientHeight,
+        glowObstacles,
+        graph?.maxDepth ?? 0,
+        overviewCollateralIdSet,
+        overviewNodeId
+      ).map(({ item, layout }) => [item.node.id, layout])
     );
-  }, [graph?.maxDepth, isRelatedOverview, nodeById, overviewLineageNodeIds, overviewNodeId, screenNodes]);
+  }, [graph?.maxDepth, isRelatedOverview, overviewCards, overviewCollateralIdSet, overviewNodeId, screenNodes]);
   useEffect(() => {
-    if (!isRelatedOverview || !shouldLockOverviewLayout || lockedOverviewCardLayouts.size > 0 || computedOverviewCardLayouts.size === 0) {
+    if (
+      !isRelatedOverview ||
+      !shouldLockOverviewLayout ||
+      lockedOverviewCardLayouts.size > 0 ||
+      computedTerrainOverviewCardLayouts.size === 0
+    ) {
       return;
     }
-    setLockedOverviewCardLayouts(new Map(computedOverviewCardLayouts));
+    setLockedOverviewCardLayouts(new Map(computedTerrainOverviewCardLayouts));
     setShouldLockOverviewLayout(false);
-  }, [computedOverviewCardLayouts, isRelatedOverview, lockedOverviewCardLayouts.size, shouldLockOverviewLayout]);
-  const overviewCardLayouts =
-    isRelatedOverview && lockedOverviewCardLayouts.size > 0 ? lockedOverviewCardLayouts : computedOverviewCardLayouts;
+  }, [computedTerrainOverviewCardLayouts, isRelatedOverview, lockedOverviewCardLayouts.size, shouldLockOverviewLayout]);
+  const terrainOverviewCardLayouts =
+    isRelatedOverview && lockedOverviewCardLayouts.size > 0 ? lockedOverviewCardLayouts : computedTerrainOverviewCardLayouts;
+  const overviewCardLayouts = useMemo(() => {
+    const container = mapRef.current?.getContainer();
+    if (!container || !isRelatedOverview || overviewCards.length === 0) return terrainOverviewCardLayouts;
+
+    return new Map(
+      blendOverviewLayerCards(
+        overviewCards,
+        terrainOverviewCardLayouts,
+        container.clientWidth,
+        container.clientHeight,
+        graph?.maxDepth ?? 0,
+        blend,
+        overviewCollateralIdSet
+      ).map(({ item, layout }) => [item.node.id, layout])
+    );
+  }, [blend, graph?.maxDepth, isRelatedOverview, overviewCards, overviewCollateralIdSet, terrainOverviewCardLayouts]);
   const ideaNodes = useMemo<IdeaLayerDatum[]>(
     () =>
       screenNodes.map(({ node, point, related, dimmed }) => ({
@@ -854,20 +891,31 @@ function MapScene({
   );
   const customLayerThreads = useMemo<IdeaLayerThreadDatum[]>(
     () => {
+      const terrainOverviewWeight = isRelatedOverview ? clamp(blend, 0, 1) : 0;
+      if (isRelatedOverview && terrainOverviewWeight <= 0.001) {
+        return overviewFamilyThreads(overviewCards, overviewCardLayouts, graph?.maxDepth ?? 0);
+      }
+
       const graphThreads: IdeaLayerThreadDatum[] = [];
       for (const edge of activeVisualThreads) {
         const source = nodeById.get(edge.source);
         const target = nodeById.get(edge.target);
         if (!source || !target) continue;
+        const sourceLayout = overviewCardLayouts.get(edge.source);
+        const targetLayout = overviewCardLayouts.get(edge.target);
+        const endpoints =
+          isRelatedOverview && sourceLayout && targetLayout
+            ? overviewThreadEndpoints(source.screen, target.screen, sourceLayout, targetLayout, terrainOverviewWeight)
+            : { source: source.screen, target: target.screen };
         graphThreads.push({
           id: edge.id,
           kind: edge.kind,
-          source: source.screen,
-          target: target.screen,
+          source: endpoints.source,
+          target: endpoints.target,
           width: threadWidthPixels(source.node, target.node, graph?.maxDepth ?? 0, isRelatedOverview)
         });
       }
-      if (!isRelatedOverview) return graphThreads;
+      if (!isRelatedOverview || terrainOverviewWeight <= 0.001) return graphThreads;
 
       const cardLinks: IdeaLayerThreadDatum[] = [];
       for (const [nodeId, layout] of overviewCardLayouts.entries()) {
@@ -878,13 +926,13 @@ function MapScene({
           kind: "card-link",
           source: item.screen,
           target: nearestPointOnRect(item.screen, layout),
-          width: 2.4
+          width: 2.4 * terrainOverviewWeight
         });
       }
 
       return [...graphThreads, ...cardLinks];
     },
-    [activeVisualThreads, graph?.maxDepth, isRelatedOverview, nodeById, overviewCardLayouts]
+    [activeVisualThreads, blend, graph?.maxDepth, isRelatedOverview, nodeById, overviewCardLayouts, overviewCards]
   );
   const hoveredCards = useMemo(() => {
     if (!hoveredId || isRelatedOverview) return [];
@@ -921,12 +969,12 @@ function MapScene({
   }, [hoveredCards, relatedGlowObstacles]);
 
   useEffect(() => {
-    ideaLayerRef.current?.setData(ideaNodes, layerActiveNodeId, {
+    ideaLayerRef.current?.setData(ideaNodes, layerHoverNodeId, {
       enabled: isGeoEditing,
-      selectedId: selectedCardId,
+      selectedId: isRelatedOverview ? overviewNodeId : selectedCardId,
       overview: isRelatedOverview
     }, customLayerThreads);
-  }, [customLayerThreads, ideaNodes, isGeoEditing, isRelatedOverview, layerActiveNodeId, selectedCardId]);
+  }, [customLayerThreads, ideaNodes, isGeoEditing, isRelatedOverview, layerHoverNodeId, overviewNodeId, selectedCardId]);
 
   const updateCardGeoFromPointer = useCallback(
     (nodeId: string, event: React.PointerEvent<HTMLElement>) => {
@@ -1043,7 +1091,7 @@ function MapScene({
     if (!map || !graph || !overviewNodeId || !isRelatedOverview) return;
 
     const points = graph.nodes
-      .filter((node) => overviewLineageIdSet.has(node.id))
+      .filter((node) => overviewIdSet.has(node.id))
       .map((node) => visualPointForNode(node, blend))
       .filter(isFiniteSpatialPoint);
 
@@ -1053,7 +1101,7 @@ function MapScene({
     setShouldLockOverviewLayout(false);
     map.once("moveend", () => setShouldLockOverviewLayout(true));
     focusMapOnPoints2d(map, points);
-  }, [blend, graph, isRelatedOverview, overviewLineageIdSet, overviewNodeId]);
+  }, [blend, graph, isRelatedOverview, overviewIdSet, overviewNodeId]);
 
   const handleSceneClick = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
@@ -1258,20 +1306,54 @@ function placeOverviewLayerCards(
   viewportWidth: number,
   viewportHeight: number,
   glowObstacles: TooltipRect[],
-  maxDepth: number
+  maxDepth: number,
+  collateralIds = new Set<string>(),
+  selectedId: string | null = null
 ): Array<{ item: ScreenNode; layout: IdeaLayerCardLayout }> {
   if (cards.length === 0) return [];
   const bounds = overviewLayerPlacementBounds(viewportWidth, viewportHeight);
-  const packing = overviewLayerPacking(cards, bounds, maxDepth);
+  const selectedNode = selectedId ? cards.find((item) => item.node.id === selectedId)?.node : undefined;
+  const packing = overviewLayerPacking(cards, bounds, maxDepth, collateralIds, selectedNode);
+  const fitAttempts = [1, 0.92, 0.84, 0.76];
+  let bestLayouts: Array<{ item: ScreenNode; layout: IdeaLayerCardLayout }> = [];
+  let bestScore = Number.POSITIVE_INFINITY;
+
+  for (const fitAttempt of fitAttempts) {
+    const layouts = placeOverviewLayerCardsNearGlows(
+      cards,
+      bounds,
+      glowObstacles,
+      selectedNode,
+      packing.scale * fitAttempt
+    );
+    const score = overviewLayoutCollisionScore(layouts.map(({ layout }) => layout), glowObstacles);
+    if (score < bestScore) {
+      bestLayouts = layouts;
+      bestScore = score;
+    }
+    if (score <= 1) return layouts;
+  }
+
+  return relaxOverviewLayerCards(bestLayouts, bounds, glowObstacles, selectedNode);
+}
+
+function placeOverviewLayerCardsNearGlows(
+  cards: ScreenNode[],
+  bounds: TooltipRect,
+  glowObstacles: TooltipRect[],
+  selectedNode: AyaNode | undefined,
+  fitScale: number
+): Array<{ item: ScreenNode; layout: IdeaLayerCardLayout }> {
   const placed: TooltipRect[] = [];
-  const layouts = cards.map((item, index) => {
-    const size = overviewLayerCardSize(item.node, maxDepth, packing.scale);
+  return cards.map((item, index) => {
+    const size = overviewTerrainLayerCardSize(item.node, selectedNode, fitScale);
+    const relationKind = overviewRelationKind(item.node, selectedNode);
     const candidates = overviewCardPositionCandidates(item.screen, size.width, size.height, bounds, index);
     const best = candidates.reduce((current, candidate, candidateIndex) => {
       const cardOverlap = placed.reduce((total, rect) => total + rectOverlapArea(candidate, rect), 0);
       const glowOverlap = glowObstacles.reduce((total, rect) => total + rectOverlapArea(candidate, rect), 0);
       const leaderLength = leaderLineLength(item.screen, candidate);
-      const originBias = item.node.id === cards[0]?.node.id ? candidateIndex * 0.2 : candidateIndex * 0.04;
+      const originBias = candidateIndex * (relationKind === "selected" ? 0.16 : 0.035);
       const collisionPenalty = cardOverlap + glowOverlap > 0 ? 1_000_000 + (cardOverlap + glowOverlap) * 120 : 0;
       const score = collisionPenalty + leaderLength + originBias;
       return score < current.score ? { rect: candidate, score } : current;
@@ -1283,19 +1365,227 @@ function placeOverviewLayerCards(
       layout: best.rect
     };
   });
-
-  return hasOverviewLayoutCollision(layouts.map(({ layout }) => layout), glowObstacles)
-    ? placeOverviewLayerCardsOnGrid(cards, bounds, glowObstacles, maxDepth, packing)
-    : layouts;
 }
 
-function overviewLayerCardSize(node: AyaNode, maxDepth: number, scale = 1): { width: number; height: number } {
-  const proximity = rootProximity(node, maxDepth);
-  const width = Math.round(((node.type === "group" ? 226 : 202) + (node.type === "group" ? 48 : 42) * proximity) * scale);
+function blendOverviewLayerCards(
+  cards: ScreenNode[],
+  terrainLayouts: Map<string, IdeaLayerCardLayout>,
+  viewportWidth: number,
+  viewportHeight: number,
+  maxDepth: number,
+  terrainWeight: number,
+  collateralIds = new Set<string>()
+): Array<{ item: ScreenNode; layout: IdeaLayerCardLayout }> {
+  if (cards.length === 0) return [];
+  const weight = clamp(terrainWeight, 0, 1);
+  if (weight >= 0.999) {
+    return cards
+      .map((item) => {
+        const layout = terrainLayouts.get(item.node.id);
+        return layout ? { item, layout } : undefined;
+      })
+      .filter((entry): entry is { item: ScreenNode; layout: IdeaLayerCardLayout } => Boolean(entry));
+  }
+
+  const treeLayouts = new Map(
+    placeOverviewLayerCardsAsTree(cards, viewportWidth, viewportHeight, maxDepth, collateralIds).map(({ item, layout }) => [
+      item.node.id,
+      layout
+    ])
+  );
+
+  return cards
+    .map((item) => {
+      const treeLayout = treeLayouts.get(item.node.id);
+      const terrainLayout = terrainLayouts.get(item.node.id) ?? treeLayout;
+      if (!terrainLayout || !treeLayout) return undefined;
+      return {
+        item,
+        layout: interpolateRect(treeLayout, terrainLayout, weight)
+      };
+    })
+    .filter((entry): entry is { item: ScreenNode; layout: IdeaLayerCardLayout } => Boolean(entry));
+}
+
+function placeOverviewLayerCardsAsTree(
+  cards: ScreenNode[],
+  viewportWidth: number,
+  viewportHeight: number,
+  maxDepth: number,
+  collateralIds = new Set<string>()
+): Array<{ item: ScreenNode; layout: IdeaLayerCardLayout }> {
+  if (cards.length === 0) return [];
+  const bounds = overviewLayerPlacementBounds(viewportWidth, viewportHeight);
+  const cardById = new Map(cards.map((item) => [item.node.id, item]));
+  const childrenByParent = new Map<string, ScreenNode[]>();
+  for (const item of cards) {
+    const parentId = item.node.parentId;
+    if (!parentId || !cardById.has(parentId)) continue;
+    const children = childrenByParent.get(parentId) ?? [];
+    children.push(item);
+    childrenByParent.set(parentId, children);
+  }
+  childrenByParent.forEach((children) => children.sort(compareOverviewTreeNodes));
+
+  const roots = cards
+    .filter((item) => !item.node.parentId || !cardById.has(item.node.parentId))
+    .sort(compareOverviewTreeNodes);
+  const subtreeWidthCache = new Map<string, number>();
+  const subtreeWidth = (item: ScreenNode): number => {
+    const cached = subtreeWidthCache.get(item.node.id);
+    if (cached !== undefined) return cached;
+    const children = childrenByParent.get(item.node.id) ?? [];
+    const width = children.length === 0 ? 1 : children.reduce((total, child) => total + subtreeWidth(child), 0);
+    subtreeWidthCache.set(item.node.id, width);
+    return width;
+  };
+
+  const positions = new Map<string, { unitX: number; level: number }>();
+  const assignTreePositions = (item: ScreenNode, offset: number, level: number): number => {
+    const width = subtreeWidth(item);
+    const children = childrenByParent.get(item.node.id) ?? [];
+    if (children.length === 0) {
+      positions.set(item.node.id, { unitX: offset + width / 2, level });
+      return width;
+    }
+
+    let childOffset = offset;
+    for (const child of children) {
+      childOffset += assignTreePositions(child, childOffset, level + 1);
+    }
+    const firstChild = positions.get(children[0]!.node.id);
+    const lastChild = positions.get(children[children.length - 1]!.node.id);
+    positions.set(item.node.id, {
+      unitX: firstChild && lastChild ? (firstChild.unitX + lastChild.unitX) / 2 : offset + width / 2,
+      level
+    });
+    return width;
+  };
+
+  const rootGapUnits = 1;
+  let offset = 0;
+  for (const root of roots) {
+    offset += assignTreePositions(root, offset, 0) + rootGapUnits;
+  }
+  const totalUnits = Math.max(1, offset - rootGapUnits);
+  const maxLevel = [...positions.values()].reduce((max, position) => Math.max(max, position.level), 0);
+  const maxBaseSize = cards.reduce(
+    (size, item) => {
+      const next = overviewLayerCardSize(item.node, maxDepth, 1, overviewRelationCardScale(item.node.id, collateralIds));
+      return {
+        width: Math.max(size.width, next.width),
+        height: Math.max(size.height, next.height)
+      };
+    },
+    { width: 1, height: 1 }
+  );
+  const columnGap = 18;
+  const rowGap = 24;
+  const horizontalScale = bounds.width / (totalUnits * maxBaseSize.width + Math.max(0, totalUnits - 1) * columnGap);
+  const verticalScale =
+    bounds.height / ((maxLevel + 1) * maxBaseSize.height + Math.max(0, maxLevel) * rowGap);
+  const scale = Math.max(0.04, Math.min(0.86, horizontalScale, verticalScale));
+  const maxSize = {
+    width: maxBaseSize.width * scale,
+    height: maxBaseSize.height * scale
+  };
+  const totalTreeWidth = totalUnits * maxSize.width + Math.max(0, totalUnits - 1) * columnGap;
+  const totalTreeHeight = (maxLevel + 1) * maxSize.height + Math.max(0, maxLevel) * rowGap;
+  const originX = bounds.left + (bounds.width - totalTreeWidth) / 2;
+  const originY = bounds.top + (bounds.height - totalTreeHeight) / 2;
+
+  return cards.map((item) => {
+    const position = positions.get(item.node.id) ?? { unitX: 0.5, level: 0 };
+    const size = overviewLayerCardSize(item.node, maxDepth, scale, overviewRelationCardScale(item.node.id, collateralIds));
+    const centerX = originX + position.unitX * (maxSize.width + columnGap) - columnGap / 2;
+    const top = originY + position.level * (maxSize.height + rowGap);
+    return {
+      item,
+      layout: clampRectToBounds(
+        {
+          left: centerX - size.width / 2,
+          top,
+          width: size.width,
+          height: size.height
+        },
+        bounds
+      )
+    };
+  });
+}
+
+function compareOverviewTreeNodes(a: ScreenNode, b: ScreenNode): number {
+  return a.node.semantic.x - b.node.semantic.x || a.node.semantic.y - b.node.semantic.y || a.node.id.localeCompare(b.node.id);
+}
+
+function interpolateRect(from: TooltipRect, to: TooltipRect, weight: number): IdeaLayerCardLayout {
+  return {
+    left: from.left + (to.left - from.left) * weight,
+    top: from.top + (to.top - from.top) * weight,
+    width: from.width + (to.width - from.width) * weight,
+    height: from.height + (to.height - from.height) * weight
+  };
+}
+
+function clampRectToBounds(rect: TooltipRect, bounds: TooltipRect): IdeaLayerCardLayout {
+  return {
+    ...rect,
+    left: clamp(rect.left, bounds.left, bounds.left + Math.max(0, bounds.width - rect.width)),
+    top: clamp(rect.top, bounds.top, bounds.top + Math.max(0, bounds.height - rect.height))
+  };
+}
+
+function overviewLayerCardSize(node: AyaNode, maxDepth: number, scale = 1, relationScale = 1): { width: number; height: number } {
+  void node;
+  void maxDepth;
+  void relationScale;
+  const width = Math.round(OVERVIEW_FOCUS_CARD_WIDTH * scale);
   return {
     width,
     height: Math.round(width * 0.66)
   };
+}
+
+const OVERVIEW_FOCUS_CARD_WIDTH = 274;
+const OVERVIEW_TERRAIN_CARD_SCALE_BY_RELATION: Record<OverviewRelationKind, number> = {
+  selected: 0.57,
+  parent: 0.64,
+  sibling: 0.55,
+  other: 0.46
+};
+const OVERVIEW_TERRAIN_CARD_MIN_WIDTH_BY_RELATION: Record<OverviewRelationKind, number> = {
+  selected: 41,
+  parent: 49,
+  sibling: 45,
+  other: 42
+};
+
+function overviewTerrainLayerCardSize(
+  node: AyaNode,
+  selectedNode: AyaNode | undefined,
+  fitScale = 1
+): { width: number; height: number } {
+  const relationKind = overviewRelationKind(node, selectedNode);
+  const width = Math.max(
+    OVERVIEW_TERRAIN_CARD_MIN_WIDTH_BY_RELATION[relationKind],
+    Math.round(OVERVIEW_FOCUS_CARD_WIDTH * OVERVIEW_TERRAIN_CARD_SCALE_BY_RELATION[relationKind] * fitScale)
+  );
+  return {
+    width,
+    height: Math.round(width * 0.66)
+  };
+}
+
+function overviewRelationKind(node: AyaNode, selectedNode: AyaNode | undefined): OverviewRelationKind {
+  if (!selectedNode) return "other";
+  if (node.id === selectedNode.id) return "selected";
+  if (selectedNode.parentId && node.id === selectedNode.parentId) return "parent";
+  if (node.parentId && selectedNode.parentId && node.parentId === selectedNode.parentId) return "sibling";
+  return "other";
+}
+
+function overviewRelationCardScale(nodeId: string, collateralIds: Set<string>): number {
+  return collateralIds.has(nodeId) ? 0.72 : 1;
 }
 
 function overviewLayerPlacementBounds(viewportWidth: number, viewportHeight: number): TooltipRect {
@@ -1315,11 +1605,15 @@ function overviewLayerPlacementBounds(viewportWidth: number, viewportHeight: num
 function overviewLayerPacking(
   cards: ScreenNode[],
   bounds: TooltipRect,
-  maxDepth: number
-): { columns: number; rows: number; scale: number } {
+  maxDepth: number,
+  collateralIds = new Set<string>(),
+  selectedNode: AyaNode | undefined
+): { scale: number } {
+  void maxDepth;
+  void collateralIds;
   const maxSize = cards.reduce(
     (size, item) => {
-      const next = overviewLayerCardSize(item.node, maxDepth);
+      const next = overviewTerrainLayerCardSize(item.node, selectedNode);
       return {
         width: Math.max(size.width, next.width),
         height: Math.max(size.height, next.height)
@@ -1334,14 +1628,11 @@ function overviewLayerPacking(
     const rows = Math.ceil(cards.length / columns);
     const cellWidth = bounds.width / columns;
     const cellHeight = bounds.height / rows;
-    const scale = Math.min(0.86, (cellWidth - gap) / maxSize.width, (cellHeight - gap) / maxSize.height);
+    const scale = Math.min(1, (cellWidth - gap) / maxSize.width, (cellHeight - gap) / maxSize.height);
     if (scale > best.scale) best = { columns, rows, scale };
   }
 
-  return {
-    ...best,
-    scale: Math.max(0.04, best.scale)
-  };
+  return { scale: Math.max(0.04, Math.min(1, best.scale)) };
 }
 
 function overviewCardPositionCandidates(
@@ -1351,7 +1642,7 @@ function overviewCardPositionCandidates(
   bounds: TooltipRect,
   index: number
 ): TooltipRect[] {
-  const gap = 18;
+  const gap = 14;
   const maxLeft = bounds.left + Math.max(0, bounds.width - width);
   const maxTop = bounds.top + Math.max(0, bounds.height - height);
   const clampRect = (left: number, top: number): TooltipRect => ({
@@ -1360,107 +1651,147 @@ function overviewCardPositionCandidates(
     width,
     height
   });
-  const candidates = [
-    clampRect(screen.x + gap, screen.y - height / 2),
-    clampRect(screen.x - width - gap, screen.y - height / 2),
-    clampRect(screen.x - width / 2, screen.y - height - gap),
-    clampRect(screen.x - width / 2, screen.y + gap),
-    clampRect(screen.x + gap, screen.y + gap),
-    clampRect(screen.x - width - gap, screen.y + gap)
+  const angleOffset = (index % 7) * 0.13;
+  const angles = [
+    0,
+    Math.PI,
+    -Math.PI / 2,
+    Math.PI / 2,
+    -Math.PI / 4,
+    Math.PI / 4,
+    (-3 * Math.PI) / 4,
+    (3 * Math.PI) / 4
   ];
-  for (const offset of [12, 24, 42, 68, 96]) {
+  const candidates: TooltipRect[] = [];
+
+  for (const angle of angles) {
+    const xRadius = width / 2 + gap;
+    const yRadius = height / 2 + gap;
     candidates.push(
-      clampRect(screen.x + offset, screen.y - height / 2),
-      clampRect(screen.x - width - offset, screen.y - height / 2),
-      clampRect(screen.x - width / 2, screen.y - height - offset),
-      clampRect(screen.x - width / 2, screen.y + offset),
-      clampRect(screen.x + offset, screen.y + offset),
-      clampRect(screen.x - width - offset, screen.y + offset),
-      clampRect(screen.x + offset, screen.y - height - offset),
-      clampRect(screen.x - width - offset, screen.y - height - offset)
+      clampRect(
+        screen.x + Math.cos(angle) * xRadius - width / 2,
+        screen.y + Math.sin(angle) * yRadius - height / 2
+      )
     );
   }
-  const rowStep = height + 10;
-  const anchorRow = Math.round((screen.y - bounds.top) / rowStep);
-  const horizontalOptions = [screen.x + gap, screen.x - width - gap, screen.x - width / 2];
 
-  for (let radius = 0; radius <= 5 + index; radius += 1) {
-    const rows = radius === 0 ? [anchorRow] : [anchorRow + radius, anchorRow - radius];
-    for (const row of rows) {
-      const top = bounds.top + row * rowStep;
-      for (const left of horizontalOptions) {
-        candidates.push(clampRect(left, top));
-      }
+  for (const ring of [18, 34, 56, 84, 118, 158, 204, 258, 320]) {
+    for (const angle of angles) {
+      const resolvedAngle = angle + angleOffset;
+      const xRadius = width / 2 + gap + ring;
+      const yRadius = height / 2 + gap + ring * 0.72;
+      candidates.push(
+        clampRect(
+          screen.x + Math.cos(resolvedAngle) * xRadius - width / 2,
+          screen.y + Math.sin(resolvedAngle) * yRadius - height / 2
+        )
+      );
     }
   }
 
   return uniqueRects(candidates);
 }
 
-function placeOverviewLayerCardsOnGrid(
-  cards: ScreenNode[],
+function relaxOverviewLayerCards(
+  layouts: Array<{ item: ScreenNode; layout: IdeaLayerCardLayout }>,
   bounds: TooltipRect,
   glowObstacles: TooltipRect[],
-  maxDepth: number,
-  packing: { columns: number; rows: number; scale: number }
+  selectedNode: AyaNode | undefined
 ): Array<{ item: ScreenNode; layout: IdeaLayerCardLayout }> {
-  const cells = overviewGridCells(bounds, packing.columns, packing.rows);
-  const used = new Set<number>();
-  return cards.map((item) => {
-    const size = overviewLayerCardSize(item.node, maxDepth, packing.scale);
-    const best = cells.reduce(
-      (current, cell, index) => {
-        if (used.has(index)) return current;
-        const rect = centerRectInCell(size, cell);
-        const glowOverlap = glowObstacles.reduce((total, obstacle) => total + rectOverlapArea(rect, obstacle), 0);
-        const collisionPenalty = glowOverlap > 0 ? 1_000_000 + glowOverlap * 120 : 0;
-        const score = collisionPenalty + leaderLineLength(item.screen, rect);
-        return score < current.score ? { index, rect, score } : current;
-      },
-      { index: -1, rect: centerRectInCell(size, cells[0] ?? bounds), score: Number.POSITIVE_INFINITY }
-    );
-    if (best.index >= 0) used.add(best.index);
-    return {
-      item,
-      layout: best.rect
-    };
-  });
-}
+  const states = layouts.map(({ item, layout }) => ({
+    item,
+    home: { ...layout },
+    rect: { ...layout },
+    flex: overviewRelationFlex(overviewRelationKind(item.node, selectedNode))
+  }));
+  let bestRects = states.map((state) => ({ ...state.rect }));
+  let bestScore = overviewLayoutCollisionScore(bestRects, glowObstacles);
 
-function overviewGridCells(bounds: TooltipRect, columns: number, rows: number): TooltipRect[] {
-  const cells: TooltipRect[] = [];
-  const width = bounds.width / columns;
-  const height = bounds.height / rows;
-  for (let row = 0; row < rows; row += 1) {
-    for (let column = 0; column < columns; column += 1) {
-      cells.push({
-        left: bounds.left + column * width,
-        top: bounds.top + row * height,
-        width,
-        height
-      });
+  for (let iteration = 0; iteration < 120; iteration += 1) {
+    for (let index = 0; index < states.length; index += 1) {
+      const current = states[index]!;
+      for (let nextIndex = index + 1; nextIndex < states.length; nextIndex += 1) {
+        const next = states[nextIndex]!;
+        const push = rectSeparationPush(current.rect, next.rect, 8);
+        if (!push) continue;
+        const totalFlex = current.flex + next.flex || 1;
+        moveRect(current.rect, -push.x * (current.flex / totalFlex), -push.y * (current.flex / totalFlex));
+        moveRect(next.rect, push.x * (next.flex / totalFlex), push.y * (next.flex / totalFlex));
+      }
+    }
+
+    for (const state of states) {
+      for (const obstacle of glowObstacles) {
+        const push = rectSeparationPush(state.rect, obstacle, 6);
+        if (push) moveRect(state.rect, -push.x, -push.y);
+      }
+      const pull = 0.018 + (1 - state.flex) * 0.02;
+      moveRect(state.rect, (state.home.left - state.rect.left) * pull, (state.home.top - state.rect.top) * pull);
+      state.rect = clampRectToBounds(state.rect, bounds);
+    }
+
+    const currentRects = states.map((state) => state.rect);
+    const score = overviewLayoutCollisionScore(currentRects, glowObstacles);
+    if (score < bestScore) {
+      bestScore = score;
+      bestRects = currentRects.map((rect) => ({ ...rect }));
+      if (score <= 1) break;
     }
   }
-  return cells;
+
+  return layouts.map(({ item }, index) => ({
+    item,
+    layout: bestRects[index] ?? layouts[index]!.layout
+  }));
 }
 
-function centerRectInCell(size: { width: number; height: number }, cell: TooltipRect): TooltipRect {
+function overviewRelationFlex(kind: OverviewRelationKind): number {
+  if (kind === "selected") return 0.24;
+  if (kind === "parent") return 0.36;
+  if (kind === "sibling") return 0.48;
+  return 0.62;
+}
+
+function overviewLayoutCollisionScore(layouts: TooltipRect[], glowObstacles: TooltipRect[]): number {
+  let score = 0;
+  for (let index = 0; index < layouts.length; index += 1) {
+    for (let next = index + 1; next < layouts.length; next += 1) {
+      score += rectOverlapArea(layouts[index]!, layouts[next]!) * 2;
+    }
+    for (const obstacle of glowObstacles) {
+      score += rectOverlapArea(layouts[index]!, obstacle) * 2.8;
+    }
+  }
+  return score;
+}
+
+function rectSeparationPush(a: TooltipRect, b: TooltipRect, gap: number): { x: number; y: number } | null {
+  const paddedA = paddedRect(a, gap / 2);
+  const paddedB = paddedRect(b, gap / 2);
+  const overlapWidth = Math.min(paddedA.left + paddedA.width, paddedB.left + paddedB.width) - Math.max(paddedA.left, paddedB.left);
+  const overlapHeight = Math.min(paddedA.top + paddedA.height, paddedB.top + paddedB.height) - Math.max(paddedA.top, paddedB.top);
+  if (overlapWidth <= 0 || overlapHeight <= 0) return null;
+
+  const aCenter = rectCenter(a);
+  const bCenter = rectCenter(b);
+  const directionX = aCenter.x <= bCenter.x ? 1 : -1;
+  const directionY = aCenter.y <= bCenter.y ? 1 : -1;
+  if (overlapWidth < overlapHeight) return { x: (overlapWidth + 0.8) * directionX, y: 0 };
+  return { x: 0, y: (overlapHeight + 0.8) * directionY };
+}
+
+function paddedRect(rect: TooltipRect, padding: number): TooltipRect {
   return {
-    left: cell.left + (cell.width - size.width) / 2,
-    top: cell.top + (cell.height - size.height) / 2,
-    width: size.width,
-    height: size.height
+    left: rect.left - padding,
+    top: rect.top - padding,
+    width: rect.width + padding * 2,
+    height: rect.height + padding * 2
   };
 }
 
-function hasOverviewLayoutCollision(layouts: IdeaLayerCardLayout[], glowObstacles: TooltipRect[]): boolean {
-  for (let index = 0; index < layouts.length; index += 1) {
-    for (let next = index + 1; next < layouts.length; next += 1) {
-      if (rectOverlapArea(layouts[index]!, layouts[next]!) > 1) return true;
-    }
-    if (glowObstacles.some((obstacle) => rectOverlapArea(layouts[index]!, obstacle) > 1)) return true;
-  }
-  return false;
+function moveRect(rect: TooltipRect, x: number, y: number): void {
+  rect.left += x;
+  rect.top += y;
 }
 
 function glowAvoidanceRect(item: ScreenNode): TooltipRect {
@@ -1549,6 +1880,93 @@ function rectOverlapArea(a: TooltipRect, b: TooltipRect): number {
   const width = Math.max(0, Math.min(a.left + a.width, b.left + b.width) - Math.max(a.left, b.left));
   const height = Math.max(0, Math.min(a.top + a.height, b.top + b.height) - Math.max(a.top, b.top));
   return width * height;
+}
+
+function overviewCardThreadEndpoints(
+  sourceRect: TooltipRect,
+  targetRect: TooltipRect
+): { source: { x: number; y: number }; target: { x: number; y: number } } {
+  const sourceCenter = rectCenter(sourceRect);
+  const targetCenter = rectCenter(targetRect);
+  return {
+    source: nearestPointOnRect(targetCenter, sourceRect),
+    target: nearestPointOnRect(sourceCenter, targetRect)
+  };
+}
+
+function overviewFamilyThreads(
+  cards: ScreenNode[],
+  layouts: Map<string, IdeaLayerCardLayout>,
+  maxDepth: number
+): IdeaLayerThreadDatum[] {
+  const cardIds = new Set(cards.map((item) => item.node.id));
+  const cardById = new Map(cards.map((item) => [item.node.id, item]));
+  const threads: IdeaLayerThreadDatum[] = [];
+
+  for (const item of cards) {
+    const parentId = item.node.parentId;
+    if (!parentId || !cardIds.has(parentId)) continue;
+    const parent = cardById.get(parentId);
+    const parentLayout = layouts.get(parentId);
+    const childLayout = layouts.get(item.node.id);
+    if (!parent || !parentLayout || !childLayout) continue;
+    threads.push({
+      id: `family:${parentId}->${item.node.id}`,
+      kind: "family",
+      source: bottomCenter(parentLayout),
+      target: topCenter(childLayout),
+      width: threadWidthPixels(parent.node, item.node, maxDepth, true)
+    });
+  }
+
+  return threads;
+}
+
+function overviewThreadEndpoints(
+  sourceGlow: { x: number; y: number },
+  targetGlow: { x: number; y: number },
+  sourceRect: TooltipRect,
+  targetRect: TooltipRect,
+  terrainWeight: number
+): { source: { x: number; y: number }; target: { x: number; y: number } } {
+  const cardEndpoints = overviewCardThreadEndpoints(sourceRect, targetRect);
+  const weight = clamp(terrainWeight, 0, 1);
+  return {
+    source: interpolateScreenPoint(cardEndpoints.source, sourceGlow, weight),
+    target: interpolateScreenPoint(cardEndpoints.target, targetGlow, weight)
+  };
+}
+
+function interpolateScreenPoint(
+  from: { x: number; y: number },
+  to: { x: number; y: number },
+  weight: number
+): { x: number; y: number } {
+  return {
+    x: from.x + (to.x - from.x) * weight,
+    y: from.y + (to.y - from.y) * weight
+  };
+}
+
+function topCenter(rect: TooltipRect): { x: number; y: number } {
+  return {
+    x: rect.left + rect.width / 2,
+    y: rect.top
+  };
+}
+
+function bottomCenter(rect: TooltipRect): { x: number; y: number } {
+  return {
+    x: rect.left + rect.width / 2,
+    y: rect.top + rect.height
+  };
+}
+
+function rectCenter(rect: TooltipRect): { x: number; y: number } {
+  return {
+    x: rect.left + rect.width / 2,
+    y: rect.top + rect.height / 2
+  };
 }
 
 function nearestPointOnRect(point: { x: number; y: number }, rect: TooltipRect): { x: number; y: number } {
@@ -1777,21 +2195,29 @@ function connectedVisualIds(threads: VisualThread[], nodeId: string): Set<string
   return ids;
 }
 
-function lineageNodeIds(graph: AyaGraph, nodeId: string): string[] {
+function overviewRelatedNodeIds(graph: AyaGraph, nodeId: string): { ids: string[]; collateralIds: Set<string> } {
   const nodeById = new Map(graph.nodes.map((node) => [node.id, node]));
   const childrenByParent = new Map<string, AyaNode[]>();
+  const rootNodes: AyaNode[] = [];
   for (const node of graph.nodes) {
-    if (!node.parentId) continue;
+    if (!node.parentId) {
+      rootNodes.push(node);
+      continue;
+    }
     const children = childrenByParent.get(node.parentId) ?? [];
     children.push(node);
     childrenByParent.set(node.parentId, children);
   }
   childrenByParent.forEach((children) => children.sort((a, b) => a.depth - b.depth || a.id.localeCompare(b.id)));
+  rootNodes.sort((a, b) => a.depth - b.depth || a.id.localeCompare(b.id));
 
   const ids: string[] = [];
+  const collateralIds = new Set<string>();
   const seen = new Set<string>();
-  const add = (id: string) => {
-    if (seen.has(id) || !nodeById.has(id)) return false;
+  const add = (id: string, collateral = false) => {
+    if (!nodeById.has(id)) return false;
+    if (seen.has(id)) return false;
+    if (collateral) collateralIds.add(id);
     seen.add(id);
     ids.push(id);
     return true;
@@ -1799,10 +2225,10 @@ function lineageNodeIds(graph: AyaGraph, nodeId: string): string[] {
 
   add(nodeId);
 
-  let current = nodeById.get(nodeId);
-  while (current?.parentId && add(current.parentId)) {
-    current = nodeById.get(current.parentId);
-  }
+  const siblingsOf = (node: AyaNode): AyaNode[] => {
+    const siblings = node.parentId ? childrenByParent.get(node.parentId) ?? [] : rootNodes;
+    return siblings.filter((sibling) => sibling.id !== node.id);
+  };
 
   const addDescendants = (parentId: string) => {
     for (const child of childrenByParent.get(parentId) ?? []) {
@@ -1810,9 +2236,32 @@ function lineageNodeIds(graph: AyaGraph, nodeId: string): string[] {
       addDescendants(child.id);
     }
   };
-  addDescendants(nodeId);
 
-  return ids;
+  const origin = nodeById.get(nodeId);
+  if (origin) {
+    let current = origin;
+    while (current.parentId) {
+      const parent = nodeById.get(current.parentId);
+      if (!parent) break;
+      add(parent.id);
+      current = parent;
+    }
+
+    addDescendants(origin.id);
+
+    for (const sibling of siblingsOf(origin)) {
+      add(sibling.id, true);
+    }
+
+    const parent = origin.parentId ? nodeById.get(origin.parentId) : undefined;
+    if (parent) {
+      for (const sibling of siblingsOf(parent)) {
+        add(sibling.id, true);
+      }
+    }
+  }
+
+  return { ids, collateralIds };
 }
 
 function outlinePath(outline: AyaGroupOutline, map: MapLibreMap): string {

@@ -30,7 +30,7 @@ export interface IdeaLayerCardLayout {
 
 export interface IdeaLayerThreadDatum {
   id: string;
-  kind: "json" | "parent" | "sibling" | "card-link";
+  kind: "json" | "parent" | "sibling" | "family" | "card-link";
   source: { x: number; y: number };
   target: { x: number; y: number };
   width: number;
@@ -41,6 +41,8 @@ interface IdeaObject {
   editRing: THREE.Points<THREE.BufferGeometry, THREE.PointsMaterial>;
   overviewCard: THREE.Sprite;
 }
+
+const OVERVIEW_FOCUS_CARD_SIZE = { width: 274, height: 181 };
 
 const MAPPED_CARD_GROUND_CLEARANCE_METERS = 0.6;
 
@@ -234,7 +236,7 @@ export class IdeaObjectLayer implements CustomLayerInterface {
   private createOverviewCard(item: IdeaLayerDatum): THREE.Sprite {
     const material = new THREE.SpriteMaterial({
       color: "#ffffff",
-      map: this.getOverviewCardTexture(item.node),
+      map: this.getOverviewCardTexture(item.node, false),
       transparent: true,
       opacity: 0,
       sizeAttenuation: false,
@@ -271,7 +273,7 @@ export class IdeaObjectLayer implements CustomLayerInterface {
     object.editRing.material.needsUpdate = true;
 
     object.overviewCard.visible = overviewing && item.related && Boolean(item.overviewCard);
-    object.overviewCard.material.map = this.getOverviewCardTexture(item.node);
+    object.overviewCard.material.map = this.getOverviewCardTexture(item.node, overviewing && selected);
     object.overviewCard.material.opacity = overviewing && item.related ? overviewCardOpacity(item, active) : 0;
     object.overviewCard.material.needsUpdate = true;
     object.overviewCard.renderOrder = active ? 110 : 95;
@@ -292,7 +294,11 @@ export class IdeaObjectLayer implements CustomLayerInterface {
       object.glow.matrix.compose(position, rotation, scale);
       object.editRing.matrix.compose(position, rotation, scale);
       if (item.overviewCard) {
-        this.updateOverviewCardTransform(object.overviewCard, item.overviewCard, this.hoveredId === item.node.id);
+        this.updateOverviewCardTransform(
+          object.overviewCard,
+          item.overviewCard,
+          this.hoveredId === item.node.id
+        );
       }
     }
   }
@@ -309,13 +315,16 @@ export class IdeaObjectLayer implements CustomLayerInterface {
     this.overlayCamera.updateProjectionMatrix();
   }
 
-  private updateOverviewCardTransform(card: THREE.Sprite, layout: IdeaLayerCardLayout, active: boolean): void {
+  private updateOverviewCardTransform(
+    card: THREE.Sprite,
+    layout: IdeaLayerCardLayout,
+    active: boolean
+  ): void {
     if (!this.map) return;
     const pixelRatio = canvasPixelRatio(this.map);
     const canvas = this.map.getCanvas();
-    const activeScale = active ? 1.28 : 1;
-    const width = layout.width * pixelRatio * activeScale;
-    const height = layout.height * pixelRatio * activeScale;
+    const width = (active ? OVERVIEW_FOCUS_CARD_SIZE.width : layout.width) * pixelRatio;
+    const height = (active ? OVERVIEW_FOCUS_CARD_SIZE.height : layout.height) * pixelRatio;
     const x = (layout.left + layout.width / 2) * pixelRatio - canvas.width / 2;
     const y = canvas.height / 2 - (layout.top + layout.height / 2) * pixelRatio;
     const position = new THREE.Vector3(x, y, 0);
@@ -428,8 +437,8 @@ export class IdeaObjectLayer implements CustomLayerInterface {
     return this.editRingTexture;
   }
 
-  private getOverviewCardTexture(node: AyaNode): THREE.CanvasTexture {
-    const key = `${node.id}:${node.shortLabel}:${node.label}:${node.color}`;
+  private getOverviewCardTexture(node: AyaNode, selected: boolean): THREE.CanvasTexture {
+    const key = `${node.id}:${node.shortLabel}:${node.label}:${node.color}:${selected ? "selected" : "idle"}`;
     const current = this.overviewCardTextures.get(key);
     if (current) return current;
 
@@ -442,7 +451,7 @@ export class IdeaObjectLayer implements CustomLayerInterface {
     if (!context) throw new Error("Unable to create overview card texture.");
 
     context.clearRect(0, 0, size, size);
-    drawOverviewCard(context, node, color);
+    drawOverviewCard(context, node, color, selected);
 
     const texture = new THREE.CanvasTexture(canvas);
     texture.colorSpace = THREE.SRGBColorSpace;
@@ -501,9 +510,27 @@ function overviewCardOpacity(item: IdeaLayerDatum, active: boolean): number {
   return (active ? 0.98 : 0.92) * dimOpacity;
 }
 
-function drawOverviewCard(context: CanvasRenderingContext2D, node: AyaNode, color: THREE.Color): void {
+function drawOverviewCard(context: CanvasRenderingContext2D, node: AyaNode, color: THREE.Color, selected: boolean): void {
   const card = { x: 18, y: 20, width: 476, height: 300, radius: 16 };
+  const accentWidth = overviewHierarchyAccentWidth(node);
+  const textLeft = card.x + accentWidth + 36;
+  const textWidth = card.width - accentWidth - 58;
   context.save();
+
+  if (selected) {
+    context.shadowColor = "rgba(255, 34, 58, 0.94)";
+    context.shadowBlur = 46;
+    context.shadowOffsetY = 0;
+    context.lineWidth = 18;
+    context.strokeStyle = "rgba(255, 35, 58, 0.88)";
+    roundedRect(context, card.x + 7, card.y + 7, card.width - 14, card.height - 14, card.radius);
+    context.stroke();
+    context.lineWidth = 8;
+    context.strokeStyle = "rgba(255, 75, 88, 0.78)";
+    roundedRect(context, card.x + 10, card.y + 10, card.width - 20, card.height - 20, card.radius - 2);
+    context.stroke();
+  }
+
   context.shadowColor = "rgba(45, 30, 16, 0.18)";
   context.shadowBlur = 24;
   context.shadowOffsetY = 14;
@@ -516,30 +543,34 @@ function drawOverviewCard(context: CanvasRenderingContext2D, node: AyaNode, colo
   context.stroke();
 
   context.fillStyle = rgbaString(color, 0.74);
-  roundedRect(context, card.x + 16, card.y + 22, 8, card.height - 44, 4);
+  roundedRect(context, card.x + 16, card.y + 22, accentWidth, card.height - 44, Math.min(8, accentWidth / 2));
   context.fill();
 
   context.fillStyle = "#3a2e27";
   context.textBaseline = "top";
   context.font = '700 31px Inter, "Yu Gothic UI", Meiryo, sans-serif';
-  const titleLines = wrapCanvasText(context, node.shortLabel, card.width - 64, 2);
+  const titleLines = wrapCanvasText(context, node.shortLabel, textWidth, 2);
   let y = card.y + 28;
   for (const line of titleLines) {
-    context.fillText(line, card.x + 42, y);
+    context.fillText(line, textLeft, y);
     y += 39;
   }
 
   context.fillStyle = "rgba(58, 46, 39, 0.78)";
   context.font = '500 22px Inter, "Yu Gothic UI", Meiryo, sans-serif';
-  const bodyLines = wrapCanvasText(context, node.label, card.width - 64, 4);
+  const bodyLines = wrapCanvasText(context, node.label, textWidth, 4);
   y += 12;
   for (const line of bodyLines) {
     if (y > card.y + card.height - 34) break;
-    context.fillText(line, card.x + 42, y);
+    context.fillText(line, textLeft, y);
     y += 30;
   }
 
   context.restore();
+}
+
+function overviewHierarchyAccentWidth(node: AyaNode): number {
+  return Math.max(7, 26 - Math.min(node.depth, 6) * 3);
 }
 
 function drawThread(context: CanvasRenderingContext2D, thread: IdeaLayerThreadDatum, pixelRatio: number): void {
@@ -566,6 +597,11 @@ function drawThread(context: CanvasRenderingContext2D, thread: IdeaLayerThreadDa
   if (thread.kind === "card-link") {
     context.setLineDash([5 * pixelRatio, 7 * pixelRatio]);
     context.lineTo(target.x, target.y);
+  } else if (thread.kind === "family") {
+    const joinY = (source.y + target.y) / 2;
+    context.lineTo(source.x, joinY);
+    context.lineTo(target.x, joinY);
+    context.lineTo(target.x, target.y);
   } else {
     context.quadraticCurveTo(midX, midY, target.x, target.y);
   }
@@ -575,14 +611,14 @@ function drawThread(context: CanvasRenderingContext2D, thread: IdeaLayerThreadDa
 
 function threadStrokeStyle(kind: IdeaLayerThreadDatum["kind"]): string {
   if (kind === "card-link") return "rgba(198, 93, 109, 0.74)";
-  if (kind === "parent") return "rgba(186, 242, 255, 0.82)";
+  if (kind === "parent" || kind === "family") return "rgba(186, 242, 255, 0.82)";
   if (kind === "sibling") return "rgba(255, 218, 158, 0.72)";
   return "rgba(255, 246, 205, 0.92)";
 }
 
 function threadShadowColor(kind: IdeaLayerThreadDatum["kind"]): string {
   if (kind === "card-link") return "rgba(255, 154, 154, 0.58)";
-  if (kind === "parent") return "rgba(116, 210, 255, 0.72)";
+  if (kind === "parent" || kind === "family") return "rgba(116, 210, 255, 0.72)";
   if (kind === "sibling") return "rgba(255, 194, 84, 0.62)";
   return "rgba(255, 226, 151, 0.86)";
 }
