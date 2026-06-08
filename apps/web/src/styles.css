@@ -89,26 +89,7 @@ input {
   right: 34px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-}
-
-.brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(28px, 3vw, 44px);
-  letter-spacing: 0;
-  color: #35271f;
-  text-shadow: 0 2px 18px rgba(255, 248, 234, 0.8);
-}
-
-.brand-mark {
-  width: 46px;
-  height: 46px;
-  display: grid;
-  place-items: center;
-  color: #cf7f28;
+  justify-content: flex-end;
 }
 
 .icon-cluster {
@@ -134,7 +115,7 @@ input {
 .loader-panel {
   position: absolute;
   z-index: 13;
-  top: 112px;
+  top: 28px;
   left: 34px;
   width: min(390px, calc(100vw - 68px));
   display: grid;
@@ -535,10 +516,6 @@ input {
     right: 22px;
   }
 
-  .brand {
-    font-size: 28px;
-  }
-
   .icon-cluster {
     gap: 8px;
   }
@@ -549,7 +526,7 @@ input {
   }
 
   .loader-panel {
-    top: 92px;
+    top: 76px;
     left: 20px;
     width: calc(100vw - 40px);
   }

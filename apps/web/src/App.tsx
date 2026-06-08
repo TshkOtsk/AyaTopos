@@ -145,12 +145,6 @@ export function App() {
       <MapScene graph={graph} blend={blend} hoveredId={hoveredId} onHover={setHoveredId} />
 
       <header className="topbar">
-        <div className="brand">
-          <div className="brand-mark" aria-hidden="true">
-            <Sparkles size={27} strokeWidth={1.8} />
-          </div>
-          <span>AyaTopos</span>
-        </div>
         <div className="icon-cluster">
           <button className="icon-button" aria-label="共有">
             <Share2 size={21} />
