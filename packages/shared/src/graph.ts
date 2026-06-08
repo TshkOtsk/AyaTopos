@@ -43,7 +43,7 @@ export function normalizeHypoWeave(input: HypoWeaveExport, options: NormalizeOpt
     new Set(rawNodes.map((node) => topAncestorOf(node, byId, topCache)).filter(Boolean))
   ).sort();
 
-  const nodes: AyaNode[] = rawNodes.map((node) => {
+  const baseNodes: AyaNode[] = rawNodes.map((node) => {
     const position = absolutePosition(node, byId, absoluteCache);
     const depth = depthOf(node, byId, depthCache);
     const topAncestorId = topAncestorOf(node, byId, topCache);
@@ -76,6 +76,7 @@ export function normalizeHypoWeave(input: HypoWeaveExport, options: NormalizeOpt
       opacity: opacityFor(depth)
     };
   });
+  const nodes = centerGroupGeoOnDescendantCards(baseNodes);
   const outlines = createGroupOutlines(rawNodes, byId, absoluteCache, depthCache, topCache, bounds, center, topOrder);
 
   return {
@@ -317,6 +318,69 @@ function sizeFor(node: HypoWeaveNode, depth: number): number {
 
 function opacityFor(depth: number): number {
   return Math.max(0.44, 1 - depth * 0.075);
+}
+
+function centerGroupGeoOnDescendantCards(nodes: AyaNode[]): AyaNode[] {
+  const nodeById = new Map(nodes.map((node) => [node.id, node]));
+  const allCardsByAncestor = new Map<string, AyaNode[]>();
+  const placedCardsByAncestor = new Map<string, AyaNode[]>();
+
+  for (const node of nodes) {
+    if (node.type !== "card") continue;
+
+    forEachAncestor(node, nodeById, (ancestorId) => {
+      addCardForAncestor(allCardsByAncestor, ancestorId, node);
+      if (isPlacedCard(node)) {
+        addCardForAncestor(placedCardsByAncestor, ancestorId, node);
+      }
+    });
+  }
+
+  return nodes.map((node) => {
+    if (node.type === "card") return node;
+
+    const descendantCards = placedCardsByAncestor.get(node.id) ?? allCardsByAncestor.get(node.id);
+    if (!descendantCards?.length) return node;
+
+    return {
+      ...node,
+      geo: {
+        ...node.geo,
+        x: average(descendantCards.map((card) => card.geo.x)),
+        y: average(descendantCards.map((card) => card.geo.y)),
+        lng: average(descendantCards.map((card) => card.geo.lng)),
+        lat: average(descendantCards.map((card) => card.geo.lat))
+      }
+    };
+  });
+}
+
+function forEachAncestor(
+  node: AyaNode,
+  nodeById: Map<string, AyaNode>,
+  visit: (ancestorId: string) => void
+): void {
+  const seen = new Set<string>();
+  let parentId = node.parentId;
+  while (parentId && !seen.has(parentId)) {
+    seen.add(parentId);
+    visit(parentId);
+    parentId = nodeById.get(parentId)?.parentId;
+  }
+}
+
+function addCardForAncestor(map: Map<string, AyaNode[]>, ancestorId: string, card: AyaNode): void {
+  const cards = map.get(ancestorId) ?? [];
+  cards.push(card);
+  map.set(ancestorId, cards);
+}
+
+function isPlacedCard(node: AyaNode): boolean {
+  return node.type === "card" && node.geoPlacementSource !== "fallback";
+}
+
+function average(values: number[]): number {
+  return values.reduce((total, value) => total + value, 0) / values.length;
 }
 
 function fallbackPlacementForNode(

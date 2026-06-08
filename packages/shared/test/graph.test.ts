@@ -116,6 +116,42 @@ describe("normalizeHypoWeave", () => {
     );
   });
 
+  it("centers group geographic positions on descendant placed cards", () => {
+    const center = { lng: 85, lat: 28, label: "Nepal" };
+    const graph = normalizeHypoWeave(
+      {
+        snapshot: {
+          nodes: [
+            { id: "root", type: "group", position: { x: 0, y: 0 }, data: { label: "Root" } },
+            { id: "group-a", type: "group", parentId: "root", position: { x: 20, y: 20 }, data: { label: "Group A" } },
+            { id: "card-a", type: "card", parentId: "group-a", position: { x: 10, y: 0 }, data: { label: "Card A" } },
+            { id: "card-b", type: "card", parentId: "group-a", position: { x: 30, y: 0 }, data: { label: "Card B" } },
+            { id: "card-c", type: "card", parentId: "group-a", position: { x: 50, y: 0 }, data: { label: "Card C" } }
+          ]
+        }
+      },
+      {
+        center,
+        placements: [
+          { nodeId: "card-a", lng: 85.01, lat: 28.02, confidence: 0.9, source: "gemini" },
+          { nodeId: "card-b", lng: 85.03, lat: 28.04, confidence: 0.9, source: "gemini" }
+        ]
+      }
+    );
+    const root = graph.nodes.find((node) => node.id === "root");
+    const group = graph.nodes.find((node) => node.id === "group-a");
+    const cardA = graph.nodes.find((node) => node.id === "card-a");
+    const cardB = graph.nodes.find((node) => node.id === "card-b");
+    const cardC = graph.nodes.find((node) => node.id === "card-c");
+
+    expect(group?.geo.lng).toBeCloseTo((cardA!.geo.lng + cardB!.geo.lng) / 2, 6);
+    expect(group?.geo.lat).toBeCloseTo((cardA!.geo.lat + cardB!.geo.lat) / 2, 6);
+    expect(root?.geo.lng).toBeCloseTo(group!.geo.lng, 6);
+    expect(root?.geo.lat).toBeCloseTo(group!.geo.lat, 6);
+    expect(cardC?.geoPlacementSource).toBe("fallback");
+    expect(group?.geo.lng).not.toBeCloseTo(cardC!.geo.lng, 6);
+  });
+
   it("creates group outlines from hull data and descendant bounds", () => {
     const graph = normalizeHypoWeave(fixture);
     const rootOutline = graph.outlines.find((outline) => outline.groupId === "root-a");
