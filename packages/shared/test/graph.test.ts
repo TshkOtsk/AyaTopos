@@ -116,6 +116,23 @@ describe("normalizeHypoWeave", () => {
     );
   });
 
+  it("keeps preset geographic placements at the supplied coordinates", () => {
+    const center = { lng: 85, lat: 28, label: "Nepal" };
+    const graph = normalizeHypoWeave(fixture, {
+      center,
+      placements: [{ nodeId: "card-a", lng: 88, lat: 31, confidence: 1, source: "preset" }]
+    });
+    const card = graph.nodes.find((node) => node.id === "card-a");
+
+    expect(card?.geoPlacementSource).toBe("preset");
+    expect(card?.geoPlacementConfidence).toBe(1);
+    expect(card?.geo.lng).toBe(88);
+    expect(card?.geo.lat).toBe(31);
+    expect(distanceFromCenterMeters(card!.geo.lng, card!.geo.lat, center)).toBeGreaterThan(
+      DEFAULT_LOCAL_RADIUS_METERS
+    );
+  });
+
   it("centers group geographic positions on descendant placed cards", () => {
     const center = { lng: 85, lat: 28, label: "Nepal" };
     const graph = normalizeHypoWeave(
