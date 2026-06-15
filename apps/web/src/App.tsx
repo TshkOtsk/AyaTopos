@@ -1299,9 +1299,7 @@ function MapScene({
                   overviewCardHitTargetStyle(layout, hoveredId === nodeId)
                 }
                 onPointerEnter={() => acceptHover(nodeId)}
-                onPointerLeave={() => {
-                  if (overviewNodeId) acceptHover(overviewNodeId);
-                }}
+                onPointerLeave={releaseHover}
                 onClick={(event) => {
                   event.preventDefault();
                   event.stopPropagation();
