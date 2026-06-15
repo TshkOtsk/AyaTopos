@@ -44,7 +44,7 @@ interface IdeaObject {
 }
 
 const OVERVIEW_FOCUS_CARD_SIZE = { width: 274, height: 181 };
-const OVERVIEW_CARD_TEXTURE_VERSION = 3;
+const OVERVIEW_CARD_TEXTURE_VERSION = 5;
 
 const MAPPED_CARD_GROUND_CLEARANCE_METERS = 0.6;
 
@@ -585,11 +585,10 @@ export class IdeaObjectLayer implements CustomLayerInterface {
   }
 
   private getOverviewCardTexture(node: AyaNode, selected: boolean): THREE.CanvasTexture {
-    const catchphraseText = overviewCatchphraseText(node);
     const titleText = overviewPrimaryTitle(node);
     const key = `${OVERVIEW_CARD_TEXTURE_VERSION}:${node.id}:${node.shortLabel}:${node.label}:${node.color}:${
       selected ? "selected" : "idle"
-    }:${catchphraseText ? "kicker-title" : "title-only"}:${titleText}`;
+    }:title:${titleText}`;
     const current = this.overviewCardTextures.get(key);
     if (current) return current;
 
@@ -876,12 +875,45 @@ function drawOverviewCard(context: CanvasRenderingContext2D, node: AyaNode, colo
   context.textBaseline = "top";
   let y = card.y + 28;
   if (catchphraseText) {
-    y = drawOverviewCatchphrase(context, catchphraseText, color, textLeft, y, textWidth);
+    const badgePaddingX = 16;
+    const badgePaddingY = 8;
+    const badgeMaxWidth = Math.min(textWidth, 276);
+    const badgeLayout = fitCanvasTextBlock(context, catchphraseText, badgeMaxWidth - badgePaddingX * 2, 52, {
+      maxFontSize: 17,
+      minFontSize: 12,
+      lineHeightMultiplier: 1.18,
+      fontWeight: 800,
+      maxLines: 2
+    });
+    const badgeTextWidth = badgeLayout.lines.reduce(
+      (maxWidth, line) => Math.max(maxWidth, context.measureText(line).width),
+      0
+    );
+    const badgeWidth = Math.min(textWidth, Math.max(128, Math.ceil(badgeTextWidth + badgePaddingX * 2)));
+    const badgeHeight = Math.ceil(badgeLayout.lines.length * badgeLayout.lineHeight + badgePaddingY * 2);
+
+    context.fillStyle = selected ? "rgba(255, 250, 242, 0.92)" : "rgba(255, 250, 242, 0.8)";
+    context.strokeStyle = rgbaString(color, selected ? 0.36 : 0.28);
+    context.lineWidth = 2;
+    roundedRect(context, textLeft, y, badgeWidth, badgeHeight, Math.min(14, badgeHeight / 2));
+    context.fill();
+    context.stroke();
+
+    context.fillStyle = color.clone().lerp(new THREE.Color("#5a4033"), 0.52).getStyle();
+    context.font = canvasFont(badgeLayout.fontWeight, badgeLayout.fontSize);
+    let badgeY = y + badgePaddingY;
+    for (const line of badgeLayout.lines) {
+      context.fillText(line, textLeft + badgePaddingX, badgeY);
+      badgeY += badgeLayout.lineHeight;
+    }
+
+    context.fillStyle = "#3a2e27";
+    y += badgeHeight + 18;
   }
 
   const titleLayout = fitCanvasTextBlock(context, titleText, textWidth, card.height - (y - card.y) - 28, {
     maxFontSize: catchphraseText ? 28 : 31,
-    minFontSize: 15,
+    minFontSize: 14,
     lineHeightMultiplier: 1.24,
     fontWeight: 700
   });
@@ -992,6 +1024,7 @@ function fitCanvasTextBlock(
     minFontSize: number;
     lineHeightMultiplier: number;
     fontWeight: number;
+    maxLines?: number;
   }
 ): { lines: string[]; fontSize: number; lineHeight: number; fontWeight: number } {
   const normalized = normalizeCanvasText(text);
@@ -1006,7 +1039,7 @@ function fitCanvasTextBlock(
 
   for (let fontSize = options.maxFontSize; fontSize >= options.minFontSize; fontSize -= 1) {
     context.font = canvasFont(options.fontWeight, fontSize);
-    const lines = wrapCanvasText(context, normalized, maxWidth);
+    const lines = wrapCanvasText(context, normalized, maxWidth, options.maxLines);
     const lineHeight = Math.round(fontSize * options.lineHeightMultiplier);
     if (lines.length * lineHeight <= maxHeight) {
       return { lines, fontSize, lineHeight, fontWeight: options.fontWeight };
@@ -1016,44 +1049,11 @@ function fitCanvasTextBlock(
   const fallbackFontSize = options.minFontSize;
   context.font = canvasFont(options.fontWeight, fallbackFontSize);
   return {
-    lines: wrapCanvasText(context, normalized, maxWidth),
+    lines: wrapCanvasText(context, normalized, maxWidth, options.maxLines),
     fontSize: fallbackFontSize,
     lineHeight: Math.round(fallbackFontSize * options.lineHeightMultiplier),
     fontWeight: options.fontWeight
   };
-}
-
-function drawOverviewCatchphrase(
-  context: CanvasRenderingContext2D,
-  text: string,
-  color: THREE.Color,
-  left: number,
-  top: number,
-  maxWidth: number
-): number {
-  context.font = canvasFont(700, 16);
-  const lines = wrapCanvasText(context, text, maxWidth - 22, 2);
-  const lineHeight = 19;
-  const paddingX = 10;
-  const paddingY = 7;
-  const contentWidth = lines.reduce((max, line) => Math.max(max, context.measureText(line).width), 0);
-  const pillWidth = Math.min(maxWidth, Math.max(76, contentWidth + paddingX * 2));
-  const pillHeight = lines.length * lineHeight + paddingY * 2;
-
-  context.fillStyle = tintedCatchphraseFill(color);
-  roundedRect(context, left, top, pillWidth, pillHeight, Math.min(12, pillHeight / 2));
-  context.fill();
-  context.lineWidth = 1.5;
-  context.strokeStyle = rgbaString(color, 0.3);
-  context.stroke();
-
-  context.fillStyle = catchphraseTextColor(color);
-  let y = top + paddingY;
-  for (const line of lines) {
-    context.fillText(line, left + paddingX, y);
-    y += lineHeight;
-  }
-  return top + pillHeight + 16;
 }
 
 function truncateCanvasText(context: CanvasRenderingContext2D, text: string, maxWidth: number): string {
@@ -1084,24 +1084,6 @@ function tintedCardFill(color: THREE.Color): string {
   const b = Math.round(color.b * 255);
   return `rgba(${Math.round(r * 0.08 + 255 * 0.92)}, ${Math.round(g * 0.08 + 246 * 0.92)}, ${Math.round(
     b * 0.08 + 232 * 0.92
-  )}, 0.96)`;
-}
-
-function tintedCatchphraseFill(color: THREE.Color): string {
-  const r = Math.round(color.r * 255);
-  const g = Math.round(color.g * 255);
-  const b = Math.round(color.b * 255);
-  return `rgba(${Math.round(r * 0.14 + 255 * 0.86)}, ${Math.round(g * 0.14 + 248 * 0.86)}, ${Math.round(
-    b * 0.14 + 236 * 0.86
-  )}, 0.92)`;
-}
-
-function catchphraseTextColor(color: THREE.Color): string {
-  const r = Math.round(color.r * 255);
-  const g = Math.round(color.g * 255);
-  const b = Math.round(color.b * 255);
-  return `rgba(${Math.round(r * 0.42 + 72 * 0.58)}, ${Math.round(g * 0.42 + 56 * 0.58)}, ${Math.round(
-    b * 0.42 + 44 * 0.58
   )}, 0.96)`;
 }
 

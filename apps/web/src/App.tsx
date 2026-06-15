@@ -87,6 +87,7 @@ interface TooltipLayout {
   item: ScreenNode;
   left: number;
   top: number;
+  width?: number;
 }
 
 type OverviewRelationKind = "selected" | "parent" | "sibling" | "other";
@@ -1014,14 +1015,9 @@ function MapScene({
     if (!hoveredId) return [];
     const container = mapRef.current?.getContainer();
     if (!container) return [];
-    if (isRelatedOverview) {
-      const hoveredItem = nodeById.get(hoveredId);
-      if (!hoveredItem || !nodeHasTooltipCatchphrase(hoveredItem.node)) return [];
-    }
+    if (isRelatedOverview) return [];
 
-    const orderedIds = isRelatedOverview
-      ? [hoveredId]
-      : [hoveredId, ...activeVisualThreads.map((edge) => (edge.source === hoveredId ? edge.target : edge.source))];
+    const orderedIds = [hoveredId, ...activeVisualThreads.map((edge) => (edge.source === hoveredId ? edge.target : edge.source))];
     const seen = new Set<string>();
     return orderedIds
       .filter((id) => {
@@ -1035,9 +1031,9 @@ function MapScene({
   }, [activeVisualThreads, hoveredId, isRelatedOverview, nodeById]);
   const relatedGlowObstacles = useMemo<TooltipRect[]>(() => {
     const container = mapRef.current?.getContainer();
-    if (!hoveredId || !container) return [];
+    if (!hoveredId || !container || isRelatedOverview) return [];
     return screenNodes
-      .filter((item) => (isRelatedOverview ? item.node.id !== hoveredId : item.related))
+      .filter((item) => item.related)
       .filter((item) => isGlowVisibleOnScreen(item, container.clientWidth, container.clientHeight))
       .map(glowAvoidanceRect);
   }, [hoveredId, isRelatedOverview, screenNodes]);
@@ -1303,6 +1299,8 @@ function MapScene({
                 }
                 onPointerEnter={() => acceptHover(nodeId)}
                 onPointerLeave={releaseHover}
+                onFocus={() => acceptHover(nodeId)}
+                onBlur={releaseHover}
                 onClick={(event) => {
                   event.preventDefault();
                   event.stopPropagation();
