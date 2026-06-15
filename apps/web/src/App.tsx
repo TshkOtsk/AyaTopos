@@ -607,6 +607,7 @@ function MapScene({
   const hoverClearRef = useRef<number | null>(null);
   const draggingCardIdRef = useRef<string | null>(null);
   const activeViewDragKindsRef = useRef(new Set<string>());
+  const lastViewDragEndedAtRef = useRef(0);
   const editViewRef = useRef<{ pitch: number; bearing: number } | null>(null);
   const overviewReturnViewRef = useRef<StoredMapView | null>(null);
   const overviewFocusModeRef = useRef<"group" | "selected">("group");
@@ -616,6 +617,7 @@ function MapScene({
   const [shouldLockOverviewLayout, setShouldLockOverviewLayout] = useState(false);
   const [tick, setTick] = useState(0);
   const isRelatedOverview = Boolean(overviewNodeId) && !isGeoEditing;
+  const hasPinnedSelection = !isGeoEditing && !isRelatedOverview && persistentNodeId !== null;
   const mapPresence = 1 - spaceTransitionStrength * 0.94;
   const spaceMode = spaceModeForStrength(spaceTransitionStrength);
   const starFieldStyles = useMemo(() => createSpaceStarFieldStyles(), []);
@@ -776,7 +778,11 @@ function MapScene({
     };
 
     const handleViewDragEnd = (kind: string) => {
-      activeViewDragKindsRef.current.delete(kind);
+      const activeKinds = activeViewDragKindsRef.current;
+      activeKinds.delete(kind);
+      if (activeKinds.size === 0) {
+        lastViewDragEndedAtRef.current = window.performance.now();
+      }
     };
 
     const startDragPan = () => handleViewDragStart("drag");
@@ -912,7 +918,11 @@ function MapScene({
   const zoom = mapRef.current?.getZoom() ?? 0;
   const shouldShowGroupOutlines = false;
   const visualThreads = useMemo(() => (graph ? createVisualThreads(graph) : []), [graph]);
-  const normalActiveNodeId = isGeoEditing ? hoveredId : hoveredId ?? persistentNodeId ?? selectedCardId;
+  const normalActiveNodeId = isGeoEditing
+    ? hoveredId
+    : hasPinnedSelection
+      ? persistentNodeId
+      : hoveredId ?? persistentNodeId ?? selectedCardId;
   const focusNodeId = isRelatedOverview ? overviewNodeId : normalActiveNodeId;
   const layerActiveNodeId = isRelatedOverview ? hoveredId ?? overviewNodeId : normalActiveNodeId;
   const layerHoverNodeId = isRelatedOverview ? hoveredId : layerActiveNodeId;
@@ -1227,16 +1237,18 @@ function MapScene({
   const acceptHover = useCallback(
     (nodeId: string) => {
       if (activeViewDragKindsRef.current.size > 0) return;
+      if (hasPinnedSelection && persistentNodeId !== nodeId) return;
       if (hoverClearRef.current !== null) {
         window.clearTimeout(hoverClearRef.current);
         hoverClearRef.current = null;
       }
       onHover(nodeId);
     },
-    [onHover]
+    [hasPinnedSelection, onHover, persistentNodeId]
   );
 
   const releaseHover = useCallback(() => {
+    if (hasPinnedSelection) return;
     if (hoverClearRef.current !== null) {
       window.clearTimeout(hoverClearRef.current);
     }
@@ -1244,7 +1256,7 @@ function MapScene({
       hoverClearRef.current = null;
       onHover(null);
     }, 90);
-  }, [onHover]);
+  }, [hasPinnedSelection, onHover]);
 
   const enterRelatedOverview = useCallback(
     (nodeId: string, focusMode: "group" | "selected" = "group") => {
@@ -1343,6 +1355,9 @@ function MapScene({
 
   const handleSceneClick = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
+      if (window.performance.now() - lastViewDragEndedAtRef.current < 220) {
+        return;
+      }
       const target = event.target;
       if (
         target instanceof Element &&
