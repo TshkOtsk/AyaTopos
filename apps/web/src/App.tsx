@@ -575,6 +575,7 @@ function MapScene({
   const activeViewDragKindsRef = useRef(new Set<string>());
   const editViewRef = useRef<{ pitch: number; bearing: number } | null>(null);
   const overviewReturnViewRef = useRef<StoredMapView | null>(null);
+  const overviewFocusModeRef = useRef<"group" | "selected">("group");
   const [overviewNodeId, setOverviewNodeId] = useState<string | null>(null);
   const [lockedOverviewCardLayouts, setLockedOverviewCardLayouts] = useState<Map<string, IdeaLayerCardLayout>>(new Map());
   const [shouldLockOverviewLayout, setShouldLockOverviewLayout] = useState(false);
@@ -806,6 +807,7 @@ function MapScene({
     if (!graph || !mapRef.current || isGeoEditing) return;
     setOverviewNodeId(null);
     overviewReturnViewRef.current = null;
+    overviewFocusModeRef.current = "group";
     setLockedOverviewCardLayouts(new Map());
     setShouldLockOverviewLayout(false);
     const points = graph.nodes
@@ -833,6 +835,7 @@ function MapScene({
     if (isGeoEditing) {
       setOverviewNodeId(null);
       overviewReturnViewRef.current = null;
+      overviewFocusModeRef.current = "group";
       setLockedOverviewCardLayouts(new Map());
       setShouldLockOverviewLayout(false);
       if (!editViewRef.current) {
@@ -1177,12 +1180,13 @@ function MapScene({
   }, [onHover]);
 
   const enterRelatedOverview = useCallback(
-    (nodeId: string) => {
+    (nodeId: string, focusMode: "group" | "selected" = "group") => {
       const map = mapRef.current;
       if (!graph || !map || isGeoEditing) return;
       if (!overviewReturnViewRef.current) {
         overviewReturnViewRef.current = snapshotMapView(map);
       }
+      overviewFocusModeRef.current = focusMode;
       setLockedOverviewCardLayouts(new Map());
       setShouldLockOverviewLayout(false);
       setOverviewNodeId(nodeId);
@@ -1197,6 +1201,7 @@ function MapScene({
     setOverviewNodeId(null);
     onHover(null);
     overviewReturnViewRef.current = null;
+    overviewFocusModeRef.current = "group";
     setLockedOverviewCardLayouts(new Map());
     setShouldLockOverviewLayout(false);
 
@@ -1221,6 +1226,7 @@ function MapScene({
       setOverviewNodeId(null);
       onHover(node.id);
       overviewReturnViewRef.current = null;
+      overviewFocusModeRef.current = "group";
       setLockedOverviewCardLayouts(new Map());
       setShouldLockOverviewLayout(false);
       map.dragRotate.enable();
@@ -1240,8 +1246,9 @@ function MapScene({
     const map = mapRef.current;
     if (!map || !graph || !overviewNodeId || !isRelatedOverview) return;
 
+    const focusSelectedOnly = overviewFocusModeRef.current === "selected";
     const points = graph.nodes
-      .filter((node) => overviewIdSet.has(node.id))
+      .filter((node) => (focusSelectedOnly ? node.id === overviewNodeId : overviewIdSet.has(node.id)))
       .map((node) => pointForNode(node))
       .filter(isFiniteSpatialPoint);
 
@@ -1249,7 +1256,16 @@ function MapScene({
     map.touchZoomRotate.disableRotation();
     setShouldLockOverviewLayout(false);
     map.once("moveend", () => setShouldLockOverviewLayout(true));
-    focusMapOnPoints2d(map, points);
+    focusMapOnPoints2d(
+      map,
+      points,
+      focusSelectedOnly
+        ? {
+            singlePointZoom: Math.min(18, Math.max(map.getZoom() + 0.9, 16.2)),
+            duration: 620
+          }
+        : undefined
+    );
   }, [graph, isRelatedOverview, overviewIdSet, overviewNodeId, pointForNode]);
 
   const handleSceneClick = useCallback(
@@ -1387,7 +1403,7 @@ function MapScene({
                 onClick={(event) => {
                   event.preventDefault();
                   event.stopPropagation();
-                  returnToNode3d(item.node);
+                  enterRelatedOverview(item.node.id, "selected");
                 }}
                 type="button"
                 aria-label={item.node.shortLabel}
