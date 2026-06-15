@@ -863,15 +863,6 @@ function MapScene({
     });
   }, [isGeoEditing]);
 
-  useEffect(() => {
-    const map = mapRef.current;
-    if (!map || !isRelatedOverview) return;
-    disableOverviewMapZoom(map);
-    return () => {
-      enableOverviewMapZoom(map);
-    };
-  }, [isRelatedOverview]);
-
   const zoom = mapRef.current?.getZoom() ?? 0;
   const shouldShowGroupOutlines = false;
   const visualThreads = useMemo(() => (graph ? createVisualThreads(graph) : []), [graph]);
@@ -1212,7 +1203,6 @@ function MapScene({
     if (!map || !returnView) return;
     map.dragRotate.enable();
     map.touchZoomRotate.enableRotation();
-    enableOverviewMapZoom(map);
     map.easeTo({
       center: returnView.center,
       zoom: returnView.zoom,
@@ -1235,7 +1225,6 @@ function MapScene({
       setShouldLockOverviewLayout(false);
       map.dragRotate.enable();
       map.touchZoomRotate.enableRotation();
-      enableOverviewMapZoom(map);
       map.easeTo({
         center: [point.lng, point.lat],
         zoom: Math.max(returnView?.zoom ?? 12, 15),
@@ -1258,7 +1247,6 @@ function MapScene({
 
     map.dragRotate.disable();
     map.touchZoomRotate.disableRotation();
-    disableOverviewMapZoom(map);
     setShouldLockOverviewLayout(false);
     map.once("moveend", () => setShouldLockOverviewLayout(true));
     focusMapOnPoints2d(map, points);
@@ -2271,23 +2259,6 @@ function focusMapOnPoints2d(map: MapLibreMap, points: AyaSpatialPoint[], options
     pitch: options.pitch ?? 0,
     bearing: options.bearing ?? 0
   });
-}
-
-function disableOverviewMapZoom(map: MapLibreMap): void {
-  map.scrollZoom.disable();
-  map.boxZoom.disable();
-  map.doubleClickZoom.disable();
-  map.keyboard.disable();
-  map.touchZoomRotate.disable();
-}
-
-function enableOverviewMapZoom(map: MapLibreMap): void {
-  map.scrollZoom.enable();
-  map.boxZoom.enable();
-  map.doubleClickZoom.enable();
-  map.keyboard.enable();
-  map.touchZoomRotate.enable();
-  map.touchZoomRotate.enableRotation();
 }
 
 function overviewPaddingForContainer(container: HTMLElement): { top: number; right: number; bottom: number; left: number } {

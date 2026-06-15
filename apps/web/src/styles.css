@@ -701,12 +701,6 @@ input {
   display: none;
 }
 
-.related-overview .maplibregl-ctrl-zoom-in,
-.related-overview .maplibregl-ctrl-zoom-out {
-  pointer-events: none;
-  opacity: 0.35;
-}
-
 .geo-point-hit-target.geo-edit-target {
   width: 58px;
   height: 58px;
