@@ -52,6 +52,13 @@ export interface HypoWeaveExport {
   app?: string;
   snapshot?: HypoWeaveSnapshot;
   workspaces?: Record<string, HypoWeaveWorkspace>;
+  ayatopos?: {
+    demoGeo?: {
+      center: GeoCenter;
+      placements: GeoPlacement[];
+    };
+    [key: string]: unknown;
+  };
   ai?: {
     pickedSentenceByGroupId?: Record<string, string>;
     [key: string]: unknown;

@@ -283,14 +283,24 @@ export function App() {
         return;
       }
 
-      const semanticGraph = normalizeHypoWeave(rawExport, { center });
+      const demoPlacements = bundledDemoPlacementsForCenter(rawExport, center);
+      const semanticGraph = normalizeHypoWeave(rawExport, {
+        center,
+        placements: demoPlacements.length > 0 ? demoPlacements : undefined
+      });
       setCurrentCenter(center);
-      setBasePlacements([]);
+      setBasePlacements(demoPlacements);
       setViewMode("view");
       setSelectedCardId(null);
       setGraph(semanticGraph);
       setBlend(1);
       setMessage("地理配置を推定しています。");
+
+      if (demoPlacements.length > 0) {
+        setStatus("ready");
+        setMessage("デモ同梱の地理座標を読み込みました。");
+        return;
+      }
 
       const response = await requestPlacements({
         areaText: trimmedArea,
@@ -2877,6 +2887,29 @@ function mergeGeoPlacements(basePlacements: GeoPlacement[], manualPlacements: Ma
     placements.set(placement.nodeId, placement);
   }
   return [...placements.values()];
+}
+
+function bundledDemoPlacementsForCenter(rawExport: HypoWeaveExport, center: GeoCenter): GeoPlacement[] {
+  const demoGeo = rawExport.ayatopos?.demoGeo;
+  if (!demoGeo || !sameGeoCenter(demoGeo.center, center)) return [];
+  return demoGeo.placements
+    .filter(
+      (placement: GeoPlacement) =>
+        typeof placement?.nodeId === "string" &&
+        isValidLngLat(placement.lng, placement.lat) &&
+        Number.isFinite(placement.confidence)
+    )
+    .map((placement: GeoPlacement) => ({
+      nodeId: placement.nodeId,
+      lng: placement.lng,
+      lat: placement.lat,
+      confidence: placement.confidence,
+      source: "preset" as const
+    }));
+}
+
+function sameGeoCenter(a: GeoCenter, b: GeoCenter): boolean {
+  return Math.abs(a.lng - b.lng) <= 0.000001 && Math.abs(a.lat - b.lat) <= 0.000001;
 }
 
 function manualGeoStorageKey(center: GeoCenter, fileName: string, rawExport: HypoWeaveExport): string {

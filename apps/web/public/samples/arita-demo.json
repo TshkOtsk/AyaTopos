@@ -4728,5 +4728,478 @@
   },
   "appUi": {
     "activeWorkspace": "board"
+  },
+  "ayatopos": {
+    "demoGeo": {
+      "center": {
+        "lng": 129.882173,
+        "lat": 33.183323,
+        "label": "Arita, Saga, Japan"
+      },
+      "placements": [
+        {
+          "nodeId": "c-19ea5e14f6f-caad-0",
+          "lng": 129.8832895799417,
+          "lat": 33.183536973044205,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "auto-group-8",
+          "lng": 129.88080599078447,
+          "lat": 33.183929743666944,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "auto-group-9",
+          "lng": 129.88076245758984,
+          "lat": 33.182189256327675,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "auto-group-31",
+          "lng": 129.8829633673327,
+          "lat": 33.185058648214756,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "auto-group-28",
+          "lng": 129.88380615361882,
+          "lat": 33.18259355362827,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "auto-group-24",
+          "lng": 129.88475871367362,
+          "lat": 33.18536121374755,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "auto-group-30",
+          "lng": 129.88336863810022,
+          "lat": 33.18658152798295,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-a18e-22",
+          "lng": 129.8817650298645,
+          "lat": 33.18374414562101,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-cdd0-23",
+          "lng": 129.88035329405722,
+          "lat": 33.18456972394141,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f6f-79ee-1",
+          "lng": 129.88189518621166,
+          "lat": 33.18226573123783,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f6f-4e61-2",
+          "lng": 129.8800458961877,
+          "lat": 33.182834038197804,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "auto-group-27",
+          "lng": 129.88555808738246,
+          "lat": 33.181728393366505,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "g-19ea5f1b0c0-0e00",
+          "lng": 129.88589473308124,
+          "lat": 33.184737520229696,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "auto-group-25",
+          "lng": 129.8865223614332,
+          "lat": 33.187236933198605,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-be1b-19",
+          "lng": 129.88456353078897,
+          "lat": 33.1865657420642,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "auto-group-16",
+          "lng": 129.88755008507874,
+          "lat": 33.18765576681093,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "auto-group-1",
+          "lng": 129.8830225329448,
+          "lat": 33.18966422254315,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "auto-group-17",
+          "lng": 129.88753277712325,
+          "lat": 33.18833016647268,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "auto-group-15",
+          "lng": 129.88732936176842,
+          "lat": 33.18857454661778,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-188a-35",
+          "lng": 129.8868847943681,
+          "lat": 33.18151893639251,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-c850-33",
+          "lng": 129.88711585092904,
+          "lat": 33.18481846945173,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-a79a-34",
+          "lng": 129.88516434802912,
+          "lat": 33.1855133116854,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-967f-36",
+          "lng": 129.8848007962045,
+          "lat": 33.18250322584032,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-c8d4-37",
+          "lng": 129.88496694148404,
+          "lat": 33.180873972468724,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "auto-group-21",
+          "lng": 129.88634975757418,
+          "lat": 33.18748288650475,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "auto-group-22",
+          "lng": 129.88787157057445,
+          "lat": 33.18757499246706,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "auto-group-13",
+          "lng": 129.88729106280354,
+          "lat": 33.187645663112924,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-bde8-16",
+          "lng": 129.88915704596445,
+          "lat": 33.187736006849896,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "auto-group-10",
+          "lng": 129.88744550415305,
+          "lat": 33.1884879993305,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-746d-13",
+          "lng": 129.88446750328967,
+          "lat": 33.18951094876145,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-d61f-14",
+          "lng": 129.88228801286888,
+          "lat": 33.19076927818365,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-2260-12",
+          "lng": 129.88916140723683,
+          "lat": 33.18850280727612,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-6e42-25",
+          "lng": 129.88681703801646,
+          "lat": 33.189327543977335,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-0aa3-28",
+          "lng": 129.88709490452885,
+          "lat": 33.18714559164061,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "auto-group-4",
+          "lng": 129.88231356175024,
+          "lat": 33.18980631410207,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "auto-group-6",
+          "lng": 129.88343833525266,
+          "lat": 33.1896514824744,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "auto-group-11",
+          "lng": 129.88916767163792,
+          "lat": 33.18932181690169,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "auto-group-14",
+          "lng": 129.8888804083105,
+          "lat": 33.18963762212743,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "auto-group-18",
+          "lng": 129.88886010038757,
+          "lat": 33.18948139836521,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-e58a-15",
+          "lng": 129.88814815178495,
+          "lat": 33.18772780003317,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "auto-group-2",
+          "lng": 129.8838796377257,
+          "lat": 33.19274271567793,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "auto-group-12",
+          "lng": 129.8903399803664,
+          "lat": 33.1901681266654,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-46f5-17",
+          "lng": 129.88915086827532,
+          "lat": 33.18860793836996,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-ef4a-18",
+          "lng": 129.88666209204848,
+          "lat": 33.18972306503461,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-86d5-26",
+          "lng": 129.88511503570618,
+          "lat": 33.18990991340049,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-752d-27",
+          "lng": 129.8828221739256,
+          "lat": 33.19107093319585,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-4189-29",
+          "lng": 129.88422829004435,
+          "lat": 33.18953480591,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-3afe-30",
+          "lng": 129.8815074258951,
+          "lat": 33.191101274283874,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-b9d1-31",
+          "lng": 129.88235382298316,
+          "lat": 33.18830875913757,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-bc56-32",
+          "lng": 129.8908328642406,
+          "lat": 33.1894827844417,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "auto-group-3",
+          "lng": 129.88422835371892,
+          "lat": 33.194381605925216,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "auto-group-5",
+          "lng": 129.8834815449925,
+          "lat": 33.19190175524612,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "auto-group-7",
+          "lng": 129.8832734795197,
+          "lat": 33.19253679925921,
+          "confidence": 0.32,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f6f-e141-3",
+          "lng": 129.89106767238323,
+          "lat": 33.18960106063817,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-7d17-24",
+          "lng": 129.8880013236707,
+          "lat": 33.19076464233046,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f6f-8491-4",
+          "lng": 129.88592911618989,
+          "lat": 33.19267419661536,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f6f-ef9b-9",
+          "lng": 129.8924435675619,
+          "lat": 33.190168998094876,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-c8b2-20",
+          "lng": 129.8832172338284,
+          "lat": 33.19438975832848,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-4db3-21",
+          "lng": 129.88954479865959,
+          "lat": 33.19188251291315,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-501e-38",
+          "lng": 129.88913543398118,
+          "lat": 33.18887098356718,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f6f-f14a-5",
+          "lng": 129.886145428705,
+          "lat": 33.194620832471,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f6f-9a65-6",
+          "lng": 129.88288604724437,
+          "lat": 33.1955870218058,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f6f-8bb0-7",
+          "lng": 129.8853297433823,
+          "lat": 33.192460548989246,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f6f-fd05-8",
+          "lng": 129.882171979858,
+          "lat": 33.19400364548676,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-72bd-10",
+          "lng": 129.88548512667927,
+          "lat": 33.19207733773755,
+          "confidence": 0.36,
+          "source": "preset"
+        },
+        {
+          "nodeId": "c-19ea5e14f70-3ebd-11",
+          "lng": 129.88255660835785,
+          "lat": 33.193353008612064,
+          "confidence": 0.36,
+          "source": "preset"
+        }
+      ]
+    }
   }
 }
