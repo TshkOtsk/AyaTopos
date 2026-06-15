@@ -11,6 +11,8 @@
   --muted: #765f4e;
   --line: rgba(105, 75, 49, 0.2);
   --glow: #ffd28b;
+  --space-transition: 0;
+  --map-presence: 1;
 }
 
 * {
@@ -47,7 +49,13 @@ input {
   overflow: hidden;
   border: 0;
   border-radius: 0;
-  background: #b9d9e7;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(205, 227, 239, calc(0.88 - var(--space-transition) * 0.72)) 0%,
+      rgba(10, 14, 28, calc(0.34 + var(--space-transition) * 0.44)) 100%
+    ),
+    linear-gradient(180deg, #d9e8ef 0%, #03050d 100%);
 }
 
 .map-canvas {
@@ -60,12 +68,75 @@ input {
   display: block;
 }
 
+.space-backdrop {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  opacity: calc(0.16 + var(--space-transition) * 0.84);
+  background:
+    radial-gradient(circle at 18% 20%, rgba(81, 121, 160, 0.26), transparent 20%),
+    radial-gradient(circle at 78% 18%, rgba(187, 149, 102, 0.14), transparent 18%),
+    radial-gradient(circle at 50% 72%, rgba(57, 104, 139, 0.18), transparent 24%),
+    linear-gradient(180deg, #0f1730 0%, #070a18 48%, #02030a 100%);
+}
+
+.space-backdrop::after {
+  content: "";
+  position: absolute;
+  inset: -8%;
+}
+
+.space-stars {
+  position: absolute;
+  inset: -4%;
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+.space-stars.far {
+  opacity: calc(0.08 + var(--space-transition) * 0.56);
+}
+
+.space-stars.near {
+  opacity: calc(0.04 + var(--space-transition) * 0.68);
+  filter: drop-shadow(0 0 4px rgba(255, 244, 222, 0.22));
+}
+
+.space-backdrop::after {
+  opacity: calc(var(--space-transition) * 0.58);
+  filter: blur(22px);
+  background:
+    radial-gradient(circle at 26% 34%, rgba(125, 177, 213, 0.18), transparent 18%),
+    radial-gradient(circle at 72% 28%, rgba(231, 190, 134, 0.16), transparent 16%),
+    radial-gradient(circle at 58% 64%, rgba(82, 111, 180, 0.18), transparent 22%);
+}
+
 .sky-wash {
   pointer-events: none;
   position: absolute;
   inset: 0;
+}
+
+.sky-wash::before,
+.sky-wash::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.sky-wash::before {
+  opacity: calc(0.92 - var(--space-transition) * 0.88);
   background:
-    linear-gradient(180deg, rgba(246, 252, 255, 0.08), rgba(255, 246, 224, 0.02));
+    radial-gradient(circle at 50% 14%, rgba(255, 248, 231, 0.16), transparent 24%),
+    linear-gradient(180deg, rgba(246, 252, 255, 0.12), rgba(255, 246, 224, 0.03));
+}
+
+.sky-wash::after {
+  opacity: calc(0.04 + var(--space-transition) * 0.92);
+  background:
+    radial-gradient(circle at 68% 16%, rgba(201, 218, 255, 0.16), transparent 12%),
+    radial-gradient(circle at 28% 18%, rgba(73, 103, 164, 0.2), transparent 24%),
+    linear-gradient(180deg, rgba(18, 29, 58, 0.14), rgba(5, 10, 24, 0.22));
 }
 
 .maplibregl-ctrl-top-right {

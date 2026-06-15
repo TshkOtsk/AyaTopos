@@ -31,6 +31,23 @@ test("loads the default graph and supports map blending plus hover focus", async
   await expect(page.locator(".thread")).toHaveCount(0);
 });
 
+test("transitions the scene from map to space as semantic blend increases", async ({ page }) => {
+  test.setTimeout(180_000);
+  await routePlacements(page, "fallback");
+
+  await visualizeDefaultGraph(page);
+
+  const scene = page.locator(".scene");
+  await expect(scene).toHaveAttribute("data-space-mode", "map");
+  await expect(page.locator(".space-backdrop")).toHaveCount(1);
+
+  await setBlend(page, "0.12");
+  await expect(scene).toHaveAttribute("data-space-mode", "transition");
+
+  await setBlend(page, "0");
+  await expect(scene).toHaveAttribute("data-space-mode", "space");
+});
+
 test("renders node glows inside the MapLibre custom layer while keeping DOM hit targets", async ({ page }) => {
   test.setTimeout(180_000);
   await routePlacements(page, "gemini");

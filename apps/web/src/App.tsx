@@ -38,7 +38,7 @@ import {
   type IdeaLayerThreadDatum,
   type IdeaObjectLayer
 } from "./ideaLayer";
-import { ensureTerrain, mapStyle } from "./mapStyle";
+import { ensureTerrain, mapStyle, setSemanticMapPresence, setSemanticSkyTransition } from "./mapStyle";
 
 type LoadState = "idle" | "loading" | "ready" | "error";
 type ViewMode = "view" | "editGeo";
@@ -95,6 +95,7 @@ type OverviewRelationKind = "selected" | "parent" | "sibling" | "other";
 const DEFAULT_AREA_TEXT = "33.183323,129.882173";
 const DEFAULT_SAMPLE_PATH = "/samples/arita-demo.json";
 const DEFAULT_SAMPLE_FILENAME = "arita-demo.json";
+const METERS_PER_DEGREE_LAT = 111_320;
 const INITIAL_MAP_CENTER: GeoCenter = {
   lng: 139.767125,
   lat: 35.681236,
@@ -122,6 +123,8 @@ export function App() {
     [currentCenter, fileName, rawExport]
   );
   const isFullyGeographic = blend >= 0.999;
+  const semanticStructureStrength = useMemo(() => semanticTransitionStrength(blend), [blend]);
+  const spaceTransitionStrength = semanticStructureStrength;
   const isGeoEditing = viewMode === "editGeo";
   const selectedCard = useMemo(
     () => graph?.nodes.find((node) => node.id === selectedCardId && node.type === "card"),
@@ -321,6 +324,8 @@ export function App() {
       <MapScene
         graph={graph}
         blend={blend}
+        semanticStructureStrength={semanticStructureStrength}
+        spaceTransitionStrength={spaceTransitionStrength}
         hoveredId={hoveredId}
         onHover={setHoveredId}
         isGeoEditing={isGeoEditing}
@@ -540,6 +545,8 @@ function GeoEditPanel({
 function MapScene({
   graph,
   blend,
+  semanticStructureStrength,
+  spaceTransitionStrength,
   hoveredId,
   onHover,
   isGeoEditing,
@@ -549,6 +556,8 @@ function MapScene({
 }: {
   graph: AyaGraph | null;
   blend: number;
+  semanticStructureStrength: number;
+  spaceTransitionStrength: number;
   hoveredId: string | null;
   onHover: (nodeId: string | null) => void;
   isGeoEditing: boolean;
@@ -571,6 +580,21 @@ function MapScene({
   const [shouldLockOverviewLayout, setShouldLockOverviewLayout] = useState(false);
   const [tick, setTick] = useState(0);
   const isRelatedOverview = Boolean(overviewNodeId) && !isGeoEditing;
+  const mapPresence = 1 - spaceTransitionStrength * 0.94;
+  const spaceMode = spaceModeForStrength(spaceTransitionStrength);
+  const starFieldStyles = useMemo(() => createSpaceStarFieldStyles(), []);
+  const sceneStyle = useMemo(
+    () =>
+      ({
+        "--space-transition": `${spaceTransitionStrength}`,
+        "--map-presence": `${mapPresence}`
+      }) as React.CSSProperties,
+    [mapPresence, spaceTransitionStrength]
+  );
+  const pointForNode = useCallback(
+    (node: AyaNode) => visualPointForNode(node, blend),
+    [blend]
+  );
 
   useEffect(
     () => () => {
@@ -744,6 +768,36 @@ function MapScene({
   }, [onHover]);
 
   useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+
+    const syncMapPresence = () => {
+      setSemanticMapPresence(map, mapPresence);
+    };
+
+    syncMapPresence();
+    map.on("styledata", syncMapPresence);
+    return () => {
+      map.off("styledata", syncMapPresence);
+    };
+  }, [mapPresence]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+
+    const syncSky = () => {
+      setSemanticSkyTransition(map, spaceTransitionStrength);
+    };
+
+    syncSky();
+    map.on("styledata", syncSky);
+    return () => {
+      map.off("styledata", syncSky);
+    };
+  }, [spaceTransitionStrength]);
+
+  useEffect(() => {
     if (!graph || !mapRef.current || isGeoEditing) return;
     setOverviewNodeId(null);
     overviewReturnViewRef.current = null;
@@ -751,8 +805,8 @@ function MapScene({
     setShouldLockOverviewLayout(false);
     const points = graph.nodes
       .filter((node) => node.type === "card")
-      .map((node) => visualPointForNode(node, blend));
-    focusMapOnPoints2d(mapRef.current, points.length > 0 ? points : graph.nodes.map((node) => visualPointForNode(node, blend)), {
+      .map((node) => pointForNode(node));
+    focusMapOnPoints2d(mapRef.current, points.length > 0 ? points : graph.nodes.map((node) => pointForNode(node)), {
       padding: visualizationPaddingForContainer(mapRef.current.getContainer()),
       maxZoom: 17,
       duration: 900,
@@ -761,7 +815,7 @@ function MapScene({
       majorityFraction: 0.6,
       singlePointZoom: 16.2
     });
-  }, [graph, isGeoEditing]);
+  }, [graph, isGeoEditing, pointForNode]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -843,7 +897,7 @@ function MapScene({
     if (!graph || !mapRef.current) return [];
 
     return graph.nodes.map((node) => {
-      const point = visualPointForNode(node, blend);
+      const point = pointForNode(node);
       const projected = projectNodeGlowToScreen(mapRef.current!, node, point);
       const isRelated = focusNodeId ? relatedIds.has(node.id) : true;
       return {
@@ -854,7 +908,7 @@ function MapScene({
         dimmed: focusNodeId ? !isRelated : false
       } satisfies ScreenNode;
     });
-  }, [blend, focusNodeId, graph, relatedIds, tick]);
+  }, [focusNodeId, graph, pointForNode, relatedIds, tick]);
 
   const visibleOutlineNodeIds = useMemo(
     () =>
@@ -987,6 +1041,8 @@ function MapScene({
         graphThreads.push({
           id: edge.id,
           kind: edge.kind,
+          sourceId: edge.source,
+          targetId: edge.target,
           source: endpoints.source,
           target: endpoints.target,
           width: threadWidthPixels(source.node, target.node, graph?.maxDepth ?? 0, isRelatedOverview)
@@ -1001,6 +1057,8 @@ function MapScene({
         cardLinks.push({
           id: `card-link:${nodeId}`,
           kind: "card-link",
+          sourceId: nodeId,
+          targetId: nodeId,
           source: item.screen,
           target: nearestPointOnRect(item.screen, layout),
           width: 2.4 * terrainOverviewWeight
@@ -1009,7 +1067,15 @@ function MapScene({
 
       return [...graphThreads, ...cardLinks];
     },
-    [activeVisualThreads, blend, graph?.maxDepth, isRelatedOverview, nodeById, overviewCardLayouts, overviewCards]
+    [
+      activeVisualThreads,
+      blend,
+      graph?.maxDepth,
+      isRelatedOverview,
+      nodeById,
+      overviewCardLayouts,
+      overviewCards
+    ]
   );
   const hoveredCards = useMemo(() => {
     if (!hoveredId) return [];
@@ -1048,8 +1114,18 @@ function MapScene({
       enabled: isGeoEditing,
       selectedId: isRelatedOverview ? overviewNodeId : selectedCardId,
       overview: isRelatedOverview
-    }, customLayerThreads);
-  }, [customLayerThreads, ideaNodes, isGeoEditing, isRelatedOverview, layerHoverNodeId, overviewNodeId, selectedCardId]);
+    }, customLayerThreads, semanticStructureStrength, graph?.outlines ?? []);
+  }, [
+    customLayerThreads,
+    graph?.outlines,
+    ideaNodes,
+    isGeoEditing,
+    isRelatedOverview,
+    layerHoverNodeId,
+    overviewNodeId,
+    selectedCardId,
+    semanticStructureStrength
+  ]);
 
   const updateCardGeoFromPointer = useCallback(
     (nodeId: string, event: React.PointerEvent<HTMLElement>) => {
@@ -1142,7 +1218,7 @@ function MapScene({
       const map = mapRef.current;
       if (!map) return;
       const returnView = overviewReturnViewRef.current;
-      const point = visualPointForNode(node, blend);
+      const point = pointForNode(node);
       setOverviewNodeId(null);
       onHover(node.id);
       overviewReturnViewRef.current = null;
@@ -1159,7 +1235,7 @@ function MapScene({
         duration: 700
       });
     },
-    [blend, onHover]
+    [onHover, pointForNode]
   );
 
   useEffect(() => {
@@ -1168,7 +1244,7 @@ function MapScene({
 
     const points = graph.nodes
       .filter((node) => overviewIdSet.has(node.id))
-      .map((node) => visualPointForNode(node, blend))
+      .map((node) => pointForNode(node))
       .filter(isFiniteSpatialPoint);
 
     map.dragRotate.disable();
@@ -1177,7 +1253,7 @@ function MapScene({
     setShouldLockOverviewLayout(false);
     map.once("moveend", () => setShouldLockOverviewLayout(true));
     focusMapOnPoints2d(map, points);
-  }, [blend, graph, isRelatedOverview, overviewIdSet, overviewNodeId]);
+  }, [graph, isRelatedOverview, overviewIdSet, overviewNodeId, pointForNode]);
 
   const handleSceneClick = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
@@ -1197,7 +1273,17 @@ function MapScene({
   );
 
   return (
-      <div className={`scene ${isRelatedOverview ? "related-overview" : ""}`} ref={sceneRef} onClick={handleSceneClick}>
+      <div
+        className={`scene ${isRelatedOverview ? "related-overview" : ""}`}
+        ref={sceneRef}
+        onClick={handleSceneClick}
+        data-space-mode={spaceMode}
+        style={sceneStyle}
+      >
+      <div className="space-backdrop" aria-hidden="true">
+        <div className="space-stars far" style={starFieldStyles.far} />
+        <div className="space-stars near" style={starFieldStyles.near} />
+      </div>
       <div className="map-canvas" ref={mapNodeRef} />
       <div className="sky-wash" />
       <svg
@@ -2050,6 +2136,8 @@ function overviewFamilyThreads(
     threads.push({
       id: `family:${parentId}->${item.node.id}`,
       kind: "family",
+      sourceId: parentId,
+      targetId: item.node.id,
       source: bottomCenter(parentLayout),
       target: topCenter(childLayout),
       width: threadWidthPixels(parent.node, item.node, maxDepth, true)
@@ -2254,8 +2342,308 @@ function isGroupOutlineVisibleAtZoom(node: AyaNode, zoom: number): boolean {
   return true;
 }
 
-function visualPointForNode(node: AyaNode, blend: number): AyaSpatialPoint {
-  return interpolatePoint(node.semantic, node.geo, blend);
+function createOrganicSemanticLayout(graph: AyaGraph): Map<string, AyaSpatialPoint> {
+  const nodeById = new Map(graph.nodes.map((node) => [node.id, node]));
+  const childrenByParent = new Map<string, AyaNode[]>();
+  for (const node of graph.nodes) {
+    if (!node.parentId) continue;
+    const siblings = childrenByParent.get(node.parentId) ?? [];
+    siblings.push(node);
+    childrenByParent.set(node.parentId, siblings);
+  }
+  childrenByParent.forEach((siblings) =>
+    siblings.sort((a, b) => {
+      if (a.type !== b.type) return a.type === "group" ? -1 : 1;
+      return a.id.localeCompare(b.id);
+    })
+  );
+
+  const topIds = Array.from(new Set(graph.nodes.map((node) => node.topAncestorId))).sort();
+  const topCenters = organicClusterCenters(topIds.length);
+  const layout = new Map<
+    string,
+    { x: number; y: number; anchorX: number; anchorY: number; pinned: boolean; topAncestorId: string }
+  >();
+
+  topIds.forEach((topId, index) => {
+    const root = nodeById.get(topId) ?? graph.nodes.find((node) => node.topAncestorId === topId && !node.parentId);
+    if (!root) return;
+    const center = topCenters[index] ?? { x: 0, y: 0 };
+    const next = topCenters[Math.min(topCenters.length - 1, index + 1)] ?? center;
+    const previous = topCenters[Math.max(0, index - 1)] ?? center;
+    const tangent = Math.atan2(next.y - previous.y, next.x - previous.x) || 0;
+    layoutSubtreeOrganic(root, center.x, center.y, tangent, childrenByParent, layout);
+    const rootState = layout.get(root.id);
+    if (rootState) {
+      rootState.pinned = true;
+      rootState.anchorX = center.x;
+      rootState.anchorY = center.y;
+    }
+  });
+
+  for (const node of graph.nodes) {
+    if (layout.has(node.id)) continue;
+    const topIndex = Math.max(0, topIds.indexOf(node.topAncestorId));
+    const fallbackCenter = topCenters[topIndex] ?? { x: 0, y: 0 };
+    const angle = seededUnit(`${node.id}:fallback-angle`) * Math.PI * 2;
+    const radius = 96 + node.depth * 28;
+    layout.set(node.id, {
+      x: fallbackCenter.x + Math.cos(angle) * radius,
+      y: fallbackCenter.y + Math.sin(angle) * radius,
+      anchorX: fallbackCenter.x + Math.cos(angle) * radius,
+      anchorY: fallbackCenter.y + Math.sin(angle) * radius,
+      pinned: false,
+      topAncestorId: node.topAncestorId
+    });
+  }
+
+  const semanticEdges = organicSemanticEdges(graph, childrenByParent, topIds);
+  relaxOrganicLayout(layout, semanticEdges, nodeById);
+
+  return new Map(
+    graph.nodes.map((node) => [
+      node.id,
+      localMetersToSpatialPoint(
+        graph.center,
+        layout.get(node.id) ?? { x: 0, y: 0, anchorX: 0, anchorY: 0, pinned: false, topAncestorId: node.topAncestorId },
+        node.semantic.altitude
+      )
+    ])
+  );
+}
+
+function organicClusterCenters(count: number): Array<{ x: number; y: number }> {
+  if (count <= 0) return [];
+  const spanX = 1040;
+  const amplitude = 290;
+  return Array.from({ length: count }, (_, index) => {
+    const progress = count === 1 ? 0.5 : index / (count - 1);
+    const x = -spanX / 2 + progress * spanX;
+    const y = Math.sin(progress * Math.PI * 1.35 - Math.PI * 0.62) * amplitude + Math.sin(progress * Math.PI * 3.1) * 48;
+    return { x, y };
+  });
+}
+
+function layoutSubtreeOrganic(
+  node: AyaNode,
+  x: number,
+  y: number,
+  direction: number,
+  childrenByParent: Map<string, AyaNode[]>,
+  layout: Map<string, { x: number; y: number; anchorX: number; anchorY: number; pinned: boolean; topAncestorId: string }>
+): void {
+  if (!layout.has(node.id)) {
+    layout.set(node.id, { x, y, anchorX: x, anchorY: y, pinned: false, topAncestorId: node.topAncestorId });
+  }
+
+  const children = childrenByParent.get(node.id) ?? [];
+  if (children.length === 0) return;
+
+  const span = children.length <= 1 ? 0 : Math.min(1.48, 0.48 + (children.length - 2) * 0.17);
+  const state = layout.get(node.id)!;
+  children.forEach((child, index) => {
+    const spread = children.length === 1 ? 0 : (index - (children.length - 1) / 2) / Math.max(1, children.length - 1);
+    const bend = (seededUnit(`${child.id}:bend`) - 0.5) * 0.28;
+    const childDirection = direction + spread * span + bend;
+    const distance = organicBranchDistance(node, child, index, children.length);
+    const childX = state.x + Math.cos(childDirection) * distance;
+    const childY = state.y + Math.sin(childDirection) * distance;
+    if (!layout.has(child.id)) {
+      layout.set(child.id, {
+        x: childX,
+        y: childY,
+        anchorX: childX,
+        anchorY: childY,
+        pinned: false,
+        topAncestorId: child.topAncestorId
+      });
+    }
+    layoutSubtreeOrganic(child, childX, childY, childDirection, childrenByParent, layout);
+  });
+}
+
+function organicBranchDistance(parent: AyaNode, child: AyaNode, index: number, siblingCount: number): number {
+  const base =
+    child.type === "group"
+      ? 172 + Math.max(0, 4 - child.depth) * 16
+      : 116 + Math.max(0, 5 - child.depth) * 10;
+  const siblingTightening = siblingCount > 1 ? Math.min(24, siblingCount * 3.5) : 0;
+  const jitter = (seededUnit(`${child.id}:distance`) - 0.5) * 24 + index * 3.5;
+  const parentLift = parent.type === "group" ? 10 : -4;
+  return Math.max(88, base + parentLift - siblingTightening + jitter);
+}
+
+function organicSemanticEdges(
+  graph: AyaGraph,
+  childrenByParent: Map<string, AyaNode[]>,
+  topIds: string[]
+): Array<{ source: string; target: string; kind: "parent" | "json" | "sibling" | "bridge" }> {
+  const edges: Array<{ source: string; target: string; kind: "parent" | "json" | "sibling" | "bridge" }> = [];
+  const seen = new Set<string>();
+  const push = (source: string, target: string, kind: "parent" | "json" | "sibling" | "bridge") => {
+    if (source === target) return;
+    const [a, b] = source < target ? [source, target] : [target, source];
+    const key = `${kind}:${a}:${b}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    edges.push({ source, target, kind });
+  };
+
+  for (const node of graph.nodes) {
+    if (node.parentId) push(node.parentId, node.id, "parent");
+  }
+  for (const edge of graph.edges) {
+    push(edge.source, edge.target, "json");
+  }
+  childrenByParent.forEach((siblings) => {
+    for (let index = 1; index < siblings.length; index += 1) {
+      push(siblings[index - 1]!.id, siblings[index]!.id, "sibling");
+    }
+  });
+  for (let index = 1; index < topIds.length; index += 1) {
+    push(topIds[index - 1]!, topIds[index]!, "bridge");
+  }
+
+  return edges;
+}
+
+function relaxOrganicLayout(
+  layout: Map<string, { x: number; y: number; anchorX: number; anchorY: number; pinned: boolean; topAncestorId: string }>,
+  edges: Array<{ source: string; target: string; kind: "parent" | "json" | "sibling" | "bridge" }>,
+  nodeById: Map<string, AyaNode>
+): void {
+  const keys = [...layout.keys()];
+  for (let iteration = 0; iteration < 18; iteration += 1) {
+    for (const edge of edges) {
+      const source = layout.get(edge.source);
+      const target = layout.get(edge.target);
+      const sourceNode = nodeById.get(edge.source);
+      const targetNode = nodeById.get(edge.target);
+      if (!source || !target || !sourceNode || !targetNode) continue;
+
+      const dx = target.x - source.x;
+      const dy = target.y - source.y;
+      const distance = Math.hypot(dx, dy) || 1;
+      const desired = organicDesiredDistance(sourceNode, targetNode, edge.kind);
+      const force = ((distance - desired) / distance) * organicSpring(edge.kind);
+      const moveX = dx * force;
+      const moveY = dy * force;
+
+      if (!source.pinned) {
+        source.x += moveX * 0.5;
+        source.y += moveY * 0.5;
+      }
+      if (!target.pinned) {
+        target.x -= moveX * 0.5;
+        target.y -= moveY * 0.5;
+      }
+    }
+
+    for (let index = 0; index < keys.length; index += 1) {
+      const left = layout.get(keys[index]!);
+      if (!left) continue;
+      for (let nextIndex = index + 1; nextIndex < keys.length; nextIndex += 1) {
+        const right = layout.get(keys[nextIndex]!);
+        if (!right) continue;
+        const dx = right.x - left.x;
+        const dy = right.y - left.y;
+        const distance = Math.hypot(dx, dy) || 1;
+        const minimum = left.topAncestorId === right.topAncestorId ? 82 : 108;
+        if (distance >= minimum) continue;
+        const push = ((minimum - distance) / distance) * 0.18;
+        const moveX = dx * push;
+        const moveY = dy * push;
+        if (!left.pinned) {
+          left.x -= moveX * 0.5;
+          left.y -= moveY * 0.5;
+        }
+        if (!right.pinned) {
+          right.x += moveX * 0.5;
+          right.y += moveY * 0.5;
+        }
+      }
+    }
+
+    for (const state of layout.values()) {
+      const anchorStrength = state.pinned ? 0.42 : 0.12;
+      state.x += (state.anchorX - state.x) * anchorStrength;
+      state.y += (state.anchorY - state.y) * anchorStrength;
+    }
+  }
+}
+
+function organicDesiredDistance(source: AyaNode, target: AyaNode, kind: "parent" | "json" | "sibling" | "bridge"): number {
+  if (kind === "bridge") return 286;
+  if (kind === "sibling") return 132 + Math.min(source.depth, target.depth) * 8;
+  if (kind === "json") return source.topAncestorId === target.topAncestorId ? 156 : 228;
+  return target.type === "group" || source.type === "group" ? 168 : 132;
+}
+
+function organicSpring(kind: "parent" | "json" | "sibling" | "bridge"): number {
+  if (kind === "bridge") return 0.1;
+  if (kind === "json") return 0.08;
+  if (kind === "sibling") return 0.11;
+  return 0.14;
+}
+
+function localMetersToSpatialPoint(
+  center: GeoCenter,
+  point: { x: number; y: number },
+  altitude: number
+): AyaSpatialPoint {
+  const clamped = clampLocalMeters(point.x, point.y, 1420);
+  const lngLat = offsetCenterByMeters(center, clamped.x, clamped.y);
+  return {
+    x: clamped.x,
+    y: clamped.y,
+    lng: lngLat.lng,
+    lat: lngLat.lat,
+    altitude
+  };
+}
+
+function createSemanticScaffoldThreads(
+  graph: AyaGraph,
+  visualThreads: VisualThread[],
+  nodeById: Map<string, ScreenNode>
+): IdeaLayerThreadDatum[] {
+  const threads: IdeaLayerThreadDatum[] = [];
+  for (const edge of visualThreads) {
+    const source = nodeById.get(edge.source);
+    const target = nodeById.get(edge.target);
+    if (!source || !target) continue;
+    threads.push({
+      id: `semantic:${edge.id}`,
+      kind: edge.kind,
+      sourceId: edge.source,
+      targetId: edge.target,
+      source: source.screen,
+      target: target.screen,
+      width: Math.max(1.6, threadWidthPixels(source.node, target.node, graph.maxDepth, false) * 0.72)
+    });
+  }
+
+  const topIds = Array.from(new Set(graph.nodes.map((node) => node.topAncestorId))).sort();
+  for (let index = 1; index < topIds.length; index += 1) {
+    const source = nodeById.get(topIds[index - 1]!);
+    const target = nodeById.get(topIds[index]!);
+    if (!source || !target) continue;
+    threads.push({
+      id: `semantic:bridge:${topIds[index - 1]}:${topIds[index]}`,
+      kind: "parent",
+      sourceId: topIds[index - 1]!,
+      targetId: topIds[index]!,
+      source: source.screen,
+      target: target.screen,
+      width: 2.6
+    });
+  }
+
+  return threads;
+}
+
+function visualPointForNode(node: AyaNode, blend: number, semanticOverride?: AyaSpatialPoint): AyaSpatialPoint {
+  return interpolatePoint(semanticOverride ?? node.semantic, node.geo, blend);
 }
 
 function placementClassForNode(node: AyaNode): "abstract" | "mapped" {
@@ -2509,4 +2897,83 @@ function hashString(input: string): string {
     hash = Math.imul(hash, 16777619);
   }
   return (hash >>> 0).toString(36);
+}
+
+function seededUnit(input: string): number {
+  return parseInt(hashString(input), 36) / 4294967295;
+}
+
+function clampLocalMeters(x: number, y: number, radiusMeters: number): { x: number; y: number } {
+  const distance = Math.hypot(x, y);
+  if (distance <= radiusMeters || distance === 0) return { x, y };
+  const ratio = radiusMeters / distance;
+  return { x: x * ratio, y: y * ratio };
+}
+
+function offsetCenterByMeters(center: GeoCenter, eastMeters: number, northMeters: number): { lng: number; lat: number } {
+  return {
+    lng: center.lng + eastMeters / metersPerDegreeLng(center.lat),
+    lat: center.lat + northMeters / METERS_PER_DEGREE_LAT
+  };
+}
+
+function metersPerDegreeLng(lat: number): number {
+  return Math.max(1, METERS_PER_DEGREE_LAT * Math.cos((lat * Math.PI) / 180));
+}
+
+function semanticTransitionStrength(blend: number): number {
+  return clamp((0.22 - blend) / 0.22, 0, 1);
+}
+
+function spaceModeForStrength(strength: number): "map" | "transition" | "space" {
+  if (strength >= 0.999) return "space";
+  if (strength <= 0.001) return "map";
+  return "transition";
+}
+
+function createSpaceStarFieldStyles(): { far: React.CSSProperties; near: React.CSSProperties } {
+  return {
+    far: createStarFieldStyle(44, 0.45, 1.2, [
+      "rgba(255, 251, 245, 0.92)",
+      "rgba(174, 210, 255, 0.8)",
+      "rgba(255, 224, 182, 0.68)"
+    ]),
+    near: createStarFieldStyle(28, 0.8, 1.9, [
+      "rgba(255, 252, 247, 0.94)",
+      "rgba(188, 223, 255, 0.86)",
+      "rgba(255, 229, 198, 0.76)"
+    ])
+  };
+}
+
+function createStarFieldStyle(
+  count: number,
+  minRadius: number,
+  maxRadius: number,
+  palette: string[]
+): React.CSSProperties {
+  const gradients: string[] = [];
+
+  for (let index = 0; index < count; index += 1) {
+    const x = (Math.random() * 100).toFixed(2);
+    const y = (Math.random() * 100).toFixed(2);
+    const radius = randomBetween(minRadius, maxRadius);
+    const fade = radius + randomBetween(0.45, 0.95);
+    const color = palette[Math.floor(Math.random() * palette.length)] ?? palette[0] ?? "rgba(255,255,255,0.9)";
+    gradients.push(
+      `radial-gradient(circle at ${x}% ${y}%, ${color} 0 ${radius.toFixed(2)}px, rgba(255,255,255,0) ${fade.toFixed(
+        2
+      )}px)`
+    );
+  }
+
+  return {
+    backgroundImage: gradients.join(", "),
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "100% 100%"
+  };
+}
+
+function randomBetween(min: number, max: number): number {
+  return min + Math.random() * (max - min);
 }
