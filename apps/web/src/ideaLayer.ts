@@ -816,17 +816,12 @@ function drawOverviewCard(context: CanvasRenderingContext2D, node: AyaNode, colo
   context.save();
 
   if (selected) {
-    context.shadowColor = "rgba(255, 34, 58, 0.94)";
-    context.shadowBlur = 46;
+    context.shadowColor = "rgba(255, 123, 95, 0.28)";
+    context.shadowBlur = 54;
     context.shadowOffsetY = 0;
-    context.lineWidth = 18;
-    context.strokeStyle = "rgba(255, 35, 58, 0.88)";
-    roundedRect(context, card.x + 7, card.y + 7, card.width - 14, card.height - 14, card.radius);
-    context.stroke();
-    context.lineWidth = 8;
-    context.strokeStyle = "rgba(255, 75, 88, 0.78)";
-    roundedRect(context, card.x + 10, card.y + 10, card.width - 20, card.height - 20, card.radius - 2);
-    context.stroke();
+    roundedRect(context, card.x - 8, card.y - 8, card.width + 16, card.height + 16, card.radius + 10);
+    context.fillStyle = "rgba(255, 244, 229, 0.2)";
+    context.fill();
   }
 
   context.shadowColor = "rgba(45, 30, 16, 0.18)";
@@ -840,9 +835,35 @@ function drawOverviewCard(context: CanvasRenderingContext2D, node: AyaNode, colo
   context.strokeStyle = rgbaString(color, 0.34);
   context.stroke();
 
+  if (selected) {
+    context.fillStyle = "rgba(255, 248, 239, 0.16)";
+    roundedRect(context, card.x + 8, card.y + 8, card.width - 16, card.height - 16, card.radius - 4);
+    context.fill();
+
+    context.shadowColor = "rgba(255, 255, 255, 0.42)";
+    context.shadowBlur = 20;
+    context.shadowOffsetY = 0;
+    context.lineWidth = 6;
+    context.strokeStyle = "rgba(255, 252, 245, 0.94)";
+    roundedRect(context, card.x + 6, card.y + 6, card.width - 12, card.height - 12, card.radius - 3);
+    context.stroke();
+
+    context.shadowColor = "transparent";
+    context.lineWidth = 3;
+    context.strokeStyle = "rgba(228, 96, 72, 0.86)";
+    roundedRect(context, card.x + 13, card.y + 13, card.width - 26, card.height - 26, card.radius - 7);
+    context.stroke();
+  }
+
   context.fillStyle = rgbaString(color, 0.74);
   roundedRect(context, card.x + 16, card.y + 22, accentWidth, card.height - 44, Math.min(8, accentWidth / 2));
   context.fill();
+
+  if (selected) {
+    context.fillStyle = "rgba(255, 241, 231, 0.5)";
+    roundedRect(context, card.x + 12, card.y + 18, 10, card.height - 36, 5);
+    context.fill();
+  }
 
   context.fillStyle = "#3a2e27";
   context.textBaseline = "top";

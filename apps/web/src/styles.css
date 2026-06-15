@@ -510,11 +510,97 @@ input {
   border-radius: 8px;
   background: transparent;
   cursor: pointer;
+  overflow: visible;
+  isolation: isolate;
+  --overview-card-halo-inset-x: 12px;
+  --overview-card-halo-inset-y: 12px;
+  --overview-card-halo-radius: 10px;
+  --overview-card-halo-inner-spread: 8px;
+  --overview-card-halo-outer-spread: 18px;
+  --overview-card-halo-glow-soft: 28px;
+  --overview-card-halo-glow-wide: 56px;
+}
+
+.overview-card-hit-target::before,
+.overview-card-hit-target::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.overview-card-hit-target.selected::before {
+  top: calc(var(--overview-card-halo-inset-y) - var(--overview-card-halo-inner-spread));
+  right: calc(var(--overview-card-halo-inset-x) - var(--overview-card-halo-inner-spread));
+  bottom: calc(var(--overview-card-halo-inset-y) - var(--overview-card-halo-inner-spread));
+  left: calc(var(--overview-card-halo-inset-x) - var(--overview-card-halo-inner-spread));
+  border-radius: calc(var(--overview-card-halo-radius) + var(--overview-card-halo-inner-spread));
+  border: 2px solid rgba(255, 247, 239, 0.88);
+  box-shadow:
+    0 0 0 1px rgba(241, 120, 89, 0.64),
+    0 0 var(--overview-card-halo-glow-soft) rgba(244, 145, 108, 0.28),
+    0 0 var(--overview-card-halo-glow-wide) rgba(255, 214, 190, 0.22);
+  opacity: 1;
+  animation: overview-card-selected-halo 2.2s ease-in-out infinite;
+}
+
+.overview-card-hit-target.selected::after {
+  top: calc(var(--overview-card-halo-inset-y) - var(--overview-card-halo-outer-spread));
+  right: calc(var(--overview-card-halo-inset-x) - var(--overview-card-halo-outer-spread));
+  bottom: calc(var(--overview-card-halo-inset-y) - var(--overview-card-halo-outer-spread));
+  left: calc(var(--overview-card-halo-inset-x) - var(--overview-card-halo-outer-spread));
+  border-radius: calc(var(--overview-card-halo-radius) + var(--overview-card-halo-outer-spread));
+  border: 1px solid rgba(255, 224, 203, 0.76);
+  box-shadow: 0 0 calc(var(--overview-card-halo-glow-soft) * 1.2) rgba(247, 150, 120, 0.24);
+  opacity: 0.72;
+  animation: overview-card-selected-pulse 2.2s ease-out infinite;
 }
 
 .overview-card-hit-target:focus-visible {
   outline: 2px solid rgba(198, 93, 109, 0.5);
   outline-offset: 3px;
+}
+
+@keyframes overview-card-selected-halo {
+  0%,
+  100% {
+    transform: scale(0.985);
+    opacity: 0.86;
+    box-shadow:
+      0 0 0 1px rgba(241, 120, 89, 0.58),
+      0 0 calc(var(--overview-card-halo-glow-soft) * 0.86) rgba(244, 145, 108, 0.2),
+      0 0 calc(var(--overview-card-halo-glow-wide) * 0.75) rgba(255, 214, 190, 0.16);
+  }
+
+  50% {
+    transform: scale(1.018);
+    opacity: 1;
+    box-shadow:
+      0 0 0 1px rgba(241, 120, 89, 0.74),
+      0 0 calc(var(--overview-card-halo-glow-soft) * 1.36) rgba(244, 145, 108, 0.34),
+      0 0 calc(var(--overview-card-halo-glow-wide) * 1.36) rgba(255, 214, 190, 0.28);
+  }
+}
+
+@keyframes overview-card-selected-pulse {
+  0% {
+    transform: scale(0.96);
+    opacity: 0;
+  }
+
+  28% {
+    opacity: 0.48;
+  }
+
+  72% {
+    opacity: 0.16;
+  }
+
+  100% {
+    transform: scale(1.045);
+    opacity: 0;
+  }
 }
 
 .geo-point-hit-target {

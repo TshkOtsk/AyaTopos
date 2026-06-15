@@ -1294,14 +1294,9 @@ function MapScene({
             return (
               <button
                 key={`${nodeId}:overview-card-hit`}
-                className="overview-card-hit-target"
+                className={`overview-card-hit-target ${overviewNodeId === nodeId ? "selected" : ""}`}
                 style={
-                  {
-                    left: layout.left,
-                    top: layout.top,
-                    width: layout.width,
-                    height: layout.height
-                  } as React.CSSProperties
+                  overviewCardHitTargetStyle(layout, hoveredId === nodeId)
                 }
                 onPointerEnter={() => acceptHover(nodeId)}
                 onPointerLeave={() => {
@@ -1604,6 +1599,47 @@ function interpolateRect(from: TooltipRect, to: TooltipRect, weight: number): Id
   };
 }
 
+function overviewCardHitTargetStyle(layout: IdeaLayerCardLayout, active: boolean): React.CSSProperties {
+  const frame = overviewCardDisplayFrame(layout, active);
+  const padX = frame.width * (OVERVIEW_CARD_TEXTURE_FRAME.x / OVERVIEW_CARD_TEXTURE_CANVAS.width);
+  const padY = frame.height * (OVERVIEW_CARD_TEXTURE_FRAME.y / OVERVIEW_CARD_TEXTURE_CANVAS.height);
+  const cornerRadius = Math.max(
+    6,
+    Math.min(frame.width, frame.height) * (OVERVIEW_CARD_TEXTURE_FRAME.radius / OVERVIEW_CARD_TEXTURE_CANVAS.width)
+  );
+  const minSide = Math.min(frame.width, frame.height);
+  const innerSpread = clamp(minSide * 0.052, 3, 10);
+  const outerSpread = clamp(minSide * 0.11, 8, 20);
+  const glowSoft = clamp(minSide * 0.18, 18, 42);
+  const glowWide = clamp(minSide * 0.34, 34, 82);
+
+  return {
+    left: frame.left,
+    top: frame.top,
+    width: frame.width,
+    height: frame.height,
+    "--overview-card-halo-inset-x": `${padX}px`,
+    "--overview-card-halo-inset-y": `${padY}px`,
+    "--overview-card-halo-radius": `${cornerRadius}px`,
+    "--overview-card-halo-inner-spread": `${innerSpread}px`,
+    "--overview-card-halo-outer-spread": `${outerSpread}px`,
+    "--overview-card-halo-glow-soft": `${glowSoft}px`,
+    "--overview-card-halo-glow-wide": `${glowWide}px`
+  } as React.CSSProperties;
+}
+
+function overviewCardDisplayFrame(layout: IdeaLayerCardLayout, active: boolean): IdeaLayerCardLayout {
+  if (!active) return layout;
+  const width = OVERVIEW_FOCUS_CARD_WIDTH;
+  const height = OVERVIEW_FOCUS_CARD_HEIGHT;
+  return {
+    left: layout.left - (width - layout.width) / 2,
+    top: layout.top - (height - layout.height) / 2,
+    width,
+    height
+  };
+}
+
 function clampRectToBounds(rect: TooltipRect, bounds: TooltipRect): IdeaLayerCardLayout {
   return {
     ...rect,
@@ -1624,6 +1660,9 @@ function overviewLayerCardSize(node: AyaNode, maxDepth: number, scale = 1, relat
 }
 
 const OVERVIEW_FOCUS_CARD_WIDTH = 274;
+const OVERVIEW_FOCUS_CARD_HEIGHT = 181;
+const OVERVIEW_CARD_TEXTURE_CANVAS = { width: 512, height: 340 };
+const OVERVIEW_CARD_TEXTURE_FRAME = { x: 18, y: 20, width: 476, height: 300, radius: 16 };
 const OVERVIEW_TERRAIN_CARD_SCALE_BY_RELATION: Record<OverviewRelationKind, number> = {
   selected: 0.57,
   parent: 0.64,
