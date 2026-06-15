@@ -697,6 +697,10 @@ input {
   cursor: zoom-out;
 }
 
+.related-overview .sky-wash {
+  display: none;
+}
+
 .related-overview .maplibregl-ctrl-zoom-in,
 .related-overview .maplibregl-ctrl-zoom-out {
   pointer-events: none;

@@ -595,6 +595,11 @@ function MapScene({
     (node: AyaNode) => visualPointForNode(node, blend),
     [blend]
   );
+  const pointForNodeRef = useRef(pointForNode);
+
+  useEffect(() => {
+    pointForNodeRef.current = pointForNode;
+  }, [pointForNode]);
 
   useEffect(
     () => () => {
@@ -805,8 +810,11 @@ function MapScene({
     setShouldLockOverviewLayout(false);
     const points = graph.nodes
       .filter((node) => node.type === "card")
-      .map((node) => pointForNode(node));
-    focusMapOnPoints2d(mapRef.current, points.length > 0 ? points : graph.nodes.map((node) => pointForNode(node)), {
+      .map((node) => pointForNodeRef.current(node));
+    focusMapOnPoints2d(
+      mapRef.current,
+      points.length > 0 ? points : graph.nodes.map((node) => pointForNodeRef.current(node)),
+      {
       padding: visualizationPaddingForContainer(mapRef.current.getContainer()),
       maxZoom: 17,
       duration: 900,
@@ -814,8 +822,9 @@ function MapScene({
       bearing: -22,
       majorityFraction: 0.6,
       singlePointZoom: 16.2
-    });
-  }, [graph, isGeoEditing, pointForNode]);
+      }
+    );
+  }, [graph, isGeoEditing]);
 
   useEffect(() => {
     const map = mapRef.current;
