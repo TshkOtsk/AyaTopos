@@ -562,6 +562,7 @@ function MapScene({
   const frameRef = useRef<number | null>(null);
   const hoverClearRef = useRef<number | null>(null);
   const draggingCardIdRef = useRef<string | null>(null);
+  const activeViewDragKindsRef = useRef(new Set<string>());
   const editViewRef = useRef<{ pitch: number; bearing: number } | null>(null);
   const overviewReturnViewRef = useRef<StoredMapView | null>(null);
   const [overviewNodeId, setOverviewNodeId] = useState<string | null>(null);
@@ -690,18 +691,56 @@ function MapScene({
     map.on("idle", rerender);
     map.on("styledata", initialize3d);
     map.on("load", initialize3d);
+
+    const handleViewDragStart = (kind: string) => {
+      const activeKinds = activeViewDragKindsRef.current;
+      const wasDragging = activeKinds.size > 0;
+      activeKinds.add(kind);
+      if (wasDragging) return;
+      if (hoverClearRef.current !== null) {
+        window.clearTimeout(hoverClearRef.current);
+        hoverClearRef.current = null;
+      }
+      onHover(null);
+    };
+
+    const handleViewDragEnd = (kind: string) => {
+      activeViewDragKindsRef.current.delete(kind);
+    };
+
+    const startDragPan = () => handleViewDragStart("drag");
+    const endDragPan = () => handleViewDragEnd("drag");
+    const startRotate = () => handleViewDragStart("rotate");
+    const endRotate = () => handleViewDragEnd("rotate");
+    const startPitch = () => handleViewDragStart("pitch");
+    const endPitch = () => handleViewDragEnd("pitch");
+
+    map.on("dragstart", startDragPan);
+    map.on("dragend", endDragPan);
+    map.on("rotatestart", startRotate);
+    map.on("rotateend", endRotate);
+    map.on("pitchstart", startPitch);
+    map.on("pitchend", endPitch);
+
     window.requestAnimationFrame(initialize3d);
 
     return () => {
       if (frameRef.current !== null) {
         window.cancelAnimationFrame(frameRef.current);
       }
+      activeViewDragKindsRef.current.clear();
       sceneRef.current?.removeEventListener("wheel", forwardOverlayWheelToMap, { capture: true });
+      map.off("dragstart", startDragPan);
+      map.off("dragend", endDragPan);
+      map.off("rotatestart", startRotate);
+      map.off("rotateend", endRotate);
+      map.off("pitchstart", startPitch);
+      map.off("pitchend", endPitch);
       map.remove();
       mapRef.current = null;
       ideaLayerRef.current = null;
     };
-  }, []);
+  }, [onHover]);
 
   useEffect(() => {
     if (!graph || !mapRef.current || isGeoEditing) return;
@@ -1042,6 +1081,7 @@ function MapScene({
 
   const acceptHover = useCallback(
     (nodeId: string) => {
+      if (activeViewDragKindsRef.current.size > 0) return;
       if (hoverClearRef.current !== null) {
         window.clearTimeout(hoverClearRef.current);
         hoverClearRef.current = null;
