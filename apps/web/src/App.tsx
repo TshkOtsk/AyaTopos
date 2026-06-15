@@ -869,8 +869,9 @@ function MapScene({
   const zoom = mapRef.current?.getZoom() ?? 0;
   const shouldShowGroupOutlines = false;
   const visualThreads = useMemo(() => (graph ? createVisualThreads(graph) : []), [graph]);
-  const focusNodeId = isRelatedOverview ? overviewNodeId : hoveredId;
-  const layerActiveNodeId = isRelatedOverview ? hoveredId ?? overviewNodeId : hoveredId;
+  const normalActiveNodeId = isGeoEditing ? hoveredId : hoveredId ?? selectedCardId;
+  const focusNodeId = isRelatedOverview ? overviewNodeId : normalActiveNodeId;
+  const layerActiveNodeId = isRelatedOverview ? hoveredId ?? overviewNodeId : normalActiveNodeId;
   const layerHoverNodeId = isRelatedOverview ? hoveredId : layerActiveNodeId;
   const overviewRelations = useMemo(
     () => (graph && overviewNodeId ? overviewRelatedNodeIds(graph, overviewNodeId) : { ids: [], collateralIds: new Set<string>() }),
@@ -890,10 +891,10 @@ function MapScene({
     () =>
       isRelatedOverview
         ? visualThreads.filter((edge) => overviewIdSet.has(edge.source) && overviewIdSet.has(edge.target))
-        : hoveredId && !isGeoEditing
-          ? visualThreads.filter((edge) => edge.source === hoveredId || edge.target === hoveredId)
+        : normalActiveNodeId && !isGeoEditing
+          ? visualThreads.filter((edge) => edge.source === normalActiveNodeId || edge.target === normalActiveNodeId)
           : [],
-    [hoveredId, isGeoEditing, isRelatedOverview, overviewIdSet, visualThreads]
+    [isGeoEditing, isRelatedOverview, normalActiveNodeId, overviewIdSet, visualThreads]
   );
 
   const screenNodes = useMemo(() => {
@@ -1081,12 +1082,15 @@ function MapScene({
     ]
   );
   const hoveredCards = useMemo(() => {
-    if (!hoveredId) return [];
+    if (!normalActiveNodeId) return [];
     const container = mapRef.current?.getContainer();
     if (!container) return [];
     if (isRelatedOverview) return [];
 
-    const orderedIds = [hoveredId, ...activeVisualThreads.map((edge) => (edge.source === hoveredId ? edge.target : edge.source))];
+    const orderedIds = [
+      normalActiveNodeId,
+      ...activeVisualThreads.map((edge) => (edge.source === normalActiveNodeId ? edge.target : edge.source))
+    ];
     const seen = new Set<string>();
     return orderedIds
       .filter((id) => {
@@ -1097,15 +1101,15 @@ function MapScene({
       .map((id) => nodeById.get(id))
       .filter((item): item is ScreenNode => Boolean(item))
       .filter((item) => isGlowVisibleOnScreen(item, container.clientWidth, container.clientHeight));
-  }, [activeVisualThreads, hoveredId, isRelatedOverview, nodeById]);
+  }, [activeVisualThreads, isRelatedOverview, nodeById, normalActiveNodeId]);
   const relatedGlowObstacles = useMemo<TooltipRect[]>(() => {
     const container = mapRef.current?.getContainer();
-    if (!hoveredId || !container || isRelatedOverview) return [];
+    if (!normalActiveNodeId || !container || isRelatedOverview) return [];
     return screenNodes
       .filter((item) => item.related)
       .filter((item) => isGlowVisibleOnScreen(item, container.clientWidth, container.clientHeight))
       .map(glowAvoidanceRect);
-  }, [hoveredId, isRelatedOverview, screenNodes]);
+  }, [isRelatedOverview, normalActiveNodeId, screenNodes]);
   const tooltipLayouts = useMemo<TooltipLayout[]>(() => {
     const container = mapRef.current?.getContainer();
     if (!container || isRelatedOverview) return [];
@@ -1157,6 +1161,18 @@ function MapScene({
     mapRef.current?.dragPan.enable();
   }, []);
 
+  const selectPersistentCard = useCallback(
+    (nodeId: string | null) => {
+      if (!nodeId || !graph) {
+        onSelectCard(null);
+        return;
+      }
+      const node = graph.nodes.find((item) => item.id === nodeId);
+      onSelectCard(node?.type === "card" ? node.id : null);
+    },
+    [graph, onSelectCard]
+  );
+
   const acceptHover = useCallback(
     (nodeId: string) => {
       if (activeViewDragKindsRef.current.size > 0) return;
@@ -1198,24 +1214,29 @@ function MapScene({
   const exitRelatedOverview = useCallback(() => {
     const map = mapRef.current;
     const returnView = overviewReturnViewRef.current;
+    const overviewSelectionId = overviewNodeId;
+    const selectedNode = graph?.nodes.find((node) => node.id === overviewSelectionId) ?? null;
+    const selectedPoint = selectedNode ? pointForNode(selectedNode) : null;
+    const currentZoom = map?.getZoom();
     setOverviewNodeId(null);
     onHover(null);
     overviewReturnViewRef.current = null;
     overviewFocusModeRef.current = "group";
     setLockedOverviewCardLayouts(new Map());
     setShouldLockOverviewLayout(false);
+    selectPersistentCard(selectedNode?.id ?? null);
 
     if (!map || !returnView) return;
     map.dragRotate.enable();
     map.touchZoomRotate.enableRotation();
     map.easeTo({
-      center: returnView.center,
-      zoom: returnView.zoom,
+      center: selectedPoint ? [selectedPoint.lng, selectedPoint.lat] : returnView.center,
+      zoom: currentZoom ?? returnView.zoom,
       pitch: returnView.pitch,
       bearing: returnView.bearing,
       duration: 560
     });
-  }, [onHover]);
+  }, [graph, onHover, overviewNodeId, pointForNode, selectPersistentCard]);
 
   const returnToNode3d = useCallback(
     (node: AyaNode) => {
@@ -1229,6 +1250,7 @@ function MapScene({
       overviewFocusModeRef.current = "group";
       setLockedOverviewCardLayouts(new Map());
       setShouldLockOverviewLayout(false);
+      selectPersistentCard(node.id);
       map.dragRotate.enable();
       map.touchZoomRotate.enableRotation();
       map.easeTo({
@@ -1239,7 +1261,7 @@ function MapScene({
         duration: 700
       });
     },
-    [onHover, pointForNode]
+    [onHover, pointForNode, selectPersistentCard]
   );
 
   useEffect(() => {
@@ -1270,7 +1292,6 @@ function MapScene({
 
   const handleSceneClick = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
-      if (!isRelatedOverview) return;
       const target = event.target;
       if (
         target instanceof Element &&
@@ -1280,9 +1301,16 @@ function MapScene({
       ) {
         return;
       }
-      exitRelatedOverview();
+      if (isRelatedOverview) {
+        exitRelatedOverview();
+        return;
+      }
+      if (!isGeoEditing) {
+        onHover(null);
+        onSelectCard(null);
+      }
     },
-    [exitRelatedOverview, isRelatedOverview]
+    [exitRelatedOverview, isGeoEditing, isRelatedOverview, onHover, onSelectCard]
   );
 
   return (
@@ -1415,11 +1443,11 @@ function MapScene({
       {tooltipLayouts.map(({ item: { node }, left, top }) => (
         <aside
           key={`${node.id}:tooltip-card`}
-          className={`idea-tooltip ${node.id === hoveredId ? "origin" : "connected"} ${
+          className={`idea-tooltip ${node.id === layerActiveNodeId ? "origin" : "connected"} ${
             nodeHasTooltipCatchphrase(node) ? "has-kicker" : "title-only"
           }`}
           onPointerEnter={() => {
-            if (hoveredId) acceptHover(hoveredId);
+            if (layerActiveNodeId) acceptHover(layerActiveNodeId);
           }}
           onPointerLeave={releaseHover}
           style={
