@@ -704,7 +704,7 @@ function MapScene({
   }, []);
 
   useEffect(() => {
-    if (!graph || !mapRef.current) return;
+    if (!graph || !mapRef.current || isGeoEditing) return;
     setOverviewNodeId(null);
     overviewReturnViewRef.current = null;
     setLockedOverviewCardLayouts(new Map());
@@ -721,7 +721,7 @@ function MapScene({
       majorityFraction: 0.6,
       singlePointZoom: 16.2
     });
-  }, [graph]);
+  }, [graph, blend, isGeoEditing]);
 
   useEffect(() => {
     const map = mapRef.current;
