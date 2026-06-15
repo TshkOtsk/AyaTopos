@@ -213,15 +213,27 @@ export function App() {
       const parsed = JSON.parse(text) as HypoWeaveExport;
       const snapshot = getHypoWeaveSnapshot(parsed);
       if (!snapshot.nodes.length) throw new Error("snapshot.nodes または workspaces.*.snapshot.nodes が見つかりません。");
+      const initialDemoView = bundledDemoInitialView(parsed);
       setRawExport(parsed);
       setFileName(file.name);
-      setGraph(null);
-      setCurrentCenter(null);
-      setBasePlacements([]);
+      setGraph(
+        initialDemoView
+          ? normalizeHypoWeave(parsed, {
+              center: initialDemoView.center,
+              placements: initialDemoView.placements.length > 0 ? initialDemoView.placements : undefined
+            })
+          : null
+      );
+      setCurrentCenter(initialDemoView?.center ?? null);
+      setBasePlacements(initialDemoView?.placements ?? []);
       setManualPlacements({});
       setViewMode("view");
       setSelectedCardId(null);
       setHoveredId(null);
+      setBlend(initialDemoView ? 1 : 0.28);
+      if (initialDemoView) {
+        setAreaText(`${initialDemoView.center.lat.toFixed(6)},${initialDemoView.center.lng.toFixed(6)}`);
+      }
       setStatus("ready");
       setMessage(`${snapshot.nodes.length} ノードを読み込みました。`);
     } catch (error) {
@@ -236,15 +248,27 @@ export function App() {
       const response = await fetch(DEFAULT_SAMPLE_PATH);
       if (!response.ok) throw new Error("デフォルトJSONが見つかりません。");
       const parsed = (await response.json()) as HypoWeaveExport;
+      const initialDemoView = bundledDemoInitialView(parsed);
       setRawExport(parsed);
       setFileName(DEFAULT_SAMPLE_FILENAME);
-      setGraph(null);
-      setCurrentCenter(null);
-      setBasePlacements([]);
+      setGraph(
+        initialDemoView
+          ? normalizeHypoWeave(parsed, {
+              center: initialDemoView.center,
+              placements: initialDemoView.placements.length > 0 ? initialDemoView.placements : undefined
+            })
+          : null
+      );
+      setCurrentCenter(initialDemoView?.center ?? null);
+      setBasePlacements(initialDemoView?.placements ?? []);
       setManualPlacements({});
       setViewMode("view");
       setSelectedCardId(null);
       setHoveredId(null);
+      setBlend(initialDemoView ? 1 : 0.28);
+      if (initialDemoView) {
+        setAreaText(`${initialDemoView.center.lat.toFixed(6)},${initialDemoView.center.lng.toFixed(6)}`);
+      }
       setStatus("ready");
       setMessage(`${getHypoWeaveSnapshot(parsed).nodes.length} ノードを読み込みました。`);
     } catch (error) {
@@ -2906,6 +2930,15 @@ function bundledDemoPlacementsForCenter(rawExport: HypoWeaveExport, center: GeoC
       confidence: placement.confidence,
       source: "preset" as const
     }));
+}
+
+function bundledDemoInitialView(rawExport: HypoWeaveExport): { center: GeoCenter; placements: GeoPlacement[] } | null {
+  const center = rawExport.ayatopos?.demoGeo?.center;
+  if (!center || !isValidLngLat(center.lng, center.lat)) return null;
+  return {
+    center,
+    placements: bundledDemoPlacementsForCenter(rawExport, center)
+  };
 }
 
 function sameGeoCenter(a: GeoCenter, b: GeoCenter): boolean {
