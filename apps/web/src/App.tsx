@@ -1011,14 +1011,17 @@ function MapScene({
     [activeVisualThreads, blend, graph?.maxDepth, isRelatedOverview, nodeById, overviewCardLayouts, overviewCards]
   );
   const hoveredCards = useMemo(() => {
-    if (!hoveredId || isRelatedOverview) return [];
+    if (!hoveredId) return [];
     const container = mapRef.current?.getContainer();
     if (!container) return [];
+    if (isRelatedOverview) {
+      const hoveredItem = nodeById.get(hoveredId);
+      if (!hoveredItem || !nodeHasTooltipCatchphrase(hoveredItem.node)) return [];
+    }
 
-    const orderedIds = [
-      hoveredId,
-      ...activeVisualThreads.map((edge) => (edge.source === hoveredId ? edge.target : edge.source))
-    ];
+    const orderedIds = isRelatedOverview
+      ? [hoveredId]
+      : [hoveredId, ...activeVisualThreads.map((edge) => (edge.source === hoveredId ? edge.target : edge.source))];
     const seen = new Set<string>();
     return orderedIds
       .filter((id) => {
@@ -1032,17 +1035,17 @@ function MapScene({
   }, [activeVisualThreads, hoveredId, isRelatedOverview, nodeById]);
   const relatedGlowObstacles = useMemo<TooltipRect[]>(() => {
     const container = mapRef.current?.getContainer();
-    if (!hoveredId || isRelatedOverview || !container) return [];
+    if (!hoveredId || !container) return [];
     return screenNodes
-      .filter((item) => item.related)
+      .filter((item) => (isRelatedOverview ? item.node.id !== hoveredId : item.related))
       .filter((item) => isGlowVisibleOnScreen(item, container.clientWidth, container.clientHeight))
       .map(glowAvoidanceRect);
   }, [hoveredId, isRelatedOverview, screenNodes]);
   const tooltipLayouts = useMemo<TooltipLayout[]>(() => {
     const container = mapRef.current?.getContainer();
-    if (!container) return [];
+    if (!container || isRelatedOverview) return [];
     return placeTooltipCards(hoveredCards, container.clientWidth, container.clientHeight, relatedGlowObstacles);
-  }, [hoveredCards, relatedGlowObstacles]);
+  }, [hoveredCards, isRelatedOverview, relatedGlowObstacles]);
 
   useEffect(() => {
     ideaLayerRef.current?.setData(ideaNodes, layerHoverNodeId, {
@@ -1315,7 +1318,9 @@ function MapScene({
       {tooltipLayouts.map(({ item: { node }, left, top }) => (
         <aside
           key={`${node.id}:tooltip-card`}
-          className={`idea-tooltip ${node.id === hoveredId ? "origin" : "connected"}`}
+          className={`idea-tooltip ${node.id === hoveredId ? "origin" : "connected"} ${
+            nodeHasTooltipCatchphrase(node) ? "has-kicker" : "title-only"
+          }`}
           onPointerEnter={() => {
             if (hoveredId) acceptHover(hoveredId);
           }}
@@ -1328,8 +1333,8 @@ function MapScene({
             } as React.CSSProperties
           }
         >
-          <strong>{node.shortLabel}</strong>
-          <p>{node.label}</p>
+          {nodeHasTooltipCatchphrase(node) ? <span className="idea-tooltip-kicker">{node.shortLabel}</span> : null}
+          <strong>{tooltipPrimaryTitle(node)}</strong>
         </aside>
       ))}
     </div>
@@ -1971,13 +1976,17 @@ function tooltipPositionCandidates(
 }
 
 function tooltipWidthForViewport(viewportWidth: number): number {
-  return Math.min(320, Math.max(180, viewportWidth - 40));
+  return Math.min(380, Math.max(220, viewportWidth - 44));
 }
 
 function estimateTooltipHeight(node: AyaNode): number {
-  const titleLines = Math.min(3, Math.max(1, Math.ceil(node.shortLabel.length / 22)));
-  const bodyLines = Math.min(7, Math.max(1, Math.ceil(node.label.length / 34)));
-  return 36 + titleLines * 20 + bodyLines * 21;
+  const titleText = tooltipPrimaryTitle(node);
+  const titleLines = Math.min(nodeHasTooltipCatchphrase(node) ? 5 : 6, Math.max(1, Math.ceil(titleText.length / 20)));
+  if (!nodeHasTooltipCatchphrase(node)) {
+    return 42 + titleLines * 26;
+  }
+  const kickerLines = Math.min(2, Math.max(1, Math.ceil(node.shortLabel.length / 22)));
+  return 58 + kickerLines * 20 + titleLines * 26;
 }
 
 function uniqueRects(rects: TooltipRect[]): TooltipRect[] {
@@ -1994,6 +2003,22 @@ function rectOverlapArea(a: TooltipRect, b: TooltipRect): number {
   const width = Math.max(0, Math.min(a.left + a.width, b.left + b.width) - Math.max(a.left, b.left));
   const height = Math.max(0, Math.min(a.top + a.height, b.top + b.height) - Math.max(a.top, b.top));
   return width * height;
+}
+
+function nodeHasTooltipCatchphrase(node: AyaNode): boolean {
+  const shortLabel = normalizeTooltipText(node.shortLabel);
+  const label = normalizeTooltipText(node.label);
+  return shortLabel.length > 0 && label.length > 0 && shortLabel !== label;
+}
+
+function tooltipPrimaryTitle(node: AyaNode): string {
+  const shortLabel = normalizeTooltipText(node.shortLabel);
+  const label = normalizeTooltipText(node.label);
+  return nodeHasTooltipCatchphrase(node) ? label : shortLabel || label;
+}
+
+function normalizeTooltipText(text: string): string {
+  return text.trim().replace(/\s+/g, " ");
 }
 
 function overviewCardThreadEndpoints(

@@ -767,16 +767,17 @@ input {
 .idea-tooltip {
   position: absolute;
   z-index: 20;
-  width: min(320px, calc(100vw - 40px));
-  padding: 14px 15px;
+  width: min(380px, calc(100vw - 44px));
+  padding: 18px 20px;
   border: 1px solid color-mix(in srgb, var(--node-color, #d4a45c) 34%, rgba(94, 70, 48, 0.14));
-  border-radius: 8px;
+  border-radius: 10px;
   color: #3a2e27;
   background: color-mix(in srgb, var(--node-color, #d4a45c) 8%, rgba(255, 246, 232, 0.95));
   box-shadow:
-    0 14px 34px rgba(45, 30, 16, 0.18),
+    0 18px 42px rgba(45, 30, 16, 0.2),
     inset 3px 0 0 color-mix(in srgb, var(--node-color, #d4a45c) 74%, transparent);
   backdrop-filter: blur(12px);
+  font-weight: 600;
 }
 
 .idea-tooltip.connected {
@@ -787,12 +788,38 @@ input {
   display: block;
   margin-bottom: 8px;
   font-size: 15px;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.idea-tooltip.title-only strong {
+  margin-bottom: 0;
+}
+
+.idea-tooltip.has-kicker strong {
+  margin-bottom: 0;
+}
+
+.idea-tooltip-kicker {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 5px 11px;
+  border: 1px solid color-mix(in srgb, var(--node-color, #d4a45c) 42%, rgba(94, 70, 48, 0.12));
+  border-radius: 999px;
+  color: color-mix(in srgb, var(--node-color, #d4a45c) 72%, #584333);
+  background: color-mix(in srgb, var(--node-color, #d4a45c) 12%, rgba(255, 249, 240, 0.92));
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
 }
 
 .idea-tooltip p {
   margin: 0;
-  font-size: 13px;
-  line-height: 1.6;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.7;
 }
 
 @media (max-width: 760px) {

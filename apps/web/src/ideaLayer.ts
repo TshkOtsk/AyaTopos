@@ -44,6 +44,7 @@ interface IdeaObject {
 }
 
 const OVERVIEW_FOCUS_CARD_SIZE = { width: 274, height: 181 };
+const OVERVIEW_CARD_TEXTURE_VERSION = 3;
 
 const MAPPED_CARD_GROUND_CLEARANCE_METERS = 0.6;
 
@@ -584,7 +585,11 @@ export class IdeaObjectLayer implements CustomLayerInterface {
   }
 
   private getOverviewCardTexture(node: AyaNode, selected: boolean): THREE.CanvasTexture {
-    const key = `${node.id}:${node.shortLabel}:${node.label}:${node.color}:${selected ? "selected" : "idle"}`;
+    const catchphraseText = overviewCatchphraseText(node);
+    const titleText = overviewPrimaryTitle(node);
+    const key = `${OVERVIEW_CARD_TEXTURE_VERSION}:${node.id}:${node.shortLabel}:${node.label}:${node.color}:${
+      selected ? "selected" : "idle"
+    }:${catchphraseText ? "kicker-title" : "title-only"}:${titleText}`;
     const current = this.overviewCardTextures.get(key);
     if (current) return current;
 
@@ -813,6 +818,8 @@ function drawOverviewCard(context: CanvasRenderingContext2D, node: AyaNode, colo
   const accentWidth = overviewHierarchyAccentWidth(node);
   const textLeft = card.x + accentWidth + 36;
   const textWidth = card.width - accentWidth - 58;
+  const catchphraseText = overviewCatchphraseText(node);
+  const titleText = overviewPrimaryTitle(node);
   context.save();
 
   if (selected) {
@@ -867,22 +874,21 @@ function drawOverviewCard(context: CanvasRenderingContext2D, node: AyaNode, colo
 
   context.fillStyle = "#3a2e27";
   context.textBaseline = "top";
-  context.font = '700 31px Inter, "Yu Gothic UI", Meiryo, sans-serif';
-  const titleLines = wrapCanvasText(context, node.shortLabel, textWidth, 2);
   let y = card.y + 28;
-  for (const line of titleLines) {
-    context.fillText(line, textLeft, y);
-    y += 39;
+  if (catchphraseText) {
+    y = drawOverviewCatchphrase(context, catchphraseText, color, textLeft, y, textWidth);
   }
 
-  context.fillStyle = "rgba(58, 46, 39, 0.78)";
-  context.font = '500 22px Inter, "Yu Gothic UI", Meiryo, sans-serif';
-  const bodyLines = wrapCanvasText(context, node.label, textWidth, 4);
-  y += 12;
-  for (const line of bodyLines) {
-    if (y > card.y + card.height - 34) break;
+  const titleLayout = fitCanvasTextBlock(context, titleText, textWidth, card.height - (y - card.y) - 28, {
+    maxFontSize: catchphraseText ? 28 : 31,
+    minFontSize: 15,
+    lineHeightMultiplier: 1.24,
+    fontWeight: 700
+  });
+  context.font = canvasFont(titleLayout.fontWeight, titleLayout.fontSize);
+  for (const line of titleLayout.lines) {
     context.fillText(line, textLeft, y);
-    y += 30;
+    y += titleLayout.lineHeight;
   }
 
   context.restore();
@@ -947,8 +953,8 @@ function canvasPixelRatio(map: MapLibreMap): number {
   return canvas.clientWidth > 0 ? canvas.width / canvas.clientWidth : window.devicePixelRatio || 1;
 }
 
-function wrapCanvasText(context: CanvasRenderingContext2D, text: string, maxWidth: number, maxLines: number): string[] {
-  const normalized = text.trim().replace(/\s+/g, " ");
+function wrapCanvasText(context: CanvasRenderingContext2D, text: string, maxWidth: number, maxLines?: number): string[] {
+  const normalized = normalizeCanvasText(text);
   if (!normalized) return [];
   const words = normalized.includes(" ") ? normalized.split(" ") : [...normalized];
   const lines: string[] = [];
@@ -962,14 +968,92 @@ function wrapCanvasText(context: CanvasRenderingContext2D, text: string, maxWidt
     }
     lines.push(current);
     current = word;
-    if (lines.length >= maxLines) break;
+    if (typeof maxLines === "number" && lines.length >= maxLines) break;
   }
 
-  if (current && lines.length < maxLines) lines.push(current);
-  if (lines.length === maxLines && context.measureText(lines[lines.length - 1]!).width > maxWidth) {
+  if (current && (typeof maxLines !== "number" || lines.length < maxLines)) lines.push(current);
+  if (
+    typeof maxLines === "number" &&
+    lines.length === maxLines &&
+    context.measureText(lines[lines.length - 1]!).width > maxWidth
+  ) {
     lines[lines.length - 1] = truncateCanvasText(context, lines[lines.length - 1]!, maxWidth);
   }
   return lines;
+}
+
+function fitCanvasTextBlock(
+  context: CanvasRenderingContext2D,
+  text: string,
+  maxWidth: number,
+  maxHeight: number,
+  options: {
+    maxFontSize: number;
+    minFontSize: number;
+    lineHeightMultiplier: number;
+    fontWeight: number;
+  }
+): { lines: string[]; fontSize: number; lineHeight: number; fontWeight: number } {
+  const normalized = normalizeCanvasText(text);
+  if (!normalized) {
+    return {
+      lines: [],
+      fontSize: options.minFontSize,
+      lineHeight: Math.round(options.minFontSize * options.lineHeightMultiplier),
+      fontWeight: options.fontWeight
+    };
+  }
+
+  for (let fontSize = options.maxFontSize; fontSize >= options.minFontSize; fontSize -= 1) {
+    context.font = canvasFont(options.fontWeight, fontSize);
+    const lines = wrapCanvasText(context, normalized, maxWidth);
+    const lineHeight = Math.round(fontSize * options.lineHeightMultiplier);
+    if (lines.length * lineHeight <= maxHeight) {
+      return { lines, fontSize, lineHeight, fontWeight: options.fontWeight };
+    }
+  }
+
+  const fallbackFontSize = options.minFontSize;
+  context.font = canvasFont(options.fontWeight, fallbackFontSize);
+  return {
+    lines: wrapCanvasText(context, normalized, maxWidth),
+    fontSize: fallbackFontSize,
+    lineHeight: Math.round(fallbackFontSize * options.lineHeightMultiplier),
+    fontWeight: options.fontWeight
+  };
+}
+
+function drawOverviewCatchphrase(
+  context: CanvasRenderingContext2D,
+  text: string,
+  color: THREE.Color,
+  left: number,
+  top: number,
+  maxWidth: number
+): number {
+  context.font = canvasFont(700, 16);
+  const lines = wrapCanvasText(context, text, maxWidth - 22, 2);
+  const lineHeight = 19;
+  const paddingX = 10;
+  const paddingY = 7;
+  const contentWidth = lines.reduce((max, line) => Math.max(max, context.measureText(line).width), 0);
+  const pillWidth = Math.min(maxWidth, Math.max(76, contentWidth + paddingX * 2));
+  const pillHeight = lines.length * lineHeight + paddingY * 2;
+
+  context.fillStyle = tintedCatchphraseFill(color);
+  roundedRect(context, left, top, pillWidth, pillHeight, Math.min(12, pillHeight / 2));
+  context.fill();
+  context.lineWidth = 1.5;
+  context.strokeStyle = rgbaString(color, 0.3);
+  context.stroke();
+
+  context.fillStyle = catchphraseTextColor(color);
+  let y = top + paddingY;
+  for (const line of lines) {
+    context.fillText(line, left + paddingX, y);
+    y += lineHeight;
+  }
+  return top + pillHeight + 16;
 }
 
 function truncateCanvasText(context: CanvasRenderingContext2D, text: string, maxWidth: number): string {
@@ -1001,6 +1085,44 @@ function tintedCardFill(color: THREE.Color): string {
   return `rgba(${Math.round(r * 0.08 + 255 * 0.92)}, ${Math.round(g * 0.08 + 246 * 0.92)}, ${Math.round(
     b * 0.08 + 232 * 0.92
   )}, 0.96)`;
+}
+
+function tintedCatchphraseFill(color: THREE.Color): string {
+  const r = Math.round(color.r * 255);
+  const g = Math.round(color.g * 255);
+  const b = Math.round(color.b * 255);
+  return `rgba(${Math.round(r * 0.14 + 255 * 0.86)}, ${Math.round(g * 0.14 + 248 * 0.86)}, ${Math.round(
+    b * 0.14 + 236 * 0.86
+  )}, 0.92)`;
+}
+
+function catchphraseTextColor(color: THREE.Color): string {
+  const r = Math.round(color.r * 255);
+  const g = Math.round(color.g * 255);
+  const b = Math.round(color.b * 255);
+  return `rgba(${Math.round(r * 0.42 + 72 * 0.58)}, ${Math.round(g * 0.42 + 56 * 0.58)}, ${Math.round(
+    b * 0.42 + 44 * 0.58
+  )}, 0.96)`;
+}
+
+function normalizeCanvasText(text: string): string {
+  return text.trim().replace(/\s+/g, " ");
+}
+
+function canvasFont(weight: number, size: number): string {
+  return `${weight} ${size}px Inter, "Yu Gothic UI", Meiryo, sans-serif`;
+}
+
+function overviewCatchphraseText(node: AyaNode): string {
+  const shortLabel = normalizeCanvasText(node.shortLabel);
+  const label = normalizeCanvasText(node.label);
+  return shortLabel.length > 0 && label.length > 0 && shortLabel !== label ? shortLabel : "";
+}
+
+function overviewPrimaryTitle(node: AyaNode): string {
+  const shortLabel = normalizeCanvasText(node.shortLabel);
+  const label = normalizeCanvasText(node.label);
+  return overviewCatchphraseText(node) ? label : shortLabel || label;
 }
 
 function seededUnit(input: string): number {
