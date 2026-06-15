@@ -694,6 +694,11 @@ function MapScene({
     };
     sceneRef.current?.addEventListener("wheel", forwardOverlayWheelToMap, { capture: true, passive: false });
 
+    const blockSceneContextMenu = (event: MouseEvent) => {
+      event.preventDefault();
+    };
+    sceneRef.current?.addEventListener("contextmenu", blockSceneContextMenu);
+
     const rerender = () => {
       if (frameRef.current !== null) return;
       frameRef.current = window.requestAnimationFrame(() => {
@@ -761,6 +766,7 @@ function MapScene({
         window.cancelAnimationFrame(frameRef.current);
       }
       activeViewDragKindsRef.current.clear();
+      sceneRef.current?.removeEventListener("contextmenu", blockSceneContextMenu);
       sceneRef.current?.removeEventListener("wheel", forwardOverlayWheelToMap, { capture: true });
       map.off("dragstart", startDragPan);
       map.off("dragend", endDragPan);
