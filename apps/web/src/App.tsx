@@ -2242,8 +2242,8 @@ function rootProximity(node: AyaNode, maxDepth: number): number {
 
 function threadWidthPixels(source: AyaNode, target: AyaNode, maxDepth: number, isOverview: boolean): number {
   const proximity = Math.max(rootProximity(source, maxDepth), rootProximity(target, maxDepth));
-  const base = isOverview ? 3.5 : 4.5;
-  const span = isOverview ? 9 : 7;
+  const base = isOverview ? 0.95 : 1.1;
+  const span = isOverview ? 3.25 : 3.55;
   return Math.round((base + span * proximity) * 10) / 10;
 }
 

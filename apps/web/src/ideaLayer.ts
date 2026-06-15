@@ -941,18 +941,42 @@ function drawThread(context: CanvasRenderingContext2D, thread: IdeaLayerThreadDa
   };
   const midX = (source.x + target.x) / 2;
   const midY = (source.y + target.y) / 2 - Math.min(120 * pixelRatio, Math.abs(source.x - target.x) * 0.18);
+  const glowWidth = Math.max(1.6, thread.width * 1.65) * pixelRatio;
+  const coreWidth = Math.max(0.85, thread.width * 0.58) * pixelRatio;
+  const dash = thread.kind === "card-link" ? [3.5 * pixelRatio, 6 * pixelRatio] : [];
 
   context.save();
   context.lineCap = "round";
   context.lineJoin = "round";
-  context.lineWidth = thread.width * pixelRatio;
-  context.strokeStyle = threadStrokeStyle(thread.kind);
+  context.lineWidth = glowWidth;
+  context.strokeStyle = threadGlowStrokeStyle(thread.kind);
   context.shadowColor = threadShadowColor(thread.kind);
-  context.shadowBlur = 18 * pixelRatio;
+  context.shadowBlur = Math.max(8, thread.width * 3.4) * pixelRatio;
+  context.setLineDash(dash);
+  traceThreadPath(context, thread, source, target, midX, midY);
+  context.stroke();
+
+  context.shadowColor = "transparent";
+  context.shadowBlur = 0;
+  context.lineWidth = coreWidth;
+  context.strokeStyle = threadCoreStrokeStyle(thread.kind);
+  context.setLineDash(dash);
+  traceThreadPath(context, thread, source, target, midX, midY);
+  context.stroke();
+  context.restore();
+}
+
+function traceThreadPath(
+  context: CanvasRenderingContext2D,
+  thread: IdeaLayerThreadDatum,
+  source: { x: number; y: number },
+  target: { x: number; y: number },
+  midX: number,
+  midY: number
+): void {
   context.beginPath();
   context.moveTo(source.x, source.y);
   if (thread.kind === "card-link") {
-    context.setLineDash([5 * pixelRatio, 7 * pixelRatio]);
     context.lineTo(target.x, target.y);
   } else if (thread.kind === "family") {
     const joinY = (source.y + target.y) / 2;
@@ -962,22 +986,27 @@ function drawThread(context: CanvasRenderingContext2D, thread: IdeaLayerThreadDa
   } else {
     context.quadraticCurveTo(midX, midY, target.x, target.y);
   }
-  context.stroke();
-  context.restore();
 }
 
-function threadStrokeStyle(kind: IdeaLayerThreadDatum["kind"]): string {
-  if (kind === "card-link") return "rgba(198, 93, 109, 0.74)";
-  if (kind === "parent" || kind === "family") return "rgba(186, 242, 255, 0.82)";
-  if (kind === "sibling") return "rgba(255, 218, 158, 0.72)";
-  return "rgba(255, 246, 205, 0.92)";
+function threadGlowStrokeStyle(kind: IdeaLayerThreadDatum["kind"]): string {
+  if (kind === "card-link") return "rgba(255, 133, 150, 0.22)";
+  if (kind === "parent" || kind === "family") return "rgba(152, 231, 255, 0.22)";
+  if (kind === "sibling") return "rgba(255, 210, 130, 0.18)";
+  return "rgba(255, 240, 190, 0.24)";
+}
+
+function threadCoreStrokeStyle(kind: IdeaLayerThreadDatum["kind"]): string {
+  if (kind === "card-link") return "rgba(255, 214, 220, 0.88)";
+  if (kind === "parent" || kind === "family") return "rgba(229, 251, 255, 0.9)";
+  if (kind === "sibling") return "rgba(255, 243, 214, 0.84)";
+  return "rgba(255, 248, 226, 0.9)";
 }
 
 function threadShadowColor(kind: IdeaLayerThreadDatum["kind"]): string {
-  if (kind === "card-link") return "rgba(255, 154, 154, 0.58)";
-  if (kind === "parent" || kind === "family") return "rgba(116, 210, 255, 0.72)";
-  if (kind === "sibling") return "rgba(255, 194, 84, 0.62)";
-  return "rgba(255, 226, 151, 0.86)";
+  if (kind === "card-link") return "rgba(255, 146, 156, 0.32)";
+  if (kind === "parent" || kind === "family") return "rgba(106, 202, 248, 0.34)";
+  if (kind === "sibling") return "rgba(255, 192, 92, 0.28)";
+  return "rgba(255, 222, 150, 0.36)";
 }
 
 function canvasPixelRatio(map: MapLibreMap): number {
