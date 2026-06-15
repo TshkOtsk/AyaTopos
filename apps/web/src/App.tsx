@@ -577,6 +577,7 @@ function MapScene({
   const overviewReturnViewRef = useRef<StoredMapView | null>(null);
   const overviewFocusModeRef = useRef<"group" | "selected">("group");
   const [overviewNodeId, setOverviewNodeId] = useState<string | null>(null);
+  const [persistentNodeId, setPersistentNodeId] = useState<string | null>(null);
   const [lockedOverviewCardLayouts, setLockedOverviewCardLayouts] = useState<Map<string, IdeaLayerCardLayout>>(new Map());
   const [shouldLockOverviewLayout, setShouldLockOverviewLayout] = useState(false);
   const [tick, setTick] = useState(0);
@@ -806,6 +807,7 @@ function MapScene({
   useEffect(() => {
     if (!graph || !mapRef.current || isGeoEditing) return;
     setOverviewNodeId(null);
+    setPersistentNodeId(null);
     overviewReturnViewRef.current = null;
     overviewFocusModeRef.current = "group";
     setLockedOverviewCardLayouts(new Map());
@@ -834,6 +836,7 @@ function MapScene({
 
     if (isGeoEditing) {
       setOverviewNodeId(null);
+      setPersistentNodeId(null);
       overviewReturnViewRef.current = null;
       overviewFocusModeRef.current = "group";
       setLockedOverviewCardLayouts(new Map());
@@ -869,7 +872,7 @@ function MapScene({
   const zoom = mapRef.current?.getZoom() ?? 0;
   const shouldShowGroupOutlines = false;
   const visualThreads = useMemo(() => (graph ? createVisualThreads(graph) : []), [graph]);
-  const normalActiveNodeId = isGeoEditing ? hoveredId : hoveredId ?? selectedCardId;
+  const normalActiveNodeId = isGeoEditing ? hoveredId : hoveredId ?? persistentNodeId ?? selectedCardId;
   const focusNodeId = isRelatedOverview ? overviewNodeId : normalActiveNodeId;
   const layerActiveNodeId = isRelatedOverview ? hoveredId ?? overviewNodeId : normalActiveNodeId;
   const layerHoverNodeId = isRelatedOverview ? hoveredId : layerActiveNodeId;
@@ -1173,6 +1176,14 @@ function MapScene({
     [graph, onSelectCard]
   );
 
+  const setPersistentSelection = useCallback(
+    (nodeId: string | null) => {
+      setPersistentNodeId(nodeId);
+      selectPersistentCard(nodeId);
+    },
+    [selectPersistentCard]
+  );
+
   const acceptHover = useCallback(
     (nodeId: string) => {
       if (activeViewDragKindsRef.current.size > 0) return;
@@ -1219,12 +1230,12 @@ function MapScene({
     const selectedPoint = selectedNode ? pointForNode(selectedNode) : null;
     const currentZoom = map?.getZoom();
     setOverviewNodeId(null);
-    onHover(null);
+    onHover(selectedNode?.id ?? null);
     overviewReturnViewRef.current = null;
     overviewFocusModeRef.current = "group";
     setLockedOverviewCardLayouts(new Map());
     setShouldLockOverviewLayout(false);
-    selectPersistentCard(selectedNode?.id ?? null);
+    setPersistentSelection(selectedNode?.id ?? null);
 
     if (!map || !returnView) return;
     map.dragRotate.enable();
@@ -1236,7 +1247,7 @@ function MapScene({
       bearing: returnView.bearing,
       duration: 560
     });
-  }, [graph, onHover, overviewNodeId, pointForNode, selectPersistentCard]);
+  }, [graph, onHover, overviewNodeId, pointForNode, setPersistentSelection]);
 
   const returnToNode3d = useCallback(
     (node: AyaNode) => {
@@ -1250,7 +1261,7 @@ function MapScene({
       overviewFocusModeRef.current = "group";
       setLockedOverviewCardLayouts(new Map());
       setShouldLockOverviewLayout(false);
-      selectPersistentCard(node.id);
+      setPersistentSelection(node.id);
       map.dragRotate.enable();
       map.touchZoomRotate.enableRotation();
       map.easeTo({
@@ -1261,7 +1272,7 @@ function MapScene({
         duration: 700
       });
     },
-    [onHover, pointForNode, selectPersistentCard]
+    [onHover, pointForNode, setPersistentSelection]
   );
 
   useEffect(() => {
@@ -1306,6 +1317,7 @@ function MapScene({
         return;
       }
       if (!isGeoEditing) {
+        setPersistentNodeId(null);
         onHover(null);
         onSelectCard(null);
       }
