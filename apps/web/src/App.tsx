@@ -721,7 +721,7 @@ function MapScene({
       majorityFraction: 0.6,
       singlePointZoom: 16.2
     });
-  }, [graph, blend, isGeoEditing]);
+  }, [graph, isGeoEditing]);
 
   useEffect(() => {
     const map = mapRef.current;
